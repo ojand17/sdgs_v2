@@ -1,0 +1,539 @@
+
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="header">
+    <!-- <title>Dashboard SDG</title> -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap-responsive.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/fullcalendar.css}"/>
+    <link rel="stylesheet" th:href="@{/css/maruti-style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/maruti-media.css}" class="skin-color"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.css}" />
+    <link rel="stylesheet" th:href="@{/css/switch-bahasa.css}" />
+    <!-- <link rel="stylesheet" th:href="@{/css/jquery.dataTables.min.css}" /> -->
+    <link rel="stylesheet" th:href="@{/css/sweetalert2.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/select2.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/multiple-select.css}" />
+    <link rel="stylesheet" th:href="@{/css/treeview.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap-datepicker.min.css}" />
+    <!--<link rel="stylesheet" th:href="@{/js/jstree/themes/default/style.min.css}" />-->
+    <link rel="stylesheet" th:href="@{/images/jstree/style.css}" />
+     <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />--> 
+    <link rel="stylesheet" th:href="@{/css/jquery.dataTables10.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/buttons.dataTables.min.css}" />
+    <link rel="stylesheet" href="https://printjs-4de6.kxcdn.com/print.min.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  
+    
+
+    <script th:src="@{/js/excanvas.min.js}"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
+<!--    <script type="text/javascript">
+        var $ = $.noConflict(true);
+    </script>-->
+    <script th:src="@{/js/jquery.ui.custom.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/jquery.flot.min.js}"></script>
+    <script th:src="@{/js/jquery.flot.resize.min.js}"></script>
+    <script th:src="@{/js/jquery.peity.min.js}"></script>
+    <script th:src="@{/js/fullcalendar.min.js}"></script>
+    <script th:src="@{/js/maruti.js}"></script>
+    <script th:src="@{/js/maruti.dashboard.js}"></script>
+    <script th:src="@{/js/maruti.chat.js}"></script>
+    <!-- <script th:src="@{/js/jquery.dataTables.min.js}"></script> -->
+    <script th:src="@{/js/sweetalert2.min.js}"></script>
+    <script th:src="@{/js/jquery.serialize-object.js}"></script>
+    <script th:src="@{/js/select2.full.min.js}"></script>
+    <script th:src="@{/js/multiple-select.js}"></script>
+    <script th:src="@{/js/bootstrap-datepicker.min.js}"></script>
+    <script th:src="@{/js/jquery.dataTables10.min.js}"></script>
+    <script th:src="@{/js/dataTables.buttons.min.js}"></script>
+    <script th:src="@{/js/buttons.flash.min.js}"></script>
+    <script th:src="@{/js/jszip.min.js}"></script>
+    <script th:src="@{/js/pdfmake.min.js}"></script>
+    <script th:src="@{/js/vfs_fonts.js}"></script>
+    <script th:src="@{/js/buttons.html5.min.js}"></script>
+	<script th:src="@{/js/buttons.print.min.js}"></script>
+
+    <!--<script th:src="@{/js/highchart/highmaps.js}"></script>-->
+    <script th:src="@{/js/jquery2.min.js}"></script>
+    <script th:src="@{/js/jstree/jstree.js}"></script>
+    <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+    <script type="text/javascript">
+        var $2 = $.noConflict(true);
+    </script>
+    
+    
+    <script th:src="@{/js/highchart/highcharts.js}"></script>
+     <script th:src="@{/js/highchart/map.js}"></script>
+     <script th:src="@{/js/highchart/id-all.js}"></script>
+     <script th:src="@{/js/highchart/exporting.js}"></script>
+    <script th:src="@{/js/highchart/export-data.js}"></script>
+    <script th:src="@{/js/highchart/accessibility.js}"></script>
+</head>
+<body>
+    <div th:fragment="menu">
+    	<div id="modal-ubah-password" class="modal hide fade" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float:right">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h3 class="modal-title" id="exampleModalLabel"><i class="icon-cog"></i> 
+                    	<span class="lang_eng" style="display:none">Change Password</span>
+                        <span class="lang_indo">Ubah Password</span>
+                    </h3>
+                </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="control-group" style='display:none'>
+                                <label th:class="control-label" for="username">
+                                	<span class="lang_eng" style="display:none">Username</span>
+                            		<span class="lang_indo">Nama Pengguna</span>
+                                </label>
+                                <div class="controls">
+                                    <input class="input-block-level" id="ubah_username" type="text" name="ubah_username"/>
+                                    <input type="hidden" id="ubah_id_user" name="ubah_id_user"/>
+                                    <!--<input type="hidden" id="id_role" name="id_role"/>-->
+                                    <span class="help-block" id="error_username"></span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label th:class="control-label" for="nama">
+                                	<span class="lang_eng" style="display:none">Password</span>
+                            		<span class="lang_indo">Kata Sandi</span>
+                                </label>
+                                <div class="controls">
+                                    <input class="input-block-level" id="ubah_password" type="password" name="ubah_password" />
+                                    <span class="help-block" id="error_password"></span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label th:class="control-label" for="nama">
+                                	<span class="lang_eng" style="display:none">Name</span>
+                            		<span class="lang_indo">Nama Lengkap</span>
+                                </label>
+                                <div class="controls">
+                                    <input class="input-block-level" id="ubah_name" type="text" name="ubah_name" />
+                                    <span class="help-block" id="error_name"></span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label th:class="control-label" for="username">
+                                	<span>Email</span>
+                                </label>
+                                <div class="controls">
+                                    <input class="input-block-level" id="ubah_email" type="text" name="ubah_email"/>
+                                    <span class="help-block" id="error_email"></span>
+                                </div>
+                            </div>
+                            <div class="control-group" style='display:none'>
+                                <label th:class="control-label" for="nama">
+                                	<span class="lang_eng" style="display:none">Role</span>
+                            		<span class="lang_indo">Role</span>
+                                </label>
+                                <div class="controls">
+                                	<input id="ubah_id_role" name="ubah_id_role"/>
+                                	<input id="ubah_prov" name="ubah_prov"/>
+                                    <span class="help-block" id="error_id_role"></span>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label th:class="control-label" for="detail">Detail</label>
+                                <div class="controls">
+                                    <textarea class="input-block-level" id="ubah_detail" name="ubah_detail" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn" data-dismiss="modal" aria-hidden="true">
+				    		<span class="lang_eng" style="display:none">Close</span>
+				    		<span class="lang_indo">Tutup</span>
+				    	</button>
+				    	<button class="btn btn-primary" id="submit-change-password">
+				    		<span class="lang_eng" style="display:none">Submit</span>
+				    		<span class="lang_indo">Simpan</span>
+				    	</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+        <div id="header">
+            <h3><a href="#">SDGs E-Monev</a></h3>
+        </div>
+        <div class="btn-group rightzero">
+            <a class="top_message tip-left" title="Manage Files"><i class="icon-file"></i></a>
+            <a class="top_message tip-bottom" title="Manage Users"><i class="icon-user"></i></a>
+            <a class="top_message tip-bottom" title="Manage Comments"><i class="icon-comment"></i>
+                <span class="label label-important">5</span>
+            </a>
+            <a class="top_message tip-bottom" title="Manage Orders"><i class="icon-shopping-cart"></i></a>
+        </div>
+        <div id="user-nav" class="navbar navbar-inverse">
+            <ul class="nav">
+                <li class="notif" style="margin-top:10px;background:none;padding:10px;">
+                    <span id="welcome" style="color:white;">Welcome Super</span>
+                </li>
+                <li class="notif lang_indo" style="margin-top:12px;background:none;padding:10px;">
+                    <form >
+                        <a href="#" class='ubah-pass' style="color:white;">
+                            <i style="color:white;" class="icon icon-cog icon-white"></i> Ubah Password
+                        </a>
+                    </form>
+                </li>
+                <li class="notif lang_eng" style="display:none;margin-top:12px;background:none;padding:10px;">
+                    <form >
+                        <a href="#" class='ubah-pass' style="color:white;">
+                            <i style="color:white;" class="icon icon-cog icon-white"></i> Change Password
+                        </a>
+                    </form>
+                </li>
+                
+                <li class="notif" style="margin-top:12px;background:none;padding:10px 30px;">
+                    <form >
+                        <a th:href="@{/admin/read-message}">
+                            <i style="color:white;" class="icon icon-envelope icon-white"> <span id="badge" class=""> </span></i>
+                        </a>
+                    </form>
+                </li>
+                <li class="" style="margin-top:7px;background:none;padding:10px;">
+                    <div class="flipswitch">
+                        <input id="fs" type="checkbox" name="flipswitch" class="flipswitch-cb" checked>
+                        <label class="flipswitch-label" for="fs">
+                            <div class="flipswitch-inner"></div>
+                            <div class="flipswitch-switch"></div>
+                        </label>
+                    </div>
+                </li>
+                <li class="" style="margin-top:12px;background:none;padding:10px;">
+                    <form id="logoutform" method="post" th:action="@{/logout}">
+                        <a href="javascript:;" onclick="document.getElementById('logoutform').submit()">
+                            <i class="icon icon-share-alt"></i> <span id="keluar" class="text">Logout</span>
+                        </a>
+                    </form>
+                </li>
+            </ul>
+        </div>
+        <div id="sidebar">
+            <script th:inline="javascript">
+                var urls = "/sdg/admin/";
+                var lang = [[${lang}]];
+                var name = [[${name}]];
+                var id_user = [[${id_user}]];
+                var privilege = [[${privilege}]];
+                
+                if(id_user){
+                	localStorage.id_user = id_user;
+                }
+                $(document).ajaxError(function (e, xhr, options) {
+                    if (xhr.status == 403) {
+                        window.location.href = 'login';
+                    }
+                });
+                $("#welcome").html("Welcome, "+name);
+                
+                if(privilege=="guest"){
+                	$(".notif").hide();
+                }
+                
+                $('.ubah-pass').on('click', function(){
+            		var id = $(this).attr('data-id');
+            		$.ajax({
+            			type: "GET",
+                        url: urls+'manajemen/get-user/'+localStorage.id_user,
+                        success: function (result) {
+                        	var val = result.content;
+                        	$('#ubah_id_user').val(val.id_user);
+            				$('#ubah_username').val(val.userName);
+            				$('#ubah_password').val(val.password);
+            				$('#ubah_name').val(val.name);
+            				$('#ubah_detail').text(val.detail);
+            				$('#ubah_id_role').val(val.id_role);
+            				$('#ubah_email').val(val.email);
+            				$('body').find('#modal-ubah-password').modal('show');
+                        },
+                    })
+                 });
+                
+                $('#myModal').on('hidden.bs.modal',function(){
+                	$('#ubah_id_user').val("");
+    				$('#ubah_username').val("");
+    				$('#ubah_password').val("");
+    				$('#ubah_name').val("");
+    				$('#ubah_detail').text("");
+    				$('#ubah_id_role').val("");
+    				$('#ubah_email').val("");
+            	});
+                
+                $('#submit-change-password').on('click', function(){
+                	var token = $("meta[name='_csrf']").attr("content");
+                    var header = $("meta[name='_csrf_header']").attr("content");
+                	var id_user = ($('#ubah_id_user').val())?$('#ubah_id_user').val():null;
+            		var username = $('#ubah_username').val();
+            		var name = $('#ubah_name').val();
+            		var detail = $('#ubah_detail').val();
+            		var id_role = $('#ubah_id_role').val();
+            		var password = $('#ubah_password').val();
+            		var email = $('#ubah_email').val();
+                	var data = JSON.stringify({
+        				'id_user':id_user,
+        				'userName':username,
+        				'name':name,
+        				'detail':detail,
+        				'enabled':1,
+        				'id_role':id_role,
+        				'password':password,
+        				'email':email
+        				});
+        			$.ajax({
+        				type: "POST",
+                        url: urls+'manajemen/save-user',
+                        beforeSend : function(xhr){
+                        	xhr.setRequestHeader(header,token);
+                        },
+                        headers:{'Accept':'application/json','Content-Type':'application/json'},
+        				data: data,
+                        success: function (result) {
+                        	swal("Password","Success",'success');
+                        	$('#modal-ubah-password').modal('hide');
+                        },
+                    });
+                });
+                
+                //Get Jml Pesan Reject
+//                $.ajax({
+//                url: urls + "count-pesan",
+//                type: 'get',
+//                success: function(result) {
+//	                    var jml = result.content[0];
+//	                    if(jml){
+//	                    	$("#badge").addClass("badge").text(jml);
+//	                    }else{
+//	                    	$("#badge").removeClass("badge").text("");
+//	                    }
+//	                }
+//	            });
+                
+                //Copy RANRAN next periode
+                if(privilege!="guest"){
+                	var today = new Date();
+    				var dd = String(today.getDate()).padStart(2, '0');
+    				var mm = String(today.getMonth() + 1).padStart(2, '0');
+    				if(dd=="31" && mm=="03"){
+    			    	$.ajax({
+    		                url: urls + "copy-period",
+    		                type: 'get',
+    		                success: function(result) {
+    		                }
+    			            });
+    			    }
+    				bahasa();
+    				if (lang == "1") {
+                        english();
+                        if (!localStorage.getItem("reload")) {
+                            localStorage.setItem("reload", "true");
+                            location.reload();
+                        } else {
+                            localStorage.removeItem("reload");
+                        }
+                    } else if (lang == "0") {
+                        bahasa();
+                        if (!localStorage.getItem("reload")) {
+                            localStorage.setItem("reload", "true");
+                            location.reload();
+                        } else {
+                            localStorage.removeItem("reload");
+                        }
+                    }
+                }
+                
+
+                //********************************* Switch Language *********************************
+                var token = $("meta[name='_csrf']").attr("content");
+                $('#fs').change(function() {
+                    if($(this).is(':checked')) {
+                    	$(".lang_indo").show();
+    	        		$(".lang_eng").hide();
+                        $.ajax({
+                            url: urls + "bahasa",
+                            headers: {"X-CSRF-TOKEN": token},
+                            type: "post",
+                            data: {"bhs": "0"},
+                            dataType: "text",
+                            success: function(data) {
+                            	if(name!="Guest"){
+                            		bahasa();
+                            	}
+                            }
+                        });
+                    } else {
+                    	$(".lang_indo").hide();
+    	        		$(".lang_eng").show();
+                        $.ajax({
+                            url: urls + "english",
+                            headers: {"X-CSRF-TOKEN": token},
+                            type: "post",
+                            data: {"bhs": "1"},
+                            dataType: "text",
+                            success: function(data) {
+                            	if(name!="Guest"){
+                            		english();
+                            	}
+                            }
+                        });
+                    }
+                });
+                $("#sidebar li:first").addClass("active");
+                
+                function clearStorageDataEntry(){
+                	sessionStorage.removeItem("idrole_gov");
+                	sessionStorage.removeItem("periode_gov");
+                	sessionStorage.removeItem("provinsi_gov");
+                	sessionStorage.removeItem("idrole_nongov");
+                	sessionStorage.removeItem("periode_nongov");
+                	sessionStorage.removeItem("provinsi_nongov");
+                	sessionStorage.removeItem("idrole_target");
+                	sessionStorage.removeItem("periode_target");
+                	sessionStorage.removeItem("provinsi_target");
+                	sessionStorage.removeItem("graph_idrole");
+                	sessionStorage.removeItem("graph_idmonper");
+                	sessionStorage.removeItem("graph_idprov");
+                	sessionStorage.removeItem("graph_idgoals");
+                	sessionStorage.removeItem("graph_idtarget");
+                	sessionStorage.removeItem("graph_idindicator");
+                	sessionStorage.removeItem("provinsi_gov_prog");
+                	sessionStorage.removeItem("monper_gov_prog");
+                	sessionStorage.removeItem("provinsi_non_gov_prog");
+                	sessionStorage.removeItem("role_non_gov_prog");
+                	sessionStorage.removeItem("monper_non_gov_prog");
+                	sessionStorage.removeItem("goals_page");
+                	sessionStorage.removeItem("role_non_gov_activity");
+                	sessionStorage.removeItem("graph_tipe_periode");
+                }
+
+                //===== Fungsi Bahasa Indonesia ======
+                function bahasa() {
+                    document.getElementById("fs").checked = true;
+                    $("#keluar").html("Keluar");
+                    $("#bhs").html("Bahasa :");
+                    $.ajax({
+                        url: urls + 'menu',
+                        type: 'get',
+                        dataType: 'json',
+                        success: function (response) {
+                            $('#menuatas').empty();
+                            for (var i = 0; i < response.length; i++) {
+                                var menuRow = '<li id="' + response[i].id_menu + '" class="' + response[i].submenu + '">' +
+                                    '<a id="' + response[i].id_menu + '" href="' + response[i].link + '"><span id="' + response[i].submenu + '">' + response[i].menu_indo + '</span></a>'
+                                '</li>';
+                                $('#menuatas').append(menuRow);
+                            }
+                            $('span[id*=aktif]:visible').each(function () {
+                                $(this).append('&nbsp;&nbsp;&nbsp;<i class="icon icon-caret-down" style="background:none"></i>');
+                            });
+                            $('li[class*=aktif]:visible').each(function () {
+                                $(this).addClass('submenu');
+                                var ul = '<ul id="' + $(this).attr('id') + '" class="drop"></ul>';
+                                $(this).append(ul);
+                            });
+                            $('li[class*=aktif]:visible').each(function () {
+                            	$(this).on('hover', function () {
+                            		$("li.aktif > ul").empty();
+                            	});
+                                $(this).on('click', function () {
+                                	clearStorageDataEntry();
+                                    $.ajax({
+                                        url: urls + 'submenu',
+                                        type: 'get',
+                                        data: 'id=' + $(this).attr('id'),
+                                        dataType: 'json',
+                                        success: function (result) {
+                                            $("li.aktif > ul").empty();
+                                            for (var j = 0; j < result.length; j++) {
+                                                var li = '<li><a href="' + result[j].submenu_link + '">' + result[j].submenu_indo + '</a></li>';
+                                                $("li.aktif > ul").append(li);
+                                            }
+                                        }
+                                    });
+                                });
+                            });
+                        }
+                    });
+                }
+
+                function english() {
+                    document.getElementById("fs").checked = false;
+                    $("#keluar").html("Logout");
+                    $("#bhs").html("English :");
+                    $.ajax({
+                        url: urls + 'menu',
+                        type: 'get',
+                        dataType: 'json',
+                        success: function (response) {
+                            $('#menuatas').empty();
+                            for (var i = 0; i < response.length; i++) {
+                                var menuRow = '<li id="' + response[i].id_menu + '" class="' + response[i].submenu + '">' +
+                                    '<a id="' + response[i].id_menu + '" href="' + response[i].link + '"><span id="' + response[i].submenu + '">' + response[i].menu_eng + '</span></a>'
+                                '</li>';
+                                $('#menuatas').append(menuRow);
+                            }
+                            $('span[id*=aktif]:visible').each(function () {
+                                $(this).append('&nbsp;&nbsp;&nbsp;<i class="icon icon-caret-down" style="background:none"></i>');
+                            });
+                            $('li[class*=aktif]:visible').each(function () {
+                                $(this).addClass('submenu');
+                                var ul = '<ul id="' + $(this).attr('id') + '" class="drop"></ul>';
+                                $(this).append(ul);
+                            });
+                            $('li[class*=aktif]:visible').each(function () {
+                            	$(this).on('hover', function () {
+                            		$("li.aktif > ul").empty();
+                            	});
+                                $(this).on('click', function () {
+                                	clearStorageDataEntry();
+                                    $.ajax({
+                                        url: urls+'submenu',
+                                        type: 'get',
+                                        data: 'id=' + $(this).attr('id'),
+                                        dataType: 'json',
+                                        success: function (result) {
+                                            $("li.aktif > ul").empty();
+                                            for (var j = 0; j < result.length; j++) {
+                                                var li = '<li><a href="' + result[j].submenu_link + '">' + result[j].submenu_eng + '</a></li>';
+                                                $("li.aktif > ul").append(li);
+                                            }
+                                        }
+                                    });
+                                });
+                            });
+                        }
+                    });
+                }
+            </script>
+            <ul id="menuatas"></ul>
+            <div id="google_translate_element"></div>
+
+<script type="text/javascript">
+    eval(function(p,a,c,k,e,r){e=String;if(!''.replace(/^/,String)){while(c--)r[c]=k[c]||c;k=[function(e){return r[e]}];e=function(){return'\\w+'};c=1};while(c--)if(k[c])p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c]);return p}('0 1(){2 3.4.5({6:\'7\'},\'8\')}',9,9,'function|googleTranslateElementInit|new|google|translate|TranslateElement|pageLanguage|id|google_translate_element'.split('|'),0,{}))
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        </div>
+    </div>
+    <!--*************************** Content ***************************-->
+    <div id="content"></div>
+
+    <div th:fragment="footer" class="row-fluid">
+        <div id="footer" class="span12"> 2019 &copy; JICA - SDG </div>
+    </div>
+</body>
+</html>

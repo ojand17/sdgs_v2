@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+<head th:include="admin/layout :: header">
+    <title th:text="SDG Indicator Monitoring">SDG Indicator Monitoring</title>
+</head>
+<body>
+    <div th:include="admin/layout :: menu"></div>
+
+    <div id="content">
+        <div id="content-header">
+            <div id="breadcrumb"> 
+            	<a href="#" title="Ke Home" class="tip-bottom"><i class="icon-home"></i>
+	            	<span class="lang_eng" style="display:none">Input Data / Detail Best Practice</span>
+					<span class="lang_indo">Input Data / Praktik Terbaik Detail</span>
+            	</a>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="widget-box">
+                    <div class="widget-title" id="judul-indo">
+                        <span class="icon"><i class="icon-tasks"></i></span>
+                        <h5 id="jdltbl">
+                        	<span class="lang_eng" style="display:none">List Detail Best Practice</span>
+							<span class="lang_indo">Daftar Praktik Terbaik Detail</span>
+                        </h5>
+                    </div>
+                    <div class="widget-content">
+                    	<div class="row-fluid">
+                    		<div class="span8">
+                    			<select id="id_prov" name="id_prov" class="form-control" disabled="true">
+	                                <option value="0" >-- Pilih --</option>
+	                                <option th:each="f:${listprov}" th:value="${f.id_prov}" th:text="${f.acronym}"></option>
+	                            </select>
+	                            <select id="idrole" name="idrole" class="form-control" disabled="true">
+	                            	<option value="0" >-- Pilih --</option>
+	                            </select>
+	                            <select id="periode" name="periode" class="form-control" disabled="true">
+	                            	<option value="0" >-- Pilih --</option>
+	                            </select>
+                    		</div>
+                    		<div class="span4" align="right">
+                    			<button id="showModal" class="btn btn-primary">
+	                   				<i class="icon-plus"></i> 
+	                   					<span class="lang_eng" style="display:none">Add Detail</span>
+	                   					<span class="lang_indo">Tambah Detail</span>
+	                   			</button>
+	                   			<button class="btn btn-warning">
+	                   				<!-- <i class="icon-plus"></i>  -->
+	                   					<span class="lang_eng" style="display:none">Apply</span>
+	                   					<span class="lang_indo">Terapkan</span>
+	                   			</button>
+                    		</div>
+                    	</div>
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <table  id="tabel-practice" class="table table-striped table-bordered">
+                                    <thead>
+	                                    <tr>
+	                                    	<th style="text-align:center;font-size:80%;" width="15%">
+	                                        	<span class="lang_eng" style="display:none">Title</span>
+                   								<span class="lang_indo">Judul</span>
+	                                        </th>
+	                                        <th style="text-align:center;font-size:80%;" width="15%">
+	                                        	<span class="lang_eng" style="display:none">Name of Destination in TPB/SDGs</span>
+                   								<span class="lang_indo">Nama Tujuan TPB/SDGs</span>
+	                                        </th>
+	                                        <th style="text-align:center;font-size:80%;" width="15%">
+	                                        	<span class="lang_eng" style="display:none">Organization Name</span>
+                   								<span class="lang_indo">Nama Organisasi</span>
+	                                        </th>
+	                                        <th style="text-align:center;font-size:80%;" width="15%">
+	                                        	<span class="lang_eng" style="display:none">Activity Location</span>
+                   								<span class="lang_indo">Lokasi Kegiatan</span>
+	                                        </th>
+	                                        <th style="text-align:center;font-size:80%;" width="15%">
+	                                        	<span class="lang_eng" style="display:none">Activity Period</span>
+                   								<span class="lang_indo">Periode Kegiatan</span>
+											</th>
+	                                        <th style="text-align:center;font-size:80%;" width="15%">
+	                                        	<span class="lang_eng" style="display:none">Partner</span>
+                   								<span class="lang_indo">Rekan</span>
+											</th>
+											<th style="text-align:center;font-size:80%;" width="15%">
+	                                        	<span class="lang_eng" style="display:none">Beneficaries</span>
+                   								<span class="lang_indo">Beneficaries</span>
+											</th>
+											<th style="text-align:center;font-size:80%;" width="15%">
+	                                        	<span class="lang_eng" style="display:none">Description</span>
+                   								<span class="lang_indo">Deskripsi</span>
+											</th>
+											<th style="text-align:center;font-size:80%;" width="15%">
+	                                        	<span class="lang_eng" style="display:none">Document(Pic/Text)</span>
+                   								<span class="lang_indo">Dokumen</span>
+											</th>
+											<th style="text-align:center;font-size:80%;" width="10%">
+	                                        	<span class="lang_eng" style="display:none">Action</span>
+                   								<span class="lang_indo">Aksi</span>
+											</th>
+	                                    </tr>
+                                    </thead>
+                                    <tbody id="tbody-best"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="myModal"data-backdrop="static" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-header">
+			    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			    <h3 class="lang_eng" style="display:none">Add Detail Best Pactice</h3>
+			    <h3 class="lang_indo">Tambah Praktik Terbaik Detail</h3>
+		  	</div>
+			<div class="modal-body">
+				<form id="form-sdgGoals">
+				<div class="control-group">
+				    <label class="lang_eng control-label" style="display:none">Title</label>
+				    <label class="lang_indo control-label">Judul</label>
+				    <div class="controls">
+				    	<input type="text" id="title" name="title" class="input-xlarge input-block-level"/>
+				    	<input id="id" name="id" class="input-medium input-block-level" type="hidden"/>
+				    	<input id="id_best_practice" name="id_best_practice" class="input-medium input-block-level" type="hidden"/>
+				    	<span class="help-block" id="error_title"></span>
+				    </div>
+				  </div>
+				  <div class="control-group">
+				    <div class="controls">
+						<div class="accordion" id="accordion2">
+							<div class="accordion-group">
+							    <div class="accordion-heading">
+							      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+							        <label class="lang_eng control-label" style="display:none">Goals SDGs</label>
+				    				<label class="lang_indo control-label">Sasaran SDG</label>
+							      </a>
+							    </div>
+							    <div id="collapseOne" class="accordion-body collapse">
+							      <div class="accordion-inner">
+							      </div>
+							    </div>
+							  </div>
+						</div>
+				    </div>
+				  </div>
+				  <div class="control-group">
+				    <label class="lang_eng control-label" style="display:none">Organization Name</label>
+				    <label class="lang_indo control-label">Nama Organisasi</label>
+				    <div class="controls">
+				    	<input id="org_name" name="org_name" class="input-xlarge input-block-level" type="text"/>
+				    	<span class="help-block" id="error_org_name"></span>
+				    </div>
+				  </div>
+				  <div class="control-group">
+				    <label class="lang_eng control-label" style="display:none">Activity Location</label>
+				    <label class="lang_indo control-label">Lokasi Kegiatan</label>
+				    <div class="controls">
+				    	<input id="location" name="location" class="input-xlarge input-block-level" type="text"/>
+				    	<span class="help-block" id="error_location"></span>
+				    </div>
+				  </div>
+				  <div class="control-group">
+				    <label class="lang_eng control-label" style="display:none">Activity Period</label>
+				    <label class="lang_indo control-label">Periode Kegiatan</label>
+				    <div class="controls">
+				    	<input id="activity_periode" name="activity_periode" class="input-xlarge input-block-level"></input>
+				    	<span class="help-block" id="error_activity_periode"></span>
+				    </div>
+				  </div>
+				  <div class="control-group">
+				    <label class="lang_eng control-label" style="display:none">Partner</label>
+				    <label class="lang_indo control-label">Partner</label>
+				    <div class="controls">
+				    	<input id="partner" name="partner" class="input-xlarge input-block-level"></input>
+				    	<span class="help-block" id="error_partner"></span>
+				    </div>
+				  </div>
+				  <div class="control-group">
+				    <label class="lang_eng control-label" style="display:none">Beneficiaries</label>
+				    <label class="lang_indo control-label">Beneficiaries</label>
+				    <div class="controls">
+				    	<input id="beneficiaries" name="beneficiaries" class="input-xlarge input-block-level"></input>
+				    	<span class="help-block" id="error_beneficiaries"></span>
+				    </div>
+				  </div>
+				  <div class="control-group">
+				    <label class="lang_eng control-label" style="display:none">Story</label>
+				    <label class="lang_indo control-label">Story</label>
+				    <div class="controls">
+				    	<textarea id="story" name="story" class="input-xlarge input-block-level"></textarea>
+				    	<span class="help-block" id="error_story"></span>
+				    </div>
+				  </div>
+				  <div class="control-group">
+				    <label class="lang_eng control-label" style="display:none">Additional Info</label>
+				    <label class="lang_indo control-label">Informasi Tambahan</label>
+				    <div class="controls">
+				    	<textarea id="add_info" name="add_info" class="input-xlarge input-block-level"></textarea>
+				    	<span class="help-block" id="error_add_info"></span>
+				    </div>
+				  </div>
+				</form>
+			</div>
+			<div class="modal-footer">
+		    	<button class="btn tutup" data-dismiss="modal" aria-hidden="true">
+		    		<span class="lang_eng" style="display:none">Close</span>
+		    		<span class="lang_indo">Tutup</span>
+		    	</button>
+		    	<button class="btn btn-primary" id="submit">
+		    		<span class="lang_eng" style="display:none">Submit</span>
+		    		<span class="lang_indo">Simpan</span>
+		    	</button>
+		  	</div>
+		</div>
+    </div>
+
+    <div th:include="admin/layout :: footer"></div>
+</body>
+<script th:inline="javascript">
+ // <![CDATA[
+        var lang = [[${lang}]];
+        var name = [[${name}]];
+        var id_prov = [[${id_prov}]];
+        var id_role = [[${id_role}]];
+        var id_monper = [[${id_monper}]];
+        var year = [[${year}]];
+        var id_best = [[${id_best}]];
+        var id_indicator = [[${id_indicator}]];
+        $("#id_best_practice").val(id_best);
+        $("#welcome").html("Welcome, "+name);
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        //$("#time_activity").datepicker();
+      //Bahasa
+        var titleDel = "Anda Yakin";
+        var messDel = "Menghapus Data?";
+        var buttDel = 'Ya, Hapus data ini!';
+        var titleApp = "Anda Yakin";
+        var messApp = "Apply Data ini?";
+        var buttApp = 'Ya, Apply data ini!';
+        var titleOk	= "Hapus";
+        var messOk = "Data berhasil dihapus";
+        var messNOk = "Data tidak dapat dihapus";
+        var required = "Harus diisi";
+        var titleUnApp = "Anda Yakin";
+        var messUnApp = "Batal Terapkan Data ini?";
+        var buttUnApp = 'Ya, Batal Terapkan data ini!';
+        var titleMod = "Maaf";
+        var messMod = "Semua pilihan harus dipilih";
+        function bhs(cek){
+			if(cek){
+				$(".lang_indo").show();
+        		$(".lang_eng").hide();
+        		titleDel = "Anda Yakin";
+        		messDel = "Menghapus Data?";
+        		buttDel = 'Ya, Hapus data ini!';
+        		titleOk	= "Hapus";
+    	        messOk = "Data berhasil dihapus";
+    	        messNOk = "Data tidak dapat dihapus";
+    	        required = "Harus diisi";
+    	        titleApp = "Anda Yakin";
+    	        messApp = "Terapkan Data ini?";
+    	        buttApp = 'Ya, Terapkan data ini!';
+    	        titleUnApp = "Anda Yakin";
+    	        messUnApp = "Batal Terapkan Data ini?";
+    	        buttUnApp = 'Ya, Batal Terapkan data ini!';
+    	        titleMod = "Maaf";
+    	        messMod = "Semua pilihan harus dipilih";
+        	}else{	    	        
+    	        $(".lang_indo").hide();
+        		$(".lang_eng").show();
+        		titleDel = "Are you sure";
+        		messDel = "Delete this data?";
+        		buttDel = 'Yes, Delete this data!';
+        		titleOk	= "Delete";
+    	        messOk = "Delete successful";
+    	        messNOk = "Can't delete data";
+    	        required = "Required";
+    	        titleApp = "Are you sure";
+    	        messApp = "Apply this data?";
+    	        buttApp = 'Ya, Apply this data!';
+    	        titleUnApp = "Are you sure";
+    	        messUnApp = "Unapply this data?";
+    	        buttUnApp = 'Ya, Unapply this data!';
+    	        titleMod = "Sorry";
+    	        messMod = "All dropdownlists must be selected";
+        	}
+        }
+        if(lang){
+        	bhs(lang=="0");
+        }else{
+        	bhs($('#fs').is(':checked'));
+        }
+        
+        $('#fs').on('change', function(e){
+        	bhs($(this).is(':checked'));
+        	if($('#id_prov').val() && $('#periode').val() && $('#idrole').val()){
+        		var id = $("#periode").val().split("###");
+            	var id_monper = id[0];
+            	var year = id[1];
+            	var id_role = $('#idrole').val();
+            	table.ajax.url(urls+'list-best/'+id_role+'/'+id_monper+'/'+year).load();
+        	}
+        });
+        $("#id_prov").val(id_prov);
+        $.ajax({
+            type: "GET",
+            url: urls+'list-get-option-role-all-profil/'+id_prov,
+            async:false,
+            success: function (result) {
+                $("#idrole").html('<option value="0" >-- Pilih --</option>');
+                var array = result.content;
+                if (array != '') {
+                    for (i in array) {
+                    	var selected = (array[i][0]==id_role)?'selected':'';
+                        $("#idrole").append('<option data-cat="'+array[i][3]+'" value="'+array[i][0]+'" '+selected+' >'+array[i][1]+'</option>');
+                    }
+                }
+            }
+        });
+        $.ajax({
+            type: "GET",
+            url: urls+'list-get-option-monper/'+id_prov,
+            async:false,
+            success: function (result1) {
+                $("#periode").html('<option value="0" >-- Pilih --</option>');
+                var array1 = result1.content;
+                if (array1 != '') {
+                    for (i in array1) {
+                        var selisih     = (array1[i][2] - array1[i][1]);
+                        var x;
+                        for(x=0; x<=selisih; x++){
+                        	var selected = ((array1[i][0] == id_monper) && ((array1[i][1]+x) == year))?'selected':'';
+                            $("#periode").append('<option value="'+array1[i][0]+'###'+(array1[i][1]+x)+'" '+selected+'>'+(array1[i][1]+x)+'</option>');
+                        }
+                        
+                    }
+                }
+            }
+        });
+        
+        $("#idrole").on("change", function(){
+        	$("#periode").val(0).trigger("change");
+        });
+        
+        function program(){
+        	var id_prov = $('#id_prov').val();
+        	var id_monper = $("#periode").val().split('###')[0];
+        	var id_role = $('#idrole').val();
+        	$.ajax({
+                url: urls + 'list-govProg-entry/'+id_monper+'/'+id_role,
+                type: 'get',
+                dataType: 'json',
+                cache: false,
+                async : false,
+                success: function (response) {
+                		var option = "<option value='0'>-- Pilih --</option>";
+                		for (var i = 0; i < response.content.length; i++) {
+                			var nm_goals;
+                			var id_goals=response.content[i].id;
+                        	if($("#fs").is(':checked')){
+                        		nm_goals = response.content[i].nm_program;
+    						}else{
+    							nm_goals = response.content[i].nm_program_eng;
+    						}
+                        	option += '<optgroup id="" label="'+response.content[i].id_program+' '+nm_goals+'">';
+                        	$.ajax({
+                                url: urls + 'list-govActivity/'+response.content[i].id+'/'+id_role,
+                                type: 'get',
+                                dataType: 'json',
+                                cache: false,
+                                async : false,
+                                success: function (result) {
+                                	for (var j = 0; j < result.content.length; j++) {
+                                		var nm_target;
+                                		var id_target=result.content[j].id;
+                                    	if($("#fs").is(':checked')){
+                                    		nm_target = result.content[j].nm_activity;
+                						}else{
+                							nm_target = result.content[j].nm_activity_eng;
+                						}
+                                    	option += '<optgroup id="" label="'+result.content[j].id_activity+' '+nm_target+'">';
+                                    	$.ajax({
+                                            url: urls + 'list-govIndicator/'+response.content[i].id+'/'+result.content[j].id,
+                                            type: 'get',
+                                            dataType: 'json',
+                                            cache: false,
+                                            async : false,
+                                            success: function (result1) {
+                                            	for (var k = 0; k < result1.content.length; k++) {
+                                            		var nm_indicator;
+                                            		var id_indicator=result1.content[k][0];
+                                                	if($("#fs").is(':checked')){
+                                                		nm_indicator = result1.content[k][2];
+                            						}else{
+                            							nm_indicator = result1.content[k][5];
+                            						}
+                                                	option += '<option value="'+id_goals+'###'+id_target+'###'+result1.content[k][0]+'">'+result1.content[k][1]+' '+nm_indicator+'</option>';
+                                            	}
+                                            }
+                                    	});
+                                    	option += '</optgroup>';
+                                	}
+                                }
+                        	});
+                        	option += '</optgroup>';
+                		}
+                		$('#id_program').append(option);
+                	}
+                });
+        }
+        
+        function programNsa(){
+        	var id_prov = $('#id_prov').val();
+        	var id_monper = $("#periode").val().split('###')[0];
+        	var id_role = $('#idrole').val();
+        	$.ajax({
+                url: urls + 'list-nsaProg/'+id_role+'/'+id_monper,
+                type: 'get',
+                dataType: 'json',
+                cache: false,
+                async : false,
+                success: function (response) {
+                		var option = "<option value='0'>-- Pilih --</option>";
+                		$('#id_program').html("");
+                		for (var i = 0; i < response.content.length; i++) {
+                			var nm_goals;
+                			var id_goals=response.content[i].id;
+                        	if($("#fs").is(':checked')){
+                        		nm_goals = response.content[i].nm_program;
+    						}else{
+    							nm_goals = response.content[i].nm_program_eng;
+    						}
+                        	option += '<optgroup id="" label="'+response.content[i].id_program+' '+nm_goals+'">';
+                        	$.ajax({
+                                url: urls + 'list-nsaActivity/'+response.content[i].id,
+                                type: 'get',
+                                dataType: 'json',
+                                cache: false,
+                                async : false,
+                                success: function (result) {
+                                	for (var j = 0; j < result.content.length; j++) {
+                                		var nm_target;
+                                		var id_target=result.content[j].id;
+                                    	if($("#fs").is(':checked')){
+                                    		nm_target = result.content[j].nm_activity;
+                						}else{
+                							nm_target = result.content[j].nm_activity_eng;
+                						}
+                                    	option += '<optgroup id="" label="'+result.content[j].id_activity+' '+nm_target+'">';
+                                    	$.ajax({
+                                            url: urls + 'list-nsaIndicator/'+response.content[i].id+'/'+result.content[j].id,
+                                            type: 'get',
+                                            dataType: 'json',
+                                            cache: false,
+                                            async : false,
+                                            success: function (result1) {
+                                            	for (var k = 0; k < result1.content.length; k++) {
+                                            		var nm_indicator;
+                                            		var id_indicator=result1.content[k][0];
+                                                	if($("#fs").is(':checked')){
+                                                		nm_indicator = result1.content[k][2];
+                            						}else{
+                            							nm_indicator = result1.content[k][5];
+                            						}
+                                                	var selected = (result1.content[k][0]==id_indicator)?'selected':'';
+                                                	option += '<option value="'+id_goals+'###'+id_target+'###'+result1.content[k][0]+'">'+result1.content[k][1]+' '+nm_indicator+'</option>';
+                                            	}
+                                            }
+                                    	});
+                                    	option += '</optgroup>';
+                                	}
+                                }
+                        	});
+                        	option += '</optgroup>';
+                		}
+                		$('#id_program').append(option);
+                	}
+                });
+        }
+        
+        $('#showModal').on('click', function(){
+        	if($('#id_prov').val() && $('#periode').val() && $('#idrole').val()){
+        		var cat = $("#idrole").find(":selected").data("cat");
+        		if(cat=="NSA"){
+        			programNsa();
+        		}else{
+        			program();
+        		}
+        		$.ajax({
+	                url: urls + 'best-practice/list-nsamap/'+$('#id_prov').val()+'/'+$("#periode").val().split('###')[0]+'/'+id_indicator,
+	                type: 'get',
+	                dataType: 'json',
+	                cache: false,
+	                async : false,
+	                success: function (result1) {
+	                	var text = "";
+	                	$('.accordion-inner').html(text);
+	                	for (var k = 0; k < result1.content.length; k++) {
+	                		var nm_goals;
+	                		var nm_target;
+	                		var nm_indicator;
+	                    	if($("#fs").is(':checked')){
+	                    		nm_goals = result1.content[k][1];
+	                    		nm_target = (result1.content[k][3]?result1.content[k][3]:"");
+	                    		nm_indicator = (result1.content[k][5]?result1.content[k][5]:"");
+							}else{
+								nm_goals = result1.content[k][2];
+								nm_target = (result1.content[k][4]?result1.content[k][4]:"");
+								nm_indicator = (result1.content[k][6]?result1.content[k][6]:"");
+							}
+	                    	text += '<label style="display:inline-block;white-space:nowrap;">'+
+				        				'<span style="vertical-align:middle">'+(result1.content[k][7]?result1.content[k][7]:"")+" "+nm_goals+'</span>'+
+				                  '</label><br/>';
+		                    text += '<label style="display:inline-block;white-space:nowrap;margin-left:20px">'+
+				        					'<span style="vertical-align:middle">'+(result1.content[k][8]?result1.content[k][8]:"")+" "+nm_target+'</span>'+
+				                     '</label><br/>';
+		                     text += '<label style="display:inline-block;white-space:nowrap;margin-left:40px">'+
+				                         '<span style="vertical-align:middle">'+(result1.content[k][9]?result1.content[k][9]:"")+" "+nm_indicator+'</span>'+
+				                   '</label><br/>';
+	                	}
+	                	$('.accordion-inner').append(text);
+	                }
+	        	});
+        		$("#myModal").modal("show");
+        	}else{
+        		swal(titleMod,messMod,'error');
+        	}
+        });
+        
+        var table = $('#tabel-practice').DataTable({
+			responsive: true,
+			sDom: 'lrtip',
+			"bLengthChange": false,
+			"cache": false,
+			"autoWidth": true,
+			"responsive":true,
+			"ajax": {
+				"url": urls+'list-best-entry/'+id_best,
+				dataSrc: 'content',
+			},
+			"searching": true,
+			"columns": [
+				{"data": function (row, data, index, display) {
+					return "<div style='font-size:90%;'>"+row[2]+"</div>";
+				}},
+				{"data": function (row, data, index, display) {
+					var text = "";
+					$.ajax({
+		                url: urls + 'best-practice/list-nsamap/'+$('#id_prov').val()+'/'+$("#periode").val().split('###')[0]+'/'+row[14],
+		                type: 'get',
+		                dataType: 'json',
+		                cache: false,
+		                async : false,
+		                success: function (result1) {
+		                	for (var k = 0; k < result1.content.length; k++) {
+		                		var nm_goals;
+		                		var nm_target;
+		                		var nm_indicator;
+		                    	if($("#fs").is(':checked')){
+		                    		nm_goals = result1.content[k][1];
+		                    		nm_target = (result1.content[k][3]?result1.content[k][3]:"");
+		                    		nm_indicator = (result1.content[k][5]?result1.content[k][5]:"");
+								}else{
+									nm_goals = result1.content[k][2];
+									nm_target = (result1.content[k][4]?result1.content[k][4]:"");
+									nm_indicator = (result1.content[k][6]?result1.content[k][6]:"");
+								}
+		                    	text += '<label style="display:inline-block;">'+
+					        				'<span style="vertical-align:middle">'+(result1.content[k][7]?result1.content[k][7]:"")+" "+nm_goals+'</span>'+
+					                  '</label><br/>';
+			                    text += '<label style="display:inline-block;margin-left:20px">'+
+					        					'<span style="vertical-align:middle">'+(result1.content[k][8]?result1.content[k][8]:"")+" "+nm_target+'</span>'+
+					                     '</label><br/>';
+			                     text += '<label style="display:inline-block;margin-left:40px">'+
+					                         '<span style="vertical-align:middle">'+(result1.content[k][9]?result1.content[k][9]:"")+" "+nm_indicator+'</span>'+
+					                   '</label><br/>';
+		                	}
+		                }
+		        	});
+					return "<div style='font-size:90%;'>"+text+"</div>";
+				}},
+				{"data": function (row, data, index, display) {
+						return "<div style='font-size:90%;'>"+row[3]+"</div>";
+					}},
+				{"data": function (row, data, index, display) {
+						return "<div style='font-size:90%;'>"+row[4]+"</div>";
+					}},
+				{"data": function (row, data, index, display) {
+					return "<div style='font-size:90%;'>"+row[5]+"</div>";
+				}},
+				{"data": function (row, data, index, display) {
+					return "<div style='font-size:90%;'>"+row[6]+"</div>";
+				}},
+				{"data": function (row, data, index, display) {
+					return "<div style='font-size:90%;'>"+row[7]+"</div>";
+				}},
+				{"data": function (row, data, index, display) {
+					return "<div style='font-size:90%;'>"+row[8]+"</div>";
+				}},
+				{"data": function (row, data, index, display) {
+					return "<div style='font-size:90%;'>"+row[9]+"</div>";
+				}},
+				{"data": function (row, data, index, display) {
+						var detail = "";
+						var cat = $("idrole").data("cat");
+						if(cat=="NSA"){
+							detail = '<button data-id="'+row[0]+'" type="button" title="detail" class="btn btn-success btn-mini delete">Detail</button></div>';
+						}
+						return "<div style='text-align:center;'>"+
+						'<button data-id="'+row[0]+'" type="button" title="edit" class="btn btn-warning btn-mini update">Edit</button>'+detail+"</div>";
+					}}
+			],
+			"columnDefs": [
+			],
+			select: true
+		});	
+        
+        
+        $('#submit').on('click', function(){
+			var id = $('#id').val();
+			var id_best_practice = $('#id_best_practice').val();
+			var title = $('#title').val();
+			var org_name = $('#org_name').val();
+			var location = $('#location').val();
+			var activity_periode = $('#activity_periode').val();
+			var partner = $('#partner').val();
+			var beneficiaries = $('#beneficiaries').val();
+			var story = $('#story').val();
+			var add_info = $('#add_info').val();
+			
+			$('.control-group').removeClass('error');
+			$('.help-block').text("");
+			var cek = 0;
+			/* if (id_gov_indicator == ""){
+                $("#error_id_gov_indicator").parents(".control-group").first().addClass("error");
+                $("#error_id_gov_indicator").text(required);
+                cek += 1;
+            }
+			if (unit == ""){
+                $("#error_unit").parents(".control-group").first().addClass("error");
+                $("#error_unit").text(required);
+                cek += 1;
+            } */
+			if(cek==0){
+				var data = JSON.stringify({
+					'id':id,
+					'id_best_practice':id_best_practice,
+					'title':title,
+					'org_name':org_name,
+					'location':location,
+					'activity_periode':activity_periode,
+					'partner':partner,
+					'beneficiaries':beneficiaries,
+					'story':story,
+					'add_info':add_info
+					});
+				$.ajax({
+					type: "POST",
+                    url: urls+'save-best-entry',
+                    beforeSend : function(xhr){
+                    	xhr.setRequestHeader(header,token);
+                    },
+                    headers:{'Accept':'application/json','Content-Type':'application/json'},
+					data: data,
+                    success: function (result) {
+                    	table.ajax.url(urls+'list-best-entry/'+id_best).load();
+                    	$('#myModal').modal('hide');
+                    },
+                });
+			}
+		});
+        
+        function clearForm(){
+			$('#id').val("");
+			$('#title').val("").removeAttr("readonly");
+			$('#org_name').val("").removeAttr("readonly");
+			$('#location').val("").removeAttr("readonly");
+			$('#activity_periode').val("").removeAttr("readonly");
+			$('#partner').val("").removeAttr("readonly");
+			$('#beneficiaries').val("").removeAttr("readonly");
+			$('#story').val("").removeAttr("readonly");
+			$('#add_info').val("").removeAttr("readonly");
+			$('.control-group').removeClass('error');
+			$('.help-block').text("");
+		}
+        
+        $('#tbody-best').on('click', '.update', function(){
+			var id = $(this).attr('data-id');
+			program();
+			$.ajax({
+				type: "GET",
+                url: urls+'get-best-entry/'+id,
+                success: function (result) {
+                	var val = result.content;
+                	$('#showModal').trigger('click');
+                	$('#id').val(val.id);
+    				$('#title').val(val.title);
+    				$('#org_name').val(val.org_name);
+    				$('#location').val(val.location);
+    				$('#activity_periode').val(val.activity_periode);
+    				$('#partner').val(val.partner);
+    				$('#beneficiaries').val(val.beneficiaries);
+    				$('#story').val(val.story);
+    				$('#add_info').val(val.add_info);
+                },
+            })
+         });
+        
+        $('.tutup').on('click', function(){
+			clearForm();
+		});
+     // ]]>
+    </script>
+</html>

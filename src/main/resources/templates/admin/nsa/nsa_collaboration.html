@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <head th:include="admin/layout :: header">
+    <title th:text="Institution Profile">Institution Profile</title>
+</head>
+<body>
+<title>NSA / NSA Collaboration</title>
+    <div th:include="admin/layout :: menu"></div>
+
+<!--  Content  -->
+    <div id="content">
+        <div id="content-header">
+            <div id="breadcrumb" class="lang_eng" style="display: none"> <a href="#" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>NSA / NSA Collaboration</a></div>
+            <div id="breadcrumb" class="lang_indo"> <a href="#" title="Ke Home" class="tip-bottom"><i class="icon-home"></i>NSA / Kolaborasi Lembaga</a></div>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="widget-box">
+                    <div class="widget-title lang_eng" id="judul-eng" style="display: none">
+                        <span class="icon"><i class="icon-tasks"></i></span>
+                        <h5>Table NSA Collaboration</h5>
+                    </div>
+                    <div class="widget-title lang_indo" id="judul-indo">
+                        <span class="icon"><i class="icon-tasks"></i></span>
+                        <h5>Tabel Kolaborasi Lembaga</h5>
+                    </div>
+                    <div class="widget-content">
+                        <div class="pull-left adddetail" style="width:100%">
+                            <select th:field="*{listprov}" class="span3" id="id_prov" name="id_prov">
+                                <option value="0" >-- Pilih Daerah --</option>
+                                <option value="all" >-- ALL --</option>
+                                <option th:each="list : ${listprov}" th:value="${list.id_prov}" th:text="${list.acronym}"></option>
+                            </select>
+                            <select id="nm_nsa_profil" name="nm_nsa_profil" class="form-control">
+                                <option value="0" >-- Pilih Institusi --</option>
+                                <option value="all" >-- ALL --</option>
+                                <option th:each="f:${listNsaProfile}" th:value="${f.id_role}" th:text="${f.nm_role}"></option>
+                            </select>
+                            <a class="btn btn-warning pull-right" href="#" onclick="tableToExcel('export', 'Report Collaboration')">Excel</a>
+                             <!--<button id="export" class="btn btn-warning pull-right">Excel</button>--> 
+<!--                            <div class="btn-toolbar" style="float:right">
+                                <button class="btn btn-success detail">Add Detail</button>
+                            </div>-->
+                        </div>
+                        
+<!--                        <div class="row-fluid">
+                            <div class="span6">
+                            </div>
+                            <div class="span6" align="right">
+                                <div class="input-append">
+                                    <input placeholder="Search..." class="span10" id="text-cari" type="text"/>
+                                    <span class="add-on"><i class="icon-search"></i></span>
+                                </div>
+                            </div>
+                    	</div>-->
+                        <div class="row-fluid">
+                            <div class="span12">
+                                <table  id="tabel-nsa-collaboration" class="table table-striped table-bordered">
+                                    <thead >
+                                        <tr>
+                                            <th style="text-align:center;font-size:80%;">
+                                                <span class="lang_eng" style="display:none">No</span>
+                                                <span class="lang_indo">No</span>
+                                            </th>
+                                            <th style="text-align:center;font-size:80%;">
+                                                <span class="lang_eng" style="display:none">Province</span>
+                                                <span class="lang_indo">Provinsi</span>
+                                            </th>
+                                            <th style="text-align:center;font-size:80%;">
+                                                <span class="lang_eng" style="display:none">Area / Sector</span>
+                                                <span class="lang_indo">Area / Sektor</span>
+                                            </th>
+                                            <th style="text-align:center;font-size:80%;">
+                                                <span class="lang_eng" style="display:none">Program Name</span>
+                                                <span class="lang_indo">Nama Program</span>
+                                            </th>
+                                            <th style="text-align:center;font-size:80%;">
+                                                <span class="lang_eng" style="display:none">Location of the Program Intervention</span>
+                                                <span class="lang_indo">Lokasi Intervensi Program</span>
+                                            </th>
+                                            <th style="text-align:center;font-size:80%;">
+                                                <span class="lang_eng" style="display:none">Beneficiaries</span>
+                                                <span class="lang_indo">Penerima Manfaat</span>
+                                            </th>
+                                            <th style="text-align:center;font-size:80%;">
+                                                <span class="lang_eng" style="display:none">Expected Benefits</span>
+                                                <span class="lang_indo">Keuntungan yang Diharapkan</span>
+                                            </th>
+                                            <th style="text-align:center;font-size:80%;">
+                                                <span class="lang_eng" style="display:none">Challenges/ Types of Support Needed</span>
+                                                <span class="lang_indo">Tantangan/ Jenis Dukungan yang Dibutuhkan</span>
+                                            </th>
+                                            <th style="text-align:center;font-size:80%;width: 10%;">
+                                                <span class="lang_eng" style="display:none">Institution Name</span>
+                                                <span class="lang_indo">Nama Institusi</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody_ins_profile">
+                                    </tbody>
+                                </table>
+                                <div id="export" style="display: none">
+                                    <table  id="tabel-nsa-collaboration-export" class="table table-striped table-bordered">
+                                        <thead >
+                                            <tr>
+                                                <th style="text-align:center;font-size:80%;border-style:ridge;" colspan="8">
+                                                    <span class="lang_eng" style="display:none">Program Detail  </span>
+                                                </th>
+                                                <th style="text-align:center;font-size:80%;border-style:ridge;" colspan="4">
+                                                    <span class="lang_eng" style="display:none">Support</span>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th style="text-align:center;font-size:80%;border-style:ridge;">
+                                                    <span class="lang_indo">No</span>
+                                                </th>
+                                                <th style="text-align:center;font-size:80%;border-style:ridge;">
+                                                    <span class="lang_eng" style="display:none">Province</span>
+                                                    <span class="lang_indo">Provinsi</span>
+                                                </th>
+                                                <th style="text-align:center;font-size:80%;border-style:ridge;">
+                                                    <span class="lang_eng" style="display:none">Area / Sector</span>
+                                                </th>
+                                                <th style="text-align:center;font-size:80%;border-style:ridge;">
+                                                    <span class="lang_eng" style="display:none">Program Name /</span>
+                                                    <span class="lang_indo">Nama Program</span>
+                                                </th>
+                                                <th style="text-align:center;font-size:80%;border-style:ridge;">
+                                                    <span class="lang_eng" style="display:none">Location of the Program Intervention / </span>
+                                                    <span class="lang_indo">Lokasi Intervensi Program</span>
+                                                </th>
+                                                <th style="text-align:center;font-size:80%;border-style:ridge;">
+                                                    <span class="lang_eng" style="display:none">Beneficiaries / </span>
+                                                    <span class="lang_indo">Penerima Manfaat</span>
+                                                </th>
+                                                <th style="text-align:center;font-size:80%;border-style:ridge;">
+                                                    <span class="lang_eng" style="display:none">Expected Benefits / </span>
+                                                    <span class="lang_indo">Keuntungan yang Diharapkan</span>
+                                                </th>
+                                                <th style="text-align:center;font-size:80%;border-style:ridge;">
+                                                    <span class="lang_eng" style="display:none">Challenges/ Types of Support Needed / </span>
+                                                    <span class="lang_indo">Tantangan/ Jenis Dukungan yang Dibutuhkan</span>
+                                                </th>
+                                                <th style="text-align:center;font-size:80%;border-style:ridge;">
+                                                    <span class="lang_eng" style="display:none">Institution Name / </span>
+                                                    <span class="lang_indo">Nama Institusi</span>
+                                                </th>
+                                                <th style="text-align:center;font-size:80%;border-style:ridge;">
+                                                    <span class="lang_eng" style="display:none">Name of Pillar Supported / </span>
+                                                    <span class="lang_indo">Nama Pilar yang Didukung</span>
+                                                </th>
+                                                <th style="text-align:center;font-size:80%;border-style:ridge;">
+                                                    <span class="lang_eng" style="display:none">Area / Location</span>
+                                                </th>
+                                                <th style="text-align:center;font-size:80%;border-style:ridge;">
+                                                    <span class="lang_eng" style="display:none">Type of Support / </span>
+                                                    <span class="lang_indo">Tipe</span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tbody_col_ins_export">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal hide fade addviewphilan" data-backdrop="static" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float:right">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h3 class="modal-title lang_indo" id="exampleModalLabel">View Support</h3>
+                        <h3 class="modal-title lang_eng" id="exampleModalLabel" style="display: none">View Support</h3>
+                    </div>
+                    <form class="form-horizontal">
+                        <div class="modal-body">
+                            <!--<div >-->
+                                <table  id="tabel_view_support" class="table table-striped table-bordered">
+                                    <thead >
+                                        <tr>
+                                            <th style="text-align:center;font-size:80%;width: 70%" >
+                                                <span class="lang_eng" style="display:none">Institution Name</span>
+                                                <span class="lang_indo">Nama Instansi</span>
+                                            </th>
+                                            <th style="text-align:center;font-size:80%;">
+                                                <span class="lang_eng" style="display:none">Action</span>
+                                                <span class="lang_indo">Aksi</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbody_view_support">
+                                    </tbody>
+                                </table>
+                            <!--</div>-->
+                        </div>
+                        <div class="modal-footer">
+                            
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal hide fade addDetail" data-backdrop="static"role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float:right">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h3 class="modal-title lang_indo" id="exampleModalLabel">Tambah Detil</h3>
+                        <h3 class="modal-title lang_eng" id="exampleModalLabel" style="display: none">Add Detail</h3>
+                    </div>
+                    <form class="form-horizontal">
+                        <div class="modal-body">
+                            <div class="control-group" style="display: none">
+                                <label for="nm_inst" class="lang_indo">ID Institusi :</label>
+                                <label for="nm_inst" class="lang_eng" style="display: none">Institution ID :</label>
+                                <input name="id" id="id" type="hidden" class="input-block-level" readonly>
+                                <input name="id_program" id="id_program" type="hidden" class="input-block-level" readonly>
+                                <input name="id_philanthropy" id="id_philanthropy" type="hidden" class="input-block-level" readonly>
+                            </div>
+                            <div class="control-group">
+                                <label for="nm_inst" class="lang_indo">Nama Program :</label>
+                                <label for="nm_inst" class="lang_eng" style="display: none">Program Name :</label>
+                                <input name="nm_program" id="nm_program" type="text" class="input-block-level" readonly>
+                            </div>
+                            <div class="control-group">
+                                <label for="achievement" class="lang_indo">Sektor :</label>
+                                <label for="achievement" class="lang_eng" style="display: none">Sector :</label>
+                                <input name="sector" id="sector" type="text" class="input-block-level" >
+                            </div>
+                            <div class="control-group">
+                                <label for="loc_inst" class="lang_indo">Lokasi :</label>
+                                <label for="loc_inst" class="lang_eng" style="display: none">Location:</label>
+                                <input name="location" id="location" type="text" class="input-block-level" >
+                            </div>
+                            <div class="control-group">
+                                <label for="beneficiaries" class="lang_indo">Penerima Manfaat :</label>
+                                <label for="beneficiaries" class="lang_eng" style="display: none">Beneficiaries :</label>
+                                <input name="beneficiaries" id="beneficiaries" type="text" class="input-block-level" >
+                            </div>
+                            <div class="control-group">
+                                <label for="year_impl" class="lang_indo">Manfaat yang Diharapkan :</label>
+                                <label for="year_impl" class="lang_eng" style="display: none">Expected Benefit :</label>
+                                <input name="ex_benefit" id="ex_benefit" type="text" class="input-block-level" >
+                            </div>
+                            <div class="control-group">
+                                <label for="major_part" class="lang_indo">Tantangan / Jenis Dukungan yang Dibutuhkan :</label>
+                                <label for="major_part" class="lang_eng" style="display: none">Challenges/ Types of Support Needed :</label>
+                                <input name="type_support" id="type_support" type="text" class="input-block-level" >
+                            </div>
+                        </div>
+                        <div class="modal-footer" id="simpan_">
+                            <button type="button" class="btn btn-secondary lang_indo" data-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-secondary lang_eng" data-dismiss="modal" style="display: none">Close</button>
+                            <button type="button" id="simpan" class="btn btn-success lang_indo">Simpan</button>
+                            <button type="button" id="simpan" class="btn btn-success lang_eng" style="display: none">Submit</button>
+                        </div>
+                        <div class="modal-footer" id="update_" style="display: none">
+                            <button type="button" class="btn btn-secondary lang_indo" data-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-secondary lang_eng" data-dismiss="modal" style="display: none">Close</button>
+                            <button type="button" id="update" class="btn btn-success lang_indo">Simpan</button>
+                            <button type="button" id="update" class="btn btn-success lang_eng" style="display: none">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal hide fade addSupport"data-backdrop="static" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float:right">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h3 class="modal-title lang_indo" id="exampleModalLabel">Tambah Support/ Lembaga filantropi</h3>
+                        <h3 class="modal-title lang_eng" id="exampleModalLabel" style="display: none">Add Support / Philanthropic Institution</h3>
+                    </div>
+                    <form class="form-horizontal">
+                        <div class="modal-body">
+                            <div class="control-group" style="display: none">
+                                <label for="nm_inst" class="lang_indo">ID Institusi :</label>
+                                <label for="nm_inst" class="lang_eng" style="display: none">Institution ID :</label>
+                                <input name="id_philanthropy" id="id_philanthropy" type="hidden" class="input-block-level" readonly>
+                                <input name="id_collaboration" id="id_collaboration" type="hidden" class="input-block-level" readonly>
+                            </div>
+                            <div class="control-group">
+                                <label for="achievement" class="lang_indo">Nama filantropi :</label>
+                                <label for="achievement" class="lang_eng" style="display: none">Philanthropy Name :</label>
+                                <select id="nm_philanthropy" name="nm_philanthropy" class="span5 form-control">
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label for="achievement" class="lang_indo">Nama Pilar yang Didukung :</label>
+                                <label for="achievement" class="lang_eng" style="display: none">Name of Pillar Supported :</label>
+                                <input name="nm_pillar" id="nm_pillar" type="text" class="input-block-level" >
+                            </div>
+                            <div class="control-group">
+                                <label for="achievement" class="lang_indo">Area / Lokasi :</label>
+                                <label for="achievement" class="lang_eng" style="display: none">Area / Location :</label>
+                                <input name="loc_philanthropy" id="loc_philanthropy" type="text" class="input-block-level" >
+                            </div>
+                            <div class="control-group">
+                                <label for="nm_inst" class="lang_indo">Tipe :</label>
+                                <label for="nm_inst" class="lang_eng" style="display: none">Type of Support :</label>
+                                <select id="type_support_1" name="type_support_1" class="span5 form-control">
+                                    <option value="1" > Civil Society Organization/Organisasi Kepemudaan/Komunitas</option>
+                                    <option value="2" > Organisasi Non-Pemerintah/LSM</option>
+                                    <option value="3" > Organisasi Hak Perempuan (WRO)/Organisasi Difabel (DPO)</option>
+                                    <option value="4" > Sektor bisnis</option>
+                                    <option value="5" > Institusi akademis</option>
+                                    <option value="6" > Media dan asosiasi media</option>
+                                    <option value="7" > Organisasi multilateral atau bilateral</option>
+                                    <option value="8" > Organisasi filantropi</option>
+                                    <option value="9" > Lainnya</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer" id="simpan1">
+                            <button type="button" class="btn btn-secondary lang_indo" data-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-secondary lang_eng" data-dismiss="modal" style="display: none">Close</button>
+                            <button type="button" id="simpan_support" class="btn btn-success lang_indo">Simpan</button>
+                            <button type="button" id="simpan_support" class="btn btn-success lang_eng" style="display: none">Submit</button>
+                        </div>
+                        <div class="modal-footer" id="update1" style="display: none">
+                            <button type="button" class="btn btn-secondary lang_indo" data-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-secondary lang_eng" data-dismiss="modal" style="display: none">Close</button>
+                            <button type="button" id="update_support" class="btn btn-success lang_indo">Simpan</button>
+                            <button type="button" id="update_support" class="btn btn-success lang_eng" style="display: none">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:include="admin/layout :: footer"></div>
+    
+</body>
+<script th:inline="javascript" >
+    // <![CDATA[
+        //$(document).ready(function (e) {
+        var id_role     = [[${id_role}]];
+        var privilege   = [[${privilege}]];
+        var cat_role   = [[${cat_role}]];
+        var id_prov   = [[${id_prov}]];
+            
+        if(id_role == '1'){
+//                alert('admin');
+        }else{
+//                alert('cat '+cat_role);
+            if(cat_role=="NSA"){
+                $("#id_prov").val(id_prov).trigger("change").attr('disabled',true);	
+            }
+//                else if(cat_role=="Institution"){
+//                    $("#id_prov").val("").trigger("change").attr('disabled',false);	
+//                }
+
+            $.ajax({
+                type: "GET",
+                url: urls+'list-get-option-role-nsa-profil/'+id_prov,
+                success: function (result10) {
+                    $("#nm_nsa_profil").html('<option value="0" >-- Pilih --</option>');
+                    $("#nm_nsa_profil").append('<option value="all" >-- ALL --</option>');
+                    var array = result10.content;
+                    if (array != '') {
+                        for (i in array) {
+                            $("#nm_nsa_profil").append('<option value="'+array[i][0]+'" >'+array[i][1]+'</option>');
+                        }
+                    }
+                    if(privilege == 'ADMIN'){
+
+                    }else{
+                        if(cat_role == 'NSA'){
+                            $("#nm_nsa_profil").val(id_role).trigger("change").attr('disabled',true);
+                        }
+//                            else if(cat_role=="Institution"){
+//                                $("#nm_nsa_profil").val("").trigger("change").attr('disabled',false);	
+//                            }
+                        else{
+                            $("#nm_nsa_profil").val(id_role).trigger("change");
+                        }
+
+                        //grid
+                        grid_export();
+                        tabel.ajax.url(urls+'list-getid-nsa-collaboration-all/'+$("#nm_nsa_profil").val()+'/'+$("#id_prov").val()).load();
+
+                    }
+                }
+            });
+                
+//                $.ajax({
+//                    type: "GET",
+//                    url: urls+'list-get-option-role-ins-profil/'+id_prov,
+//                    success: function (result10) {
+//                        $("#nm_nsa_profil").html('<option value="0" >-- Pilih --</option>');
+//                        var array = result10.content;
+//                        if (array != '') {
+//                            for (i in array) {
+//                                $("#nm_nsa_profil").append('<option value="'+array[i][0]+'" >'+array[i][1]+'</option>');
+//                            }
+//                        }
+//                        if(privilege == 'ADMIN'){
+//                    
+//                        }else{
+//                            if(cat_role == 'NSA'){
+//                                $("#nm_nsa_profil").val(id_role).trigger("change").attr('disabled',true);
+//                            }else{
+//                                $("#nm_nsa_profil").val(id_role).trigger("change");
+//                            }
+//                            
+//                        }
+//                    }
+//                });
+                
+        }
+        
+        function grid_export(){
+            $("#tabel-nsa-collaboration-export > tbody").html("");
+            $.ajax({
+                type: "GET",
+                async:false,
+                url: urls+'list-getid-nsa-collaboration-all/'+$("#nm_nsa_profil").val()+'/'+$("#id_prov").val(),
+                success: function (data_level1) {
+//                    console.log(data_level1.content);
+                    var level1 = data_level1.content;
+                    if (level1 != '') {
+                        for (i in level1) {
+                            if(level1[i][0] == null || level1[i][0] == ""){
+                                var td3 = "-";
+                            }else{
+                                var td3 = level1[i][0];
+                            }
+                            if($('#fs').is(':checked')){
+                                var td4 = level1[i][1];
+                            }else{
+                                var td4 = level1[i][14];
+                            }
+                            if(level1[i][2] == null || level1[i][2] == ""){
+                                var td5 = "-";
+                            }else{
+                                var td5 = level1[i][2];
+                            }
+                            if(level1[i][3] == null || level1[i][3] == ""){
+                                var td6 = "-";
+                            }else{
+                                var td6 = level1[i][3];
+                            }
+                            if(level1[i][4] == null || level1[i][4] == ""){
+                                var td7 = "-";
+                            }else{
+                                var td7 = level1[i][4];
+                            }
+                            if(level1[i][5] == null || level1[i][5] == ""){
+                                var td8 = "-";
+                            }else{
+                                var td8 = level1[i][5];
+                            }
+                            var dt ="";
+                            var dt1 ="";
+                            var dt2 ="";
+                            var dt3 ="";
+                            var ket_pilan ="";
+                            $.ajax({
+                                type: "GET",
+                                async:false,
+                                url: urls+'list_add_support_philan/'+level1[i][7],
+                                success: function (result3) {
+                                    var level2 = result3.content;
+                                    console.log(level2);
+                                    if (level2 != '') {
+                                        for (u in level2) {
+                                            
+                                            dt += "- "+level2[u][6] +"<br/>";
+                                            dt1 += ""+level2[u][3] +"<br/>";
+                                            dt2 += ""+level2[u][4] +"<br/>";
+                                            if(level2[u][1] == '1'){
+                                                ket_pilan = " Civil Society Organization/Organisasi Kepemudaan/Komunitas";
+                                            }else if(level2[u][1] == '2'){
+                                                ket_pilan = " Organisasi Non-Pemerintah/LSM";
+                                            }else if(level2[u][1] == '3'){
+                                                ket_pilan = " Organisasi Hak Perempuan (WRO)/Organisasi Difabel (DPO)";
+                                            }else if(level2[u][1] == '4'){
+                                                ket_pilan = " Sektor bisnis";
+                                            }else if(level2[u][1] == '5'){
+                                                ket_pilan = " Institusi akademis";
+                                            }else if(level2[u][1] == '6'){
+                                                ket_pilan = " Media dan asosiasi media";
+                                            }else if(level2[u][1] == '7'){
+                                                ket_pilan = " Organisasi multilateral atau bilateral";
+                                            }else if(level2[u][1] == '8'){
+                                                ket_pilan = " Organisasi filantropi";
+                                            }else if(level2[u][1] == '9'){
+                                                ket_pilan = " Lainnya";
+                                            }
+                                            dt3 += ""+ket_pilan +"<br/>";
+                                        }
+                                    }
+                                }
+                            });
+                            var tb_prog = '<tr> <td style="border-style:ridge;">'+(i+1)+'</td> <td style="border-style:ridge;">'+level1[i][15]+'</td> <td style="border-style:ridge;">'+td3+'</td> <td style="border-style:ridge;">'+td4+'</td> <td style="border-style:ridge;">'+td5+'</td> <td style="border-style:ridge;">'+td6+'</td> <td style="border-style:ridge;">'+td7+'</td> <td style="border-style:ridge;">'+td8+'</td> <td style="border-style:ridge;">'+dt+'</td> <td style="border-style:ridge;">'+dt1+'</td> <td style="border-style:ridge;">'+dt2+'</td> <td style="border-style:ridge;">'+dt3+'</td></tr>';
+                            $("#tabel-nsa-collaboration-export > tbody").append(tb_prog);
+                        }
+                    }
+                }
+            });
+        }
+        
+        var tabel = $('#tabel-nsa-collaboration').DataTable({
+        	responsive: true,
+			sDom: 'lrtip',
+			"bLengthChange": false,
+			"cache": false,
+			"autoWidth": true,
+			"responsive":true,
+//            buttons: [
+//	        	{
+//	        	    extend: 'print',
+//	        	    text: 'Print',
+//	        	    exportOptions: {
+//	        	        stripHtml: false,
+//	        	    }
+//	        	},
+//	        	{
+//	        		extend: 'excelHtml5',
+//	        		filename: 'Profil Non-State Actor',
+//	        		text: 'Save as Excel',
+//	        		exportOptions: {
+//	        		    format: {
+//	        		        body: function(data, column, row) {
+//	        		        	data = data.replace(/<br\s*\/?>/ig, '\r\n');
+//	        		            data = data.replace(/<.*?>/g, "");
+//	        		            data = data.replace("&amp;", "&");
+//	        		            data = data.replace("&nbsp;", "");
+//	        		            data = data.replace("&nbsp;", "");
+//	        		            return data;
+//	        		        }
+//	        		    },
+//	        		   
+//	        		}
+//	        	},
+//	        ],
+            "ajax": {
+                "url": urls+'list-getid-nsa-collaboration-all/'+$("#nm_nsa_profil").val()+'/'+$("#id_prov").val(),
+                dataSrc: 'content',
+            },
+            "searching": true,
+            "columns": [
+                {"data": function (row, data, index, display) {
+                    return "<div style='font-size:90%;'>"+(display.row+1)+"</div>";
+                }},
+                {"data": function (row, data, index, display) {
+//                    if(row[0] == null || row[0] == ""){
+//                        return "<div style='font-size:90%;'>-</div>";
+//                    }else{
+//                    }
+                    return "<div style='font-size:90%;'>"+row[15]+"</div>";
+                }},
+                {"data": function (row, data, index, display) {
+                    if(row[0] == null || row[0] == ""){
+                        return "<div style='font-size:90%;'>-</div>";
+                    }else{
+                        return "<div style='font-size:90%;'>"+row[0]+"</div>";
+                    }
+                }},
+                {"data": function (row, data, index, display) {
+                    if($('#fs').is(':checked')){
+//                                        return "<div style='font-size:90%;'>"+row[4]+"</div>";
+                        return "<div style='font-size:90%;'>"+row[1]+"</div>";
+                    }else{
+//                                        return "<div style='font-size:90%;'>"+row[13]+"</div>";
+                        return "<div style='font-size:90%;'>"+row[14]+"</div>";
+                    }
+                }},
+                {"data": function (row, data, index, display) {
+                    if(row[2] == null || row[2] == ""){
+                        return "<div style='font-size:90%;'>-</div>";
+                    }else{
+                        return "<div style='font-size:90%;'>"+row[2]+"</div>";
+                    }
+                }},
+                {"data": function (row, data, index, display) {
+                    if(row[3] == null || row[3] == ""){
+                        return "<div style='font-size:90%;'>-</div>";
+                    }else{
+                        return "<div style='font-size:90%;'>"+row[3]+"</div>";
+                    }
+                }},
+                {"data": function (row, data, index, display) {
+                    if(row[4] == null || row[4] == ""){
+                        return "<div style='font-size:90%;'>-</div>";
+                    }else{
+                        return "<div style='font-size:90%;'>"+row[4]+"</div>";
+                    }
+                }},
+                {"data": function (row, data, index, display) {
+                    /* if(privilege=="SUPER" || privilege=="ADMIN"){
+                        if(cat_role != 'Institution'){
+                            //NSA bisa edit
+                            if(cat_role == 'Government'){
+//                                if(row[5] == null || row[5] == ""){
+//                                    return "<div style='text-align:center;'>-</div>";
+//                                }else{
+//                                    return "<div style='text-align:center;'>"+row[5]+"</div>";
+//                                }
+                                if(row[7] == null || row[7] == ""){
+                                    return "<div style='text-align:center;'>"+'<button data-id="'+row[1]+'###'+row[9]+'###'+row[8]+'" type="button" title="Add Detail" class="btn btn-success add_detail"> Add Detail</button></div>';
+                                }else{
+                                    if(row[5] == null || row[5] == ""){
+                                        var data_id = row[7]+'###'+row[0]+'###'+row[9]+'###'+row[2]+'###'+row[3]+'###'+row[4]+'###'+row[5]+'###'+row[8]+'###'+row[1];
+                                        return "<div style='text-align:center;'>"+'<a data-id="'+data_id+'" title="Update Detail" class="edit_detail" href="#">'+"<i class='icon-edit'></i> - </a></div>";
+                                    }else{
+                                        var data_id = row[7]+'###'+row[0]+'###'+row[9]+'###'+row[2]+'###'+row[3]+'###'+row[4]+'###'+row[5]+'###'+row[8]+'###'+row[1];
+                                        return "<div style='text-align:center;'>"+'<a data-id="'+data_id+'" title="Update Detail" class="edit_detail" href="#">'+" "+row[5]+"</a></div>";
+                                    }
+                                }
+                            }else{
+                                if(row[7] == null || row[7] == ""){
+                                    return "<div style='text-align:center;'>"+'<button data-id="'+row[1]+'###'+row[9]+'###'+row[8]+'" type="button" title="Add Detail" class="btn btn-success add_detail"> Add Detail</button></div>';
+                                }else{
+                                    if(row[5] == null || row[5] == ""){
+                                        var data_id = row[7]+'###'+row[0]+'###'+row[9]+'###'+row[2]+'###'+row[3]+'###'+row[4]+'###'+row[5]+'###'+row[8]+'###'+row[1];
+                                        return "<div style='text-align:center;'>"+'<a data-id="'+data_id+'" title="Update Detail" class="edit_detail" href="#">'+"<i class='icon-edit'></i> - </a></div>";
+                                    }else{
+                                        var data_id = row[7]+'###'+row[0]+'###'+row[9]+'###'+row[2]+'###'+row[3]+'###'+row[4]+'###'+row[5]+'###'+row[8]+'###'+row[1];
+                                        return "<div style='text-align:center;'>"+'<a data-id="'+data_id+'" title="Update Detail" class="edit_detail" href="#">'+" "+row[5]+"</a></div>";
+                                    }
+                                }
+                            }
+                        }else{
+                            //selain NSA gak bisa edit
+                            if(row[5] == null || row[5] == ""){
+                                return "<div style='text-align:center;'>-</div>";
+                            }else{
+                                return "<div style='text-align:center;'>"+row[5]+"</div>";
+                            }
+                        }
+                    } */
+                    if(privilege=="SUPER" || (privilege=="ADMIN" && id_prov==row[13])){
+                    	if(row[7] == null || row[7] == ""){
+                            return "<div style='text-align:center;'>"+'<button data-id="'+row[1]+'###'+row[9]+'###'+row[8]+'" type="button" title="Add Detail" class="btn btn-success add_detail"> Add Detail</button></div>';
+                        }else{
+                            if(row[5] == null || row[5] == ""){
+                                var data_id = row[7]+'###'+row[0]+'###'+row[9]+'###'+row[2]+'###'+row[3]+'###'+row[4]+'###'+row[5]+'###'+row[8]+'###'+row[1];
+                                return "<div style='text-align:center;'>"+'<a data-id="'+data_id+'" title="Update Detail" class="edit_detail" href="#">'+"<i class='icon-edit'></i> - </a></div>";
+                            }else{
+                                var data_id = row[7]+'###'+row[0]+'###'+row[9]+'###'+row[2]+'###'+row[3]+'###'+row[4]+'###'+row[5]+'###'+row[8]+'###'+row[1];
+                                return "<div style='text-align:center;'>"+'<a data-id="'+data_id+'" title="Update Detail" class="edit_detail" href="#">'+" "+row[5]+"</a></div>";
+                            }
+                        }
+                    }else if(privilege=="ADMIN" && id_prov!=row[13]){
+                    	if(row[5] == null || row[5] == ""){
+                            return "<div style='text-align:center;'>-</div>";
+                        }else{
+                            return "<div style='text-align:center;'>"+row[5]+"</div>";
+                        }
+                    }else if(privilege=="USER"){
+                        //user yg catrole nya nsa bisa edit
+                        if(cat_role == 'NSA'){
+                            //NSA bisa edit
+                            if(row[7] == null || row[7] == ""){
+                                return "<div style='text-align:center;'>"+'<button data-id="'+row[1]+'###'+row[9]+'###'+row[8]+'" type="button" title="Add Detail" class="btn btn-success add_detail"> Add Detail</button></div>';
+                            }else{
+                                if(row[5] == null || row[5] == ""){
+                                    var data_id = row[7]+'###'+row[0]+'###'+row[9]+'###'+row[2]+'###'+row[3]+'###'+row[4]+'###'+row[5]+'###'+row[8]+'###'+row[1];
+                                    return "<div style='text-align:center;'>"+'<a data-id="'+data_id+'" title="Update Detail" class="edit_detail" href="#">'+"<i class='icon-edit'></i> - </a></div>";
+                                }else{
+                                    var data_id = row[7]+'###'+row[0]+'###'+row[9]+'###'+row[2]+'###'+row[3]+'###'+row[4]+'###'+row[5]+'###'+row[8]+'###'+row[1];
+                                    return "<div style='text-align:center;'>"+'<a data-id="'+data_id+'" title="Update Detail" class="edit_detail" href="#">'+" "+row[5]+"</a></div>";
+                                }
+                            }
+                        }else{
+                            //selain NSA gak bisa edit
+                            if(row[5] == null || row[5] == ""){
+                                return "<div style='text-align:center;'>-</div>";
+                            }else{
+                                return "<div style='text-align:center;'>"+row[5]+"</div>";
+                            }
+                        }
+                    }else{
+                        return "";
+                    }
+
+                }},
+                {"data": function (row, data, index, display) {
+
+                    /* if(privilege=="SUPER" || privilege=="ADMIN"){
+                        if(cat_role == 'Institution' || cat_role == 'Government'){
+                            var data_id = row[8]+'###'+row[10]+'###'+row[6]+'###'+row[11]+'###'+row[12]+'###'+row[7];
+                            return "<div style='text-align:center;'>"+'<button data-id="'+data_id+'" type="button" title="Add Support" class="btn btn-primary add_support"> Add Support</button>'+' <button data-id="'+row[7]+'" data-idprog="'+row[9]+'" type="button" title="Add View" class="btn btn-success add_view"> View</button>'+"</div>";
+                        }else if(cat_role == 'NSA'){
+                            var data_id = row[8]+'###'+row[10]+'###'+row[6]+'###'+row[11]+'###'+row[12]+'###'+row[7];
+                            return "<div style='text-align:center;'>"+'<button data-id="'+row[7]+'" data-idprog="'+row[9]+'" type="button" title="Add View" class="btn btn-success add_view"> View</button>'+"</div>";
+                        }else{
+                            return "";
+                        }
+                    } */
+                    if(privilege=="SUPER" || (privilege=="ADMIN" && id_prov==row[13])){
+                    	var data_id = row[8]+'###'+row[10]+'###'+row[6]+'###'+row[11]+'###'+row[12]+'###'+row[7];
+                        return "<div style='text-align:center;'>"+'<button data-id="'+data_id+'" type="button" title="Add Support" class="btn btn-primary btn-small add_support"> Add Support</button>'+' <button data-id="'+row[7]+'" data-idprog="'+row[9]+'" data-id_prov = "'+row[13]+'" type="button" title="Add View" class="btn btn-success add_view"> View</button>'+"</div>";
+                    }else if(privilege=="ADMIN" && id_prov!=row[13]){
+                    	var data_id = row[8]+'###'+row[10]+'###'+row[6]+'###'+row[11]+'###'+row[12]+'###'+row[7];
+                        return "<div style='text-align:center;'>"+'<button data-id="'+row[7]+'" data-idprog="'+row[9]+'" data-id_prov = "'+row[13]+'" type="button" title="Add View" class="btn btn-success btn-small add_view"> View</button>'+"</div>";
+                    }else if(privilege=="USER"){
+                        //user yg catrole nya INST bisa edit
+                        if(cat_role == 'Institution'){
+                            //INST bisa edit
+                            var jumlah;
+                            $.ajax({
+                                type: "GET",
+                                async:false,
+                                url: urls+'jumlah_role_philan/'+id_role+'/'+row[7],
+                                success: function (result) {
+                                    jumlah = result.content[0];
+                                }
+                            });
+                            
+                            if(jumlah == '0'){
+                                var data_id = row[8]+'###'+row[10]+'###'+row[6]+'###'+row[11]+'###'+row[12]+'###'+row[7];
+                                return "<div style='text-align:center;'>"+'<button data-id="'+data_id+'" type="button" title="Add Support" class="btn btn-primary add_support"> Add Support</button>'+' <button data-id="'+row[7]+'" data-idprog="'+row[9]+'" data-id_prov = "'+row[13]+'" type="button" title="Add View" class="btn btn-success add_view"> View</button>'+"</div>";
+                            }else{
+                                var data_id = row[8]+'###'+row[10]+'###'+row[6]+'###'+row[11]+'###'+row[12]+'###'+row[7];
+                                return "<div style='text-align:center;'>"+'<button data-id="'+row[7]+'" data-idprog="'+row[9]+'" data-id_prov = "'+row[13]+'" type="button" title="Add View" class="btn btn-success add_view"> View</button>'+"</div>";
+                            }
+                            
+                        }else{
+                            //selain INST gak bisa edit
+                            var data_id = row[8]+'###'+row[10]+'###'+row[6]+'###'+row[11]+'###'+row[12]+'###'+row[7];
+                            return "<div style='text-align:center;'>"+'<button data-id="'+row[7]+'" data-idprog="'+row[9]+'" data-id_prov = "'+row[13]+'" type="button" title="Add View" class="btn btn-success add_view"> View</button>'+"</div>";
+                        }
+                    }else{
+                        return "";
+                    }
+
+                }}
+            ],
+            "columnDefs": [
+            ],
+            select: true
+        });
+            
+        $("#id_prov").on('change', function(e){
+            var id_prov = this.value ;
+            $("#nm_nsa_profil").html('');
+            $.ajax({
+                type: "GET",
+                url: urls+'list-get-option-role-nsa-profil/'+id_prov,
+                success: function (result) {
+                    $("#nm_nsa_profil").html('<option value="0" >-- Pilih --</option>');
+                    $("#nm_nsa_profil").append('<option value="all" >-- ALL --</option>');
+                    var array = result.content;
+                    if (array != '') {
+                        for (i in array) {
+                            $("#nm_nsa_profil").append('<option value="'+array[i][0]+'" >'+array[i][1]+'</option>');
+                        }
+                    }
+                }
+            });
+                
+            $("#nm_philanthropy").html('');
+            $.ajax({
+                type: "GET",
+                url: urls+'list-get-option-role-ins-profil_1/'+id_prov,
+                success: function (result) {
+                    $("#nm_philanthropy").html('<option value="0" >-- Pilih --</option>');
+                    var array = result.content;
+                    if (array != '') {
+                        for (i in array) {
+                            $("#nm_philanthropy").append('<option value="'+array[i][0]+'" >'+array[i][1]+'</option>');
+                        }
+                    }
+                }
+            });
+            //grid
+            //tabel.ajax.url(urls+'list-getid-nsa-collaboration-all/'+$("#nm_nsa_profil").val()+'/'+$("#id_prov").val()).load();
+                            
+        });
+            
+            
+        $("#nm_nsa_profil").on('change', function(e){
+            var id = this.value ;
+
+            $("#nm_philanthropy").html('');
+            $.ajax({
+                type: "GET",
+                url: urls+'list-get-option-role-ins-profil_1/'+$("#id_prov").val(),
+                success: function (result) {
+                    $("#nm_philanthropy").html('<option value="0" >-- Pilih --</option>');
+                    var array = result.content;
+                    if (array != '') {
+                        for (i in array) {
+                            $("#nm_philanthropy").append('<option value="'+array[i][0]+'" >'+array[i][1]+'</option>');
+                        }
+                    }
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: urls+'list-getid-nsa-profil/'+id,
+                success: function (result1) {
+                    if(result1.content[0] ==  null){
+
+                        //grid
+                        grid_export();
+                        tabel.ajax.url(urls+'list-getid-nsa-collaboration-all/'+$("#nm_nsa_profil").val()+'/'+$("#id_prov").val()).load();
+                        //tutup kosong
+                    }else{
+                        //grid
+                        grid_export();
+                        tabel.ajax.url(urls+'list-getid-nsa-collaboration-all/'+$("#nm_nsa_profil").val()+'/'+$("#id_prov").val()).load();
+                    }
+                }
+            });
+        });
+            
+        //Bahasa
+        var titleDel = "Anda Yakin";
+        var messDel = "Menghapus Data?";
+        var buttDel = 'Ya, Hapus data ini!';
+        var titleOk	= "Hapus";
+        var messOk = "Data berhasil dihapus";
+        var messNOk = "Data tidak dapat dihapus";
+        var required = "Harus diisi";
+        function bhs(cek){
+            if(cek){
+                $(".lang_indo").show();
+                $(".lang_eng").hide();
+                titleDel = "Anda Yakin";
+                messDel = "Menghapus Data?";
+                buttDel = 'Ya, Hapus data ini!';
+                titleOk	= "Hapus";
+                messOk = "Data berhasil dihapus";
+                messNOk = "Data tidak dapat dihapus";
+                required = "Harus diisi";
+            }else{	    	        
+                $(".lang_indo").hide();
+                $(".lang_eng").show();
+                titleDel = "Are you sure";
+                messDel = "Delete this data?";
+                buttDel = 'Yes, Delete this data!';
+                titleOk	= "Delete";
+                messOk = "Delete successful";
+                messNOk = "Can't delete data";
+                required = "Required";
+            }
+        }
+        
+        if(lang){
+            bhs(lang=="0");
+        }else{
+            bhs($('#fs').is(':checked'));
+        }
+
+        $('#fs').on('change', function(e){
+            //grid
+            bhs($(this).is(':checked'));
+        });
+            
+            
+        $("#nm_ins_profil").on('change', function(e){
+            var id = this.value ;
+            grid_export();
+            tabel.ajax.url(urls+'list-getid-nsa-collaboration-all/'+$("#nm_nsa_profil").val()+'/'+$("#id_prov").val()).load();
+        });
+            
+        
+
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+            
+        $('#simpan_').on('click', '#simpan', function(e){
+            var id_role         = $('#nm_ins_profil').val();
+            var id              = ($('#id').val())?$('#id').val():null;
+            var sector          = $('#sector').val();
+            var id_program      = $('#id_program').val();
+            var location        = $('#location').val();
+            var beneficiaries   = $('#beneficiaries').val();
+            var ex_benefit      = $('#ex_benefit').val();
+            var type_support    = $('#type_support').val();
+            var id_philanthropy = ($('#id_philanthropy').val())?$('#id_philanthropy').val():null;
+                
+            var data    = JSON.stringify({
+                            'id': id,
+                            'sector': sector,
+                            'id_program': id_program,
+                            'location': location,
+                            'beneficiaries': beneficiaries,
+                            'ex_benefit': ex_benefit,
+                            'type_support': type_support,
+                            'id_philanthropy': id_philanthropy
+                        });
+            console.log(data)
+            $.ajax({
+                type: "POST",
+                url: urls+'save-nsa-collaboration',
+                beforeSend : function(xhr){
+                    xhr.setRequestHeader(header,token);
+                },
+                headers:{'Accept':'application/json','Content-Type':'application/json'},
+                data: data,
+                success: function (result) {
+                    //grid
+                    grid_export();
+                    tabel.ajax.url(urls+'list-getid-nsa-collaboration-all/'+$("#nm_nsa_profil").val()+'/'+$("#id_prov").val()).load();
+                    $('.addDetail').modal("hide");
+//                        window.location = urls+"nsa/nsa-collaboration";
+                },
+            });
+        });
+            
+            
+        $('#simpan1').on('click', '#simpan_support', function(e){
+            var id_role         = $('#nm_ins_profil').val();
+            var id_philanthropy = ($('#id_philanthropy').val())?$('#id_philanthropy').val():null;
+            var type_support    = $('#type_support_1').val();
+            var nm_philanthropy = $('#nm_philanthropy').val();
+            var nm_pillar       = $('#nm_pillar').val();
+            var loc_philanthropy = $('#loc_philanthropy').val();
+            var id_collaboration = $('#id_collaboration').val();
+
+            var data    = JSON.stringify({
+                            'id_philanthropy': id_philanthropy,
+                            'type_support': type_support,
+                            'nm_philanthropy': id_collaboration,
+                            'id_inst': nm_philanthropy,
+                            'nm_pillar': nm_pillar,
+                            'loc_philanthropy': loc_philanthropy
+                        });
+            $.ajax({
+                type: "POST",
+                url: urls+'save-nsa-philanthropy',
+                beforeSend : function(xhr){
+                    xhr.setRequestHeader(header,token);
+                },
+                headers:{'Accept':'application/json','Content-Type':'application/json'},
+                data: data,
+                success: function (result) {
+                        
+//                    var id_phy   = result.v_id_phy
+//                    var data2    = JSON.stringify({
+//                                    'id_philanthropy': id_phy,
+//                                    'id': id_collaboration,
+//                                });
+//                    $.ajax({
+//                        type: "POST",
+//                        url: urls+'save-nsa-collaboration-phy',
+//                        beforeSend : function(xhr){
+//                            xhr.setRequestHeader(header,token);
+//                        },
+//                        headers:{'Accept':'application/json','Content-Type':'application/json'},
+//                        data: data2,
+//                        success: function (result1) {
+//                                
+//                            //grid
+////                                window.location = urls+"nsa/nsa-collaboration";
+//                        },
+//                    });  
+                    grid_export();
+                    tabel.ajax.url(urls+'list-getid-nsa-collaboration-all/'+$("#nm_nsa_profil").val()+'/'+$("#id_prov").val()).load();
+                    $('.addSupport').modal("hide");
+                },
+            });
+        });
+            
+            
+        $('#update_').on('click', '#update', function(e){
+            var id_role         = $('#nm_ins_profil').val();
+            var id_inst         = $('#id_inst').val();
+            var nm_inst         = $('#nm_inst').val();
+            var achievement     = $('#achievement').val();
+            var loc_inst        = $('#loc_inst').val();
+            var beneficiaries   = $('#beneficiaries').val();
+            var year_impl       = $('#year_impl').val();
+            var major_part      = $('#major_part').val();
+
+            var data    = JSON.stringify({
+                            'id_inst': id_inst,
+                            'nm_inst': nm_inst,
+                            'achievement': achievement,
+                            'loc_inst': loc_inst,
+                            'beneficiaries': beneficiaries,
+                            'year_impl': year_impl,
+                            'major_part': major_part
+                        });
+            $.ajax({
+                type: "POST",
+                url: urls+'save-ins-profil',
+                beforeSend : function(xhr){
+                    xhr.setRequestHeader(header,token);
+                },
+                headers:{'Accept':'application/json','Content-Type':'application/json'},
+                data: data,
+                success: function (result) {
+                    //grid
+                    grid_export();
+                    tabel.ajax.url(urls+'list-getid-nsa-collaboration-all/'+$("#nm_nsa_profil").val()+'/'+$("#id_prov").val()).load();
+//                        window.location = urls+"nsa/inst-profile";
+                    $('.addModal').modal('hide');
+                },
+            });
+        });
+            
+            
+        $('#tabel-nsa-collaboration').on('click', '.add_detail', function(){
+            var dataid  = $(this).data('id');
+            var data    = dataid.split('###');
+
+            $('#id').val(null);
+            $('#sector').val('');
+            $('#nm_program').val(data[0]);
+            $('#id_program').val(data[1]);
+            $('#location').val('');
+            $('#beneficiaries').val('');
+            $('#ex_benefit').val('');
+            $('#type_support').val('');
+            $('#id_philanthropy').val(data[2]);
+
+            $('.addDetail').modal("show");
+            $('#simpan_').show();
+            $('#update_').hide();
+        });
+
+        $('#tabel-nsa-collaboration').on('click', '.add_support', function(){
+            var dataid  = $(this).data('id');
+            var data    = dataid.split('###');
+//                alert(id_role);
+            $.ajax({
+                type: "GET",
+                url: urls+'list-get-option-role-ins-profil_role/'+id_role,
+                success: function (result) {
+                    var array = result.content;
+//                        alert(array.length);
+                    if(privilege == "SUPER" || privilege == "ADMIN"){
+                        $('#nm_philanthropy').val('0').trigger("change");
+                    }else{
+                        if(cat_role == 'Institution'){
+                            if(array.length == 0){
+                                $('#nm_philanthropy').val("0").trigger("change").attr('disabled',true);
+                            }else{
+                                $('#nm_philanthropy').val(array[0][0]).trigger("change").attr('disabled',true);
+                            }
+                        }else{
+                            $('#nm_philanthropy').val('0').trigger("change");
+                        }
+                    }
+                }
+            });
+
+
+
+
+//                alert('id colap = '+data[5]);
+            $('#id_philanthropy').val('');
+            $('#id_collaboration').val(data[5]);
+            $('#type_support').val('');
+
+            $('#nm_pillar').val('');
+            $('#loc_philanthropy').val('');
+
+
+
+            $('.addSupport').modal("show");
+            $('#simpan1').show();
+            $('#update1').hide();
+        });
+
+
+        $('#tabel-nsa-collaboration').on('click', '.add_view', function(){
+            var dataid      = $(this).data('id');
+            var dataprog    = $(this).data('idprog');
+            var prov    	= $(this).data('id_prov');
+            
+            $('#tabel_view_support').DataTable({
+                responsive: true,
+                sDom: 'lrtip',
+                "bLengthChange": false,
+                "cache": false,
+                "autoWidth": false,
+                "responsive":true,
+                "bDestroy": true,
+                "ajax": {
+                    "url": urls+'list_add_support_philan/'+dataid,
+                    dataSrc: 'content',
+                },
+                "searching": true,
+                "columns": [
+                    {"data": function (row, data, index, display) {
+                        return "<div style='font-size:90%;'>"+row[6]+"</div>";
+                    }},
+                    {"data": function (row, data, index, display) {
+                            
+                        /* if(privilege=="SUPER" || privilege=="ADMIN"){
+                            if(cat_role == 'Institution'){
+                                var data_id = row[0]+'###'+row[1]+'###'+row[3]+'###'+row[3]+'###'+row[4]+'###'+row[2]+'###'+row[5]+'###'+row[2];
+                                return "<div style='text-align:center;'>"+'<a data-id="'+data_id+'" title="Update Support" class="btn btn-primary btn-mini edit_support" href="#">'+"<i class='icon-edit'></i></a>"+'<a data-id="'+data_id+'" title="Delete Support" class="btn btn-danger btn-mini delete_support" style="margin-left:4px" href="#">'+"<i class='icon-trash'></i></a></div>";
+                            }else if(cat_role == 'NSA' || cat_role == 'Government'){
+                                return "";
+                            }else{
+                                return "";
+                            }
+                        } */
+                        if(privilege=="SUPER" || (privilege=="ADMIN" && id_prov==prov)){
+                        	var data_id = row[0]+'###'+row[1]+'###'+row[3]+'###'+row[3]+'###'+row[4]+'###'+row[2]+'###'+row[5]+'###'+row[2];
+                            return "<div style='text-align:center;'>"+'<a data-id="'+data_id+'" title="Update Support" class="btn btn-primary btn-mini edit_support" href="#">'+"<i class='icon-edit'></i></a>"+'<a data-id="'+data_id+'" title="Delete Support" class="btn btn-danger btn-mini delete_support" style="margin-left:4px" href="#">'+"<i class='icon-trash'></i></a></div>";
+                        }else if(privilege=="ADMIN" && id_prov!=prov){
+                        	return "";
+                        }else if(privilege=="USER"){
+                            if(cat_role == 'Institution'){
+                                if(row[7] == id_role){
+                                    var data_id = row[0]+'###'+row[1]+'###'+row[3]+'###'+row[3]+'###'+row[4]+'###'+row[2]+'###'+row[5]+'###'+row[2];
+                                    return "<div style='text-align:center;'>"+'<a data-id="'+data_id+'" title="Update Support" class="btn btn-primary btn-mini edit_support" href="#">'+"<i class='icon-edit'></i></a>"+'<a data-id="'+data_id+'" title="Delete Support" class="btn btn-danger btn-mini delete_support" style="margin-left:4px" href="#">'+"<i class='icon-trash'></i></a></div>";
+                                }else{
+                                    return "";
+                                }
+                            }else{
+                                return "";
+                            }
+                        }else{
+                            return "";
+                        }
+                        
+                    }}
+                ],
+                "columnDefs": [
+                ],
+                select: true
+            });
+
+            $('.addviewphilan').modal("show");
+        });
+
+
+        $('#tabel-nsa-collaboration').on('click', '.edit_detail', function(){
+            var dataid  = $(this).data('id');
+            var data    = dataid.split('###');
+
+            $('#id').val(data[0]);
+            $('#sector').val(data[1]);
+            $('#nm_program').val(data[8]);
+            $('#id_program').val(data[2]);
+            $('#location').val(data[3]);
+            $('#beneficiaries').val(data[4]);
+            $('#ex_benefit').val(data[5]);
+            $('#type_support').val(data[6]);
+            $('#id_philanthropy').val(data[7]);
+
+            $('.addDetail').modal("show");
+            $('#simpan_').show();
+            $('#update_').hide();
+        });
+
+
+        $('#tabel_view_support').on('click', '.edit_support', function(){
+            $('.addviewphilan').modal("hide");
+            var dataid  = $(this).data('id');
+            var data    = dataid.split('###');
+
+            if(privilege=="SUPER" || privilege=="ADMIN"){
+                if(privilege == 'SUPER' || privilege == 'ADMIN' || cat_role == 'Institution'){
+                    $('#nm_philanthropy').val(data[6]).trigger("change").attr('disabled',false);
+                }else if(cat_role == 'NSA'){
+                    $('#nm_philanthropy').val(data[6]).trigger("change").attr('disabled',false);
+                }else{
+                    return "";
+                }
+            }else if(privilege=="USER"){
+                if(cat_role == 'Institution'){
+                    $('#nm_philanthropy').val(data[6]).trigger("change").attr('disabled',true);
+                }else{
+                    $('#nm_philanthropy').val(data[6]).trigger("change").attr('disabled',true);
+                }
+            }else{
+                return "";
+            }
+            $('#id_philanthropy').val(data[0]);
+            $('#type_support_1').val(data[1]).trigger("change");
+            
+            $('#nm_pillar').val(data[3]);
+            $('#loc_philanthropy').val(data[4]);
+            $('#id_collaboration').val(data[5]);
+
+            $('.addSupport').modal("show");
+            $('#simpan1').show();
+            $('#update1').hide();
+        });
+        
+        
+        $('#tabel_view_support').on('click', '.delete_support', function(){
+            var dataid  = $(this).data('id');
+            var data    = dataid.split('###');
+            $('.addviewphilan').modal("hide");
+            swal({
+                title: titleDel,
+                text: messDel,
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: buttDel
+            }).then(function () {
+                $.ajax({
+                    type: "DELETE",
+                    url: urls+'delete-philan-collaboration/'+data[0],
+                    beforeSend : function(xhr){
+                        xhr.setRequestHeader(header,token);
+                    },
+                    success: function (result) {
+                        //grid
+                        grid_export();
+                        tabel.ajax.url(urls+'list-getid-nsa-collaboration-all/'+$("#nm_nsa_profil").val()+'/'+$("#id_prov").val()).load();
+//                        $('.addviewphilan').modal("hide");
+                    },
+                });
+            }, function (dismiss) {
+                if (dismiss === 'cancel') {
+                    $('.addviewphilan').modal("show");
+                }
+            })
+            
+        });
+            
+            
+            
+            
+//            $("#tabel-ins-profile").on('click', '.delete', function () {
+//                var dataid  = $(this).attr('data-id');
+//                swal({
+//                    title: titleDel,
+//                    text: messDel,
+//                    type: 'warning',
+//                    showCancelButton: true,
+//                    confirmButtonColor: '#3085d6',
+//                    cancelButtonColor: '#d33',
+//                    confirmButtonText: buttDel
+//                }).then(function () {
+//                    $.ajax({
+//                        type: "DELETE",
+//                        url: urls+'delete-ins-profil/'+dataid,
+//                        beforeSend : function(xhr){
+//                            xhr.setRequestHeader(header,token);
+//                        },
+//                        success: function (result) {
+//                            swal(titleOk,messOk,'success');
+//                            window.location = urls+"nsa/inst-profile";
+//                        },
+//                        error:function (result) {
+//                            swal(titleOk,messNOk,'error');
+//                            window.location = urls+"nsa/inst-profile";
+//                        },
+//                    })
+//                }, function (dismiss) {
+//                    if (dismiss === 'cancel') {
+//                    }
+//                })
+//
+//            });
+            
+
+        //});
+    // ]]>
+    
+//    $("#export").on("click", function(){
+//    	var idrole = $("#nm_nsa_profil").val();
+//    	if (idrole == "0") {
+//    		swal("Anda harus memilih institusi");
+//    	} else {
+//    		window.open(urls+"nsa/dowload_inst_colab/"+idrole, "_blank");
+//    	}
+//    });
+
+
+    var tableToExcel = (function() {
+    var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+    return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+    }
+    })()
+</script>
+</html>
