@@ -53,9 +53,13 @@
 							<div class="accordion" id="accordion2">
 								<div class="accordion-group">
 								    <div class="accordion-heading">
-								      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-								        <label class="lang_eng control-label" style="display:none">Choose SDGs Indicator</label>
-					    				<label class="lang_indo control-label">Pilih Indikator SDG</label>
+								      <a class="accordion-toggle label-nas" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+								        <label class="lang_eng control-label" style="display:none">Choose SDGs Output Details</label>
+					    				<label class="lang_indo control-label">Pilih Rincian Output / RO SDG</label>
+								      </a>
+								      <a class="accordion-toggle label-prov" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+								        <label class="lang_eng control-label" style="display:none">Choose SDGs Sub Activity</label>
+					    				<label class="lang_indo control-label">Pilih Sub Kegiatan SDG</label>
 								      </a>
 								    </div>
 								    <div id="collapseOne" class="accordion-body collapse">
@@ -204,6 +208,22 @@
     	bhs($(this).is(':checked'));
     	$("#role").trigger("change");
     });
+
+  	//label by prov
+	label();
+	function label(){
+		var id_prov = $('#daerah').val();
+		if(id_prov == '000' || id_prov == '0'){
+			$('.label-nas').show();
+			$('.label-prov').hide();
+		}else{
+			$('.label-nas').hide();
+			$('.label-prov').show();
+		}
+	}
+	$('#daerah').on('change', function(){
+		label();
+	});	
     
     // ********************** Fungsi pilih select option Provinsi **********************
     $("#daerah").on("change", function(){
@@ -529,8 +549,24 @@
         
         var goal = 'Capaian';
         var target = "Target SDG";
-        var code = 'Kode Indikator';
-        var nama = 'Nama Indikator';
+        
+        var cat = $('#role').find(':selected').data('cat');
+        var daerah = $('#daerah').val();
+        
+        var code;
+        var nama;
+
+        if(cat=='NSA'){
+        	code = 'Kode Output Kegiatan';
+         	nama = 'Output Kegiatan';
+        }else if(daerah=='000' && (cat=='all' || cat == 'Government')){
+        	code = 'Kode Rincian Output';
+         	nama = 'Rincian Output / RO';
+		}else{
+			code = 'Kode Sub Kegiatan';
+			nama = 'Sub Kegiatan';
+         }
+            
         var unit = 'Satuan';
         var sdg_ach = 'Realisasi';
         var sumber = 'Sumber Data';
@@ -546,8 +582,16 @@
         if($("#fs").is(':checked')){
         	goal = 'Capaian';
         	target = "Target SDG";
-        	code = 'Kode Indikator';
-        	nama = 'Nama Indikator';
+        	if(cat=='NSA'){
+            	code = 'Kode Output Kegiatan';
+             	nama = 'Output Kegiatan';
+            }else if(daerah=='000' && (cat=='all' || cat == 'Government')){
+            	code = 'Kode Rincian Output';
+             	nama = 'Rincian Output / RO';
+    		}else{
+    			code = 'Kode Sub Kegiatan';
+    			nama = 'Sub Kegiatan';
+             }
         	unit = 'Satuan';
         	sdg_ach = 'Realisasi';
         	sumber = 'Sumber Data';
@@ -563,8 +607,16 @@
     	}else{
     		goal = 'Goal';
     		target = "SDG Targets";
-    		code = 'Indicator Code';
-    		nama = 'Indicator Name';
+    		if(cat=='NSA'){
+            	code = 'Activity Output Code';
+             	nama = 'Activity Output';
+            }else if(daerah=='000' && (cat=='all' || cat == 'Government')){
+            	code = 'Output Details Code';
+             	nama = 'Output Details';
+    		}else{
+    			code = 'Sub Activity Code';
+    			nama = 'Sub Activity';
+             }
     		unit = 'Unit';
     		sdg_ach = 'Actual';
     		sumber = 'Source of Data';
