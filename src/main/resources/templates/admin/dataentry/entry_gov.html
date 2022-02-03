@@ -49,7 +49,7 @@
                             <select id="type" name="type" class="form-control">
                             	<option value="0" >-- Pilih --</option>
                                 <option value="budget" >Budget</option>
-                                <option value="indicator" >Indicator</option>
+                                <option value="indicator" >Rincian Output / RO</option>
                             </select>
                             <div class="input-append pull-right">
                                 <input placeholder="Search..." class="span10" id="text-cari" type="text"/>
@@ -430,8 +430,14 @@
             	var header = '';
             	var headerFull = '';
                 header += '<tr class="" >';
-                header += '<th rowspan="2" style="text-align:center;font-size:80%;width: 5%"> <span class="lang_eng" style="display:none">Indicator Code</span> <span class="lang_indo">Kode Indikator</span> </th>';
-                header += '<th rowspan="2" style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Indicator Name</span> <span class="lang_indo">Nama Indikator</span> </th><th rowspan="2">Role</th>';
+                if(v_idprov == '000'){
+                    header += '<th rowspan="2" style="text-align:center;font-size:80%;width: 5%"> <span class="lang_eng" style="display:none">Output Details Code</span> <span class="lang_indo">Kode Rincian Output / RO</span> </th>';
+                    header += '<th rowspan="2" style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Output Details Name</span> <span class="lang_indo">Nama Rincian Output / RO</span> </th><th rowspan="2">Role</th>';
+                }else{
+                    header += '<th rowspan="2" style="text-align:center;font-size:80%;width: 5%"> <span class="lang_eng" style="display:none">Sub Activity Code</span> <span class="lang_indo">Kode Sub Kegiatan</span> </th>';
+                    header += '<th rowspan="2" style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Sub Activity Name</span> <span class="lang_indo">Nama Sub Kegiatan</span> </th><th rowspan="2">Role</th>';
+                }
+                
                 header += '<th rowspan="2" style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Unit</span><span class="lang_indo">Unit</span> </th> <th rowspan="2" style="text-align:center;font-size:80%;"> <span class="lang_eng" style="display:none">Target SDGs</span> <span class="lang_indo">Target SDG</span> </th> ';
                 headerFull += header;
                 var span="";
@@ -449,10 +455,15 @@
                 	col3 = true;
                 	col4 = true;
                 }
-                header += '<th '+span+'>Indicator</th></tr><tr>';
+                if(v_idprov == '000'){
+                    header += '<th '+span+'><span class="lang_eng" style="display:none">Output Details</span> <span class="lang_indo">Rincian Output / RO</span></th></tr><tr>';
+                }else{
+                    header += '<th '+span+'><span class="lang_eng" style="display:none">Sub Activity</span> <span class="lang_indo">Sub Kegiatan</span></th></tr><tr>';
+                }
+                
                 header += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization I</span> <span class="lang_indo">Realisasi I</span> </th> ';
                 
-                headerFull += '<th colspan="4">Indicator</th></tr><tr>';
+                headerFull += '<th colspan="4"><span class="lang_eng" style="display:none">Output Details</span> <span class="lang_indo">Rincian Output / RO</span></th></tr><tr>';
                 headerFull += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization I</span> <span class="lang_indo">Realisasi I</span> </th> ';
                 
                 if(sts=="semesterly"){
@@ -952,12 +963,23 @@
             	var header = '';
             	var headerFull = '';
                 header += '<tr class="" >';
-                header += '<th rowspan="2" style="text-align:center;font-size:80%;width: 5%"> <span class="lang_eng" style="display:none">Indicator Code</span> <span class="lang_indo">Kode Indikator</span> </th>';
+                if(v_idprov == '000'){
+                    header += '<th rowspan="2" style="text-align:center;font-size:80%;width: 5%"> <span class="lang_eng" style="display:none">Output Details Code</span> <span class="lang_indo">Kode Rincian Output / RO</span> </th>';
+                }else{
+                    header += '<th rowspan="2" style="text-align:center;font-size:80%;width: 5%"> <span class="lang_eng" style="display:none">Sub Activity Code</span> <span class="lang_indo">Kode Sub Kegiatan</span> </th>';
+                }
+                
                 header += '<th rowspan="2" style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Activity Name</span> <span class="lang_indo">Nama Kegiatan</span> </th><th rowspan="2">Role</th>';
                 
                 headerFull += '<tr class="" >';
-                headerFull += '<th rowspan="2" style="text-align:center;font-size:80%;width: 5%"> <span class="lang_eng" style="display:none">Indicator Code</span> <span class="lang_indo">Kode Indikator</span> </th>';
-                headerFull += '<th rowspan="2" style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Indicator Name</span> <span class="lang_indo">Nama Indikator</span> </th><th rowspan="2">Role</th>';
+                if(v_idprov == '000'){
+                    headerFull += '<th rowspan="2" style="text-align:center;font-size:80%;width: 5%"> <span class="lang_eng" style="display:none">Output Details Code</span> <span class="lang_indo">Kode Rincian Output / RO</span> </th>';
+                    headerFull += '<th rowspan="2" style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Output Details Name</span> <span class="lang_indo">Nama Rincian Output / RO</span> </th><th rowspan="2">Role</th>';
+                }else{
+                    headerFull += '<th rowspan="2" style="text-align:center;font-size:80%;width: 5%"> <span class="lang_eng" style="display:none">Sub Activity Code</span> <span class="lang_indo">Kode Sub Kegiatan</span> </th>';
+                    headerFull += '<th rowspan="2" style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Sub Activity Name</span> <span class="lang_indo">Nama Sub Kegiatan</span> </th><th rowspan="2">Role</th>';
+                }
+                
                 headerFull += '<th rowspan="2" style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Unit</span><span class="lang_indo">Unit</span> </th> <th rowspan="2" style="text-align:center;font-size:80%;"> <span class="lang_eng" style="display:none">Target SDGs</span> <span class="lang_indo">Target SDG</span> </th> ';
                 
                 var spanBud="";
