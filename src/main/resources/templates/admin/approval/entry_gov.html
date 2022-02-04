@@ -42,7 +42,7 @@
                             <select id="type" name="type" class="form-control">
                             	<option value="0" >-- Pilih --</option>
                                 <option value="entry_gov_budget" >Budget</option>
-                                <option value="entry_gov_indicator" >Indicator</option>
+                                <option value="entry_gov_indicator" >Rincian Output / RO</option>
                             </select>
                             <select id="period" name="period" class="form-control">
                                 <option value="0" ><span class=""> -- Pilih -- </span> </option>
@@ -328,6 +328,13 @@
 //                    grid();
 //                }
 //            });
+            if(id_prov == '000'){
+                var html_type = "<option value='0' >-- Pilih --</option><option value='entry_gov_budget' >Budget</option><option value='entry_gov_indicator' >Rincian Output / RO</option>";
+                $("#type").html(html_type);
+            }else{
+                var html_type = "<option value='0' >-- Pilih --</option><option value='entry_gov_budget' >Budget</option><option value='entry_gov_indicator' >Sub Kegiatan</option>";
+                $("#type").html(html_type);
+            }
 
             $.ajax({
                 type: "GET",
@@ -363,6 +370,16 @@
             var tipe    = $("#type").val();
             var periode = $("#periode").val();
             var data    = periode.split("###");
+            var id_prov = $("#id_prov").val();
+            
+            if(id_prov == '000'){
+                var html_type = "<option value='0' >-- Pilih --</option><option value='entry_gov_budget' >Budget</option><option value='entry_gov_indicator' >Rincian Output / RO</option>";
+                $("#type").html(html_type);
+            }else{
+                var html_type = "<option value='0' >-- Pilih --</option><option value='entry_gov_budget' >Budget</option><option value='entry_gov_indicator' >Sub Kegiatan</option>";
+                $("#type").html(html_type);
+            }
+            
             if(tipe == 'entry_gov_budget'){
                 $.ajax({
                     type: "GET",
