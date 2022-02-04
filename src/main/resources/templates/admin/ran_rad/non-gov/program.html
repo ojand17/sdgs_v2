@@ -281,6 +281,7 @@
 	        var messDelBiasa = "Menghapus Data?";
 	        var titleMod = "Maaf";
 	        var messMod = "Semua pilihan harus dipilih";
+	        var messModRole = "Role harus dipilih";
 	        function bhs(cek){
 				if(cek){
 					$(".lang_indo").show();
@@ -295,6 +296,7 @@
 	    	        messDelBiasa = "Menghapus Data?";
 	    	        titleMod = "Maaf";
 	    	        messMod = "Semua pilihan harus dipilih";
+	    	        messModRole = "Role harus dipilih";
 	        	}else{	    	        
 	    	        $(".lang_indo").hide();
 	        		$(".lang_eng").show();
@@ -308,6 +310,7 @@
 	    	        messDelBiasa = "Delete this data?";
 	    	        titleMod = "Sorry";
 	    	        messMod = "All dropdownlists must be selected";
+	    	        messModRole = "Role must be selected";
 	        	}
 	        }
 	        if(lang){
@@ -343,7 +346,12 @@
 	        	if($('#id_prov').val() && $('#id_monper').val() && $('#id_role').val()){
 	        		$("#myModal").modal("show");
 	        	}else{
-	        		swal(titleMod,messMod,'error');
+		        	if(!$('#id_role').val()){
+		        		swal(titleMod,messModRole,'error');
+				    }else{
+				    	swal(titleMod,messMod,'error');
+					}
+	        		
 	        	}
 	        });
 

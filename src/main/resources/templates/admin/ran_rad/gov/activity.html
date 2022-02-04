@@ -303,7 +303,7 @@
 		        	},
 		        ],
 				"ajax": {
-					"url": urls+'list-govActivity/'+id_program+'/'+$('#id_role').val(),
+					"url": urls+'list-govActivity/'+id_program+'/'+$('#id_role').val()?$('#id_role').val():0,
 					dataSrc: 'content',
 				},
 				"searching": true,
