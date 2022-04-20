@@ -5,8 +5,8 @@
 <head th:include="admin/layout :: header">
     <title th:text="${title}"></title>
 </head>
-<body>
 <title>Dashboard</title>
+<body>
     <div th:include="admin/layout :: menu"></div>
     <div id="content">
         <div id="content-header">
@@ -68,6 +68,43 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row-fluid">
+            	<div class="span12">
+            		<div class="widget-box">
+	            		<div class="widget-title">
+	                        <span class="icon"><i class="icon-tasks"></i></span>
+	                        <h5>Analisis Data Form 2a</h5>
+	                    </div>
+	                    <div class="widget-content">
+	                    	<div class="row-fluid">
+	                    		<select class="span3 select2" id="periodeNas">
+		                    		<option></option>
+		                    		<option th:each="per: ${periodeNas}" th:value="${per.id_monper}" th:text="${per.start_year+' - '+per.end_year}"></option>
+	                            </select>
+	                            <select class="span9 select2" id="goals">
+		                    		<option></option>
+		                    		<option th:each="data: ${goals}" th:value="${data.id}" th:text="${lang!=0?data.id_goals+'. '+data.nm_goals:data.id_goals+'. '+data.nm_goals_eng}"></option>
+	                            </select>
+	                    	</div>
+	                    	<br/>
+	                    	<div class="row-fluid">
+	                    		<div class="span6">
+	                    			<div id="bar-2a"></div>
+	                    		</div>
+	                    		<div class="span6">
+	                    			<div id="pie-2a"></div>
+	                    		</div>
+	                    	</div>
+	                    	<br/>
+	                    	<div class="row-fluid">
+	                    		<div class="span6">
+	                    			<div id="pie1-2a"></div>
+	                    		</div>
+	                    	</div>
+	                    </div>
+	            	</div>
+            	</div>
             </div>
             <!-- <div class="row-fluid">
                 <div class="widget-box">
@@ -205,7 +242,12 @@
             var $result = $('<span style="padding-left:' + (20 * node.level) + 'px;">' + node.text + '</span>');
             return $result;
           };
-
+		$('#periodeNas').select2({
+			placeholder: 'Select Periode',
+		});
+		$('#goals').select2({
+			placeholder: 'Select Goals',
+		});
         $("#filter_sdg").select2({
           placeholder: 'Select an option',
           width: "70%",
@@ -571,111 +613,160 @@
         
 
         //******************** Barchart ********************
-        Highcharts.chart('barcontainer', {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Capaian Berdasarkan 4 Pilar'
-            },
-            xAxis: {
-                categories: [
-                    'Jan',
-                    'Feb',
-                    'Mar',
-                    'Apr',
-                    'May',
-                    'Jun',
-                    'Jul',
-                    'Aug',
-                    'Sep',
-                    'Oct',
-                    'Nov',
-                    'Dec'
-                ],
-                crosshair: true
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Persentase (%)'
-                }
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                footerFormat: '</table>',
-                shared: true,
-                useHTML: true
-            },
-            plotOptions: {
-                column: {
-                    pointPadding: 0.2,
-                    borderWidth: 0
-                }
-            },
-            credits: {
-                enabled: false
-            },
-            series: [{
-                name: 'Pilar Pembangunan Sosial',
-                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+        function barChart(){
+            var id_monper = $("#periodeNas").val();
+            var goals = $("#goals").val();
+            if(id_monper && goals){
+            	$.ajax({
+                    type: "GET",
+                    url: urls+'dashboard/get-bar-2a/'+id_monper+'/'+goals,
+                    success: function (result) {
+                        var hasil = result.program;
+                        var arrNama = [];
+                        var arrVal = [];
+                        for(var i = 0, len = hasil.length; i < len; i++){
+                        	arrNama.push(hasil[i][0]);
+                        	arrVal.push(hasil[i][1]);
+                        }
 
-            }, {
-                name: 'Pilar Pembangunan Ekonomi',
-                data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
+                        Highcharts.chart('bar-2a', {
+                            chart:{
+                                type: 'column'
+                            },
+                            title: {
+                                text: 'Sebaran Program'
+                            },
+                            xAxis: {
+                                categories: arrNama,
+                                crosshair: true
+                            },
+                            yAxis: {
+                                min: 0,
+                                title: {
+                                    text: 'Program'
+                                }
+                            },
+                            tooltip: {
+                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                                    '<td style="padding:0"><b>{point.y}</b></td></tr>',
+                                footerFormat: '</table>',
+                                shared: true,
+                                useHTML: true
+                            },
+                            plotOptions: {
+                                column: {
+                                    pointPadding: 0.2,
+                                    borderWidth: 0
+                                }
+                            },
+                            credits: {
+                                enabled: false
+                            },
+                            series: [{
+                                name: 'Program',
+                                data: arrVal
 
-            }, {
-                name: 'Pilar Pembangunan Lingkungan',
-                data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3, 51.2]
+                            },]
+                        });
 
-            }, {
-                name: 'Pilar Hukum & Tata Kelola Perusahaan',
-                data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
+                        var hasilKeg = result.kegiatan;
+                        var datapie = [];
+                        for(var i = 0, len = hasilKeg.length; i < len; i++){
+                        	datapie.push({
+                        		'name':hasilKeg[i][0],
+                        		'y':hasilKeg[i][1]
+                            });
+                        }
 
-            }]
-        });
-        //********************** Piechart *********************
-        Highcharts.chart('piecontainer', {
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie'
-            },
-            title: {
-                text: 'Data Pencapaian Program<br>Periode Tahun 2018'
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                        connectorColor: 'silver'
+                        Highcharts.chart('pie-2a', {
+                            chart: {
+                                plotBackgroundColor: null,
+                                plotBorderWidth: null,
+                                plotShadow: false,
+                                type: 'pie'
+                            },
+                            title: {
+                                text: 'Sebaran Kegiatan'
+                            },
+                            tooltip: {
+                                pointFormat: '{series.name}: <b>{point.percentage:.1f}% <br>value: {point.y}</b>'
+                            },
+                            accessibility: {
+                                point: {
+                                    valueSuffix: '%'
+                                }
+                            },
+                            plotOptions: {
+                                pie: {
+                                    allowPointSelect: true,
+                                    cursor: 'pointer',
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '<b>{point.name}</b>: {point.percentage:.1f} %<br>value: {point.y}'
+                                    }
+                                }
+                            },
+                            series: [{
+                                name: 'Activity',
+                                colorByPoint: true,
+                                data: datapie
+                            }]
+                        });
+
+                        var hasilRo = result.ro;
+                        var datapie1 = [];
+                        for(var i = 0, len = hasilRo.length; i < len; i++){
+                        	datapie1.push({
+                        		'name':hasilRo[i][0],
+                        		'y':hasilRo[i][1]
+                            });
+                        }
+                        Highcharts.chart('pie1-2a', {
+                            chart: {
+                                plotBackgroundColor: null,
+                                plotBorderWidth: null,
+                                plotShadow: false,
+                                type: 'pie'
+                            },
+                            title: {
+                                text: 'Sebaran Rincian Output'
+                            },
+                            tooltip: {
+                                pointFormat: '{series.name}: <b>{point.percentage:.1f}% <br>value: {point.y}</b>'
+                            },
+                            accessibility: {
+                                point: {
+                                    valueSuffix: '%'
+                                }
+                            },
+                            plotOptions: {
+                                pie: {
+                                    allowPointSelect: true,
+                                    cursor: 'pointer',
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '<b>{point.name}</b>: {point.percentage:.1f} %<br>value: {point.y}'
+                                    }
+                                }
+                            },
+                            series: [{
+                                name: 'Rincian Output',
+                                colorByPoint: true,
+                                data: datapie1
+                            }]
+                        });
                     }
-                }
-            },
-            credits: {
-                enabled: false
-            },
-            series: [{
-                name: 'Share',
-                data: [
-                    { name: 'Program 1', y: 61.41 },
-                    { name: 'Program 2', y: 11.84 },
-                    { name: 'Program 3', y: 10.85 },
-                    { name: 'Program 4', y: 4.67 },
-                    { name: 'Program 5', y: 4.18 },
-                    { name: 'Program 6', y: 7.05 }
-                ]
-            }]
+           		});
+            	
+            }
+        }
+        
+        $("#periodeNas,#goals").on('change', function(){
+        	barChart();
         });
+
+        
     </script>
 </body>
 </html>

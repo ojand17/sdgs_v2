@@ -58,6 +58,9 @@ public class AdminController {
         
     @Autowired
     private ServletContext context;
+    
+    @Autowired
+    private SdgGoalsService goalsService;
 
     //*********************** Menu Dari DB ***********************
     @Autowired
@@ -229,6 +232,8 @@ public class AdminController {
             model.addAttribute("tahunmap",hasiltahun);
             model.addAttribute("filtersdg",filtersdg);
             model.addAttribute("id_user",userData.get(0).getId_user());
+            model.addAttribute("periodeNas",monPeriodService.findAll("000"));
+            model.addAttribute("goals",goalsService.findAll());
          return "admin/dashboard";
     }
     
@@ -502,5 +507,38 @@ public class AdminController {
         model.addAttribute("privilege", privilege);
         return "admin/ran_rad/monper";
     }
+    
+    @GetMapping("admin/dashboard/get-bar-2a/{id_monper}/{id_goals}")
+    public @ResponseBody Map<String, Object> getBar(@PathVariable("id_monper") Integer id_monper,@PathVariable("id_goals") Integer id_goals) {
+    	Query query = em.createNativeQuery("SELECT distinct d.nm_role, count(distinct b.id_program) program\r\n" + 
+    			"from gov_map a \r\n" + 
+    			"left join gov_indicator b on a.id_gov_indicator = b.id\r\n" + 
+    			"left join gov_activity c on b.id_activity = c.id\r\n" + 
+    			"left join ref_role d on c.id_role = d.id_role\r\n" + 
+    			"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_goals = '"+id_goals+"'\r\n" + 
+    			"GROUP BY d.nm_role");
+    	Query queryKegiatan = em.createNativeQuery("SELECT distinct d.nm_role, count(DISTINCT b.id_activity) activity\r\n" + 
+    			"from gov_map a \r\n" + 
+    			"left join gov_indicator b on a.id_gov_indicator = b.id\r\n" + 
+    			"left join gov_activity c on b.id_activity = c.id\r\n" + 
+    			"left join ref_role d on c.id_role = d.id_role\r\n" + 
+    			"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_goals = '"+id_goals+"'\r\n" + 
+    			"GROUP BY d.nm_role");
+    	Query queryRo = em.createNativeQuery("SELECT distinct d.nm_role, count(DISTINCT b.id) indicator\r\n" + 
+    			"from gov_map a \r\n" + 
+    			"left join gov_indicator b on a.id_gov_indicator = b.id\r\n" + 
+    			"left join gov_activity c on b.id_activity = c.id\r\n" + 
+    			"left join ref_role d on c.id_role = d.id_role\r\n" + 
+    			"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_goals = '"+id_goals+"'\r\n" + 
+    			"GROUP BY d.nm_role");
+	    List list =  query.getResultList();
+	    List listKegiatan =  queryKegiatan.getResultList();
+	    List listRo =  queryRo.getResultList();
+	    Map<String, Object> hasil = new HashMap<>();
+	    hasil.put("program",list);
+	    hasil.put("kegiatan",listKegiatan);
+	    hasil.put("ro",listRo);
+	    return hasil;
+	}
 
 }
