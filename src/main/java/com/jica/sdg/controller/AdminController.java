@@ -583,7 +583,7 @@ public class AdminController {
 	    		"left join gov_indicator e on a.id_gov_indicator = e.id\r\n" + 
 	    		"left join gov_activity f on e.id_activity = f.id\r\n" + 
 	    		"left join ref_role g on f.id_role = g.id_role\r\n" + 
-	    		"where a.id_prov = '000' and a.id_monper = '"+id_monper+"'\r\n" + 
+	    		"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_indicator = '"+id_indicator+"'\r\n" + 
 	    		"GROUP BY a.id_gov_indicator) a\r\n" + 
 	    		"GROUP BY nm_role");
 	    List listByKl =  queryByKl.getResultList();
