@@ -228,12 +228,20 @@ public class AdminController {
             Map<String, Object> filtersdg = new HashMap<>();
             filtersdg.put("data",list3);
             
+            Query querySdgIndikator = em.createNativeQuery("SELECT a.id, CONCAT(b.id_goals,'.',c.id_target,'.',a.id_indicator) kode,a.nm_indicator \r\n" + 
+            		"FROM sdg_indicator a\r\n" + 
+            		"LEFT JOIN sdg_goals b on a.id_goals = b.id\r\n" + 
+            		"LEFT JOIN sdg_target c on a.id_target = c.id\r\n" + 
+            		"ORDER BY b.id,b.id,a.id");
+            List listSdgIndikator =  querySdgIndikator.getResultList();
+            
             model.addAttribute("map",hasil);
             model.addAttribute("tahunmap",hasiltahun);
             model.addAttribute("filtersdg",filtersdg);
             model.addAttribute("id_user",userData.get(0).getId_user());
             model.addAttribute("periodeNas",monPeriodService.findAll("000"));
             model.addAttribute("goals",goalsService.findAll());
+            model.addAttribute("indikator",listSdgIndikator);
          return "admin/dashboard";
     }
     
@@ -538,6 +546,50 @@ public class AdminController {
 	    hasil.put("program",list);
 	    hasil.put("kegiatan",listKegiatan);
 	    hasil.put("ro",listRo);
+	    return hasil;
+	}
+    
+    @GetMapping("admin/dashboard/get-capian-ro/{id_monper}/{id_indicator}")
+    public @ResponseBody Map<String, Object> getPie(@PathVariable("id_monper") Integer id_monper,@PathVariable("id_indicator") Integer id_indicator) {
+    	Query query = em.createNativeQuery("SELECT \r\n" + 
+    			"SUM(if(persen < 75, 1, 0)) kurang,\r\n" + 
+    			"SUM(if(persen>=75 && persen<=95, 1, 0)) sedang,\r\n" + 
+    			"SUM(if(persen > 95, 1, 0)) baik\r\n" + 
+    			"FROM\r\n" + 
+    			"(SELECT a.id_gov_indicator,\r\n" + 
+    			"SUM(b.value) target, \r\n" + 
+    			"SUM(d.achievement1+d.achievement2) realisasi,\r\n" + 
+    			"ROUND(COALESCE(SUM(b.value)/SUM(d.achievement1+d.achievement2)*100,0),0) persen\r\n" + 
+    			"from gov_map a  \r\n" + 
+    			"left join gov_target b on a.id_gov_indicator = b.id_gov_indicator\r\n" + 
+    			"left join assign_gov_indicator c on a.id_gov_indicator = c.id_gov_indicator and c.id_monper = a.id_monper\r\n" + 
+    			"left join entry_gov_indicator d on c.id = d.id_assign\r\n" + 
+    			"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_indicator = '"+id_indicator+"'\r\n" + 
+    			"GROUP BY a.id_gov_indicator) a");
+	    List list =  query.getResultList();
+	    Query queryByKl = em.createNativeQuery("SELECT id_role,nm_role,\r\n" + 
+	    		"SUM(if(persen < 75, 1, 0)) kurang,\r\n" + 
+	    		"SUM(if(persen>=75 && persen<=95, 1, 0)) sedang,\r\n" + 
+	    		"SUM(if(persen > 95, 1, 0)) baik\r\n" + 
+	    		"FROM\r\n" + 
+	    		"(SELECT f.id_role,g.nm_role,\r\n" + 
+	    		"SUM(b.value) target, \r\n" + 
+	    		"SUM(d.achievement1+d.achievement2) realisasi,\r\n" + 
+	    		"ROUND(COALESCE(SUM(b.value)/SUM(d.achievement1+d.achievement2)*100,0),0) persen\r\n" + 
+	    		"from gov_map a  \r\n" + 
+	    		"left join gov_target b on a.id_gov_indicator = b.id_gov_indicator\r\n" + 
+	    		"left join assign_gov_indicator c on a.id_gov_indicator = c.id_gov_indicator and c.id_monper = a.id_monper\r\n" + 
+	    		"left join entry_gov_indicator d on c.id = d.id_assign\r\n" + 
+	    		"left join gov_indicator e on a.id_gov_indicator = e.id\r\n" + 
+	    		"left join gov_activity f on e.id_activity = f.id\r\n" + 
+	    		"left join ref_role g on f.id_role = g.id_role\r\n" + 
+	    		"where a.id_prov = '000' and a.id_monper = '"+id_monper+"'\r\n" + 
+	    		"GROUP BY a.id_gov_indicator) a\r\n" + 
+	    		"GROUP BY nm_role");
+	    List listByKl =  queryByKl.getResultList();
+	    Map<String, Object> hasil = new HashMap<>();
+	    hasil.put("ro",list);
+	    hasil.put("roByKl",listByKl);
 	    return hasil;
 	}
 

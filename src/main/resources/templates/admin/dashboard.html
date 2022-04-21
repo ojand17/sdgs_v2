@@ -74,7 +74,7 @@
             		<div class="widget-box">
 	            		<div class="widget-title">
 	                        <span class="icon"><i class="icon-tasks"></i></span>
-	                        <h5>Analisis Data Form 2a</h5>
+	                        <h5>Analisis Data Sebaran Form 2a</h5>
 	                    </div>
 	                    <div class="widget-content">
 	                    	<div class="row-fluid">
@@ -100,6 +100,37 @@
 	                    	<div class="row-fluid">
 	                    		<div class="span6">
 	                    			<div id="pie1-2a"></div>
+	                    		</div>
+	                    	</div>
+	                    </div>
+	            	</div>
+            	</div>
+            </div>
+            <div class="row-fluid">
+            	<div class="span12">
+            		<div class="widget-box">
+	            		<div class="widget-title">
+	                        <span class="icon"><i class="icon-tasks"></i></span>
+	                        <h5>Analisis Data Kinerja Rincian Output Form 2a</h5>
+	                    </div>
+	                    <div class="widget-content">
+	                    	<div class="row-fluid">
+	                    		<select class="span3 select2" id="periodeNas1">
+		                    		<option></option>
+		                    		<option th:each="per: ${periodeNas}" th:value="${per.id_monper}" th:text="${per.start_year+' - '+per.end_year}"></option>
+	                            </select>
+	                            <select class="span9 select2" id="indicator">
+		                    		<option></option>
+		                    		<option th:each="data: ${indikator}" th:value="${data[0]}" th:text="${data[1]+' '+data[2]}"></option>
+	                            </select>
+	                    	</div>
+	                    	<br/>
+	                    	<div class="row-fluid">
+	                    		<div class="span6">
+	                    			<div id="pie-capaian"></div>
+	                    		</div>
+	                    		<div class="span6">
+	                    			<div id="stacked-capaian"></div>
 	                    		</div>
 	                    	</div>
 	                    </div>
@@ -242,11 +273,14 @@
             var $result = $('<span style="padding-left:' + (20 * node.level) + 'px;">' + node.text + '</span>');
             return $result;
           };
-		$('#periodeNas').select2({
+		$('#periodeNas,#periodeNas1').select2({
 			placeholder: 'Select Periode',
 		});
 		$('#goals').select2({
 			placeholder: 'Select Goals',
+		});
+		$('#indicator').select2({
+			placeholder: 'Select RO',
 		});
         $("#filter_sdg").select2({
           placeholder: 'Select an option',
@@ -765,6 +799,148 @@
         $("#periodeNas,#goals").on('change', function(){
         	barChart();
         });
+
+        $("#periodeNas1,#indicator").on('change', function(){
+        	capaianChart();
+        });
+
+        function capaianChart(){
+        	var id_monper = $("#periodeNas1").val();
+            var indicator = $("#indicator").val();
+
+            if(id_monper && indicator){
+            	$.ajax({
+                    type: "GET",
+                    url: urls+'dashboard/get-capian-ro/'+id_monper+'/'+indicator,
+                    success: function (result) {
+                        var hasil = result.ro;
+                        var datapie = [
+                            {
+	                        	'name':'Realisasi Fisik RO < 75%',
+	                    		'y':hasil[0][0]
+                            },
+                            {
+	                        	'name':'Realisasi Fisik RO 75-95%',
+	                    		'y':hasil[0][1]
+                            },
+                            {
+	                        	'name':'Realisasi Fisik RO > 95%',
+	                    		'y':hasil[0][1]
+                            },
+                            ];
+
+                        Highcharts.chart('pie-capaian', {
+                            chart: {
+                                plotBackgroundColor: null,
+                                plotBorderWidth: null,
+                                plotShadow: false,
+                                type: 'pie'
+                            },
+                            title: {
+                                text: 'Jumlah RO Menurut Capaian Kinerja Fisik'
+                            },
+                            tooltip: {
+                                pointFormat: '{series.name}: <b>{point.percentage:.1f}% <br>value: {point.y}</b>'
+                            },
+                            accessibility: {
+                                point: {
+                                    valueSuffix: '%'
+                                }
+                            },
+                            plotOptions: {
+                                pie: {
+                                    allowPointSelect: true,
+                                    cursor: 'pointer',
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '<b>{point.name}</b>: {point.percentage:.1f} %<br>value: {point.y}'
+                                    }
+                                }
+                            },
+                            series: [{
+                                name: 'Activity',
+                                colorByPoint: true,
+                                data: datapie
+                            }]
+                        });
+
+                        var hasilByKl = result.roByKl;
+                        var dataKl = [];
+                        var dataKurang = [];
+                        var dataSedang = [];
+                        var dataBaik = [];
+                        for(var i = 0, len = hasilByKl.length; i < len; i++){
+                        	dataKl.push(hasilByKl[i][1]);
+                        	dataKurang.push(hasilByKl[i][2]);
+                        	dataSedang.push(hasilByKl[i][3]);
+                        	dataBaik.push(hasilByKl[i][4]);
+                        }
+
+                        Highcharts.chart('stacked-capaian', {
+                            chart: {
+                                type: 'column'
+                            },
+                            title: {
+                                text: 'Jumlah RO Menurut Capaian Kinerja Fisik Per K/L'
+                            },
+                            xAxis: {
+                                categories: dataKl
+                            },
+                            yAxis: {
+                                min: 0,
+                                title: {
+                                    text: 'Jumlah RO Menurut Capaian Kinerja Fisik Per K/L'
+                                },
+                                stackLabels: {
+                                    enabled: true,
+                                    style: {
+                                        fontWeight: 'bold',
+                                        color: ( // theme
+                                            Highcharts.defaultOptions.title.style &&
+                                            Highcharts.defaultOptions.title.style.color
+                                        ) || 'gray'
+                                    }
+                                }
+                            },
+                            legend: {
+                                align: 'right',
+                                x: -30,
+                                verticalAlign: 'top',
+                                y: 25,
+                                floating: true,
+                                backgroundColor:
+                                Highcharts.defaultOptions.legend.backgroundColor || 'white',
+                                borderColor: '#CCC',
+                                borderWidth: 1,
+                                shadow: false
+                            },
+                            tooltip: {
+                                headerFormat: '<b>{point.x}</b><br/>',
+                                pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                            },
+                            plotOptions: {
+                                column: {
+                                    stacking: 'normal',
+                                    dataLabels: {
+                                        enabled: true
+                                    }
+                                }
+                            },
+                            series: [{
+                                name: 'Realisasi Fisik RO > 95%',
+                                data: dataBaik
+                            }, {
+                                name: 'Realisasi Fisik RO 75-95%',
+                                data: dataSedang
+                            }, {
+                                name: 'Realisasi Fisik RO < 75%',
+                                data: dataKurang
+                            }]
+                        });
+                    }
+            	});
+            }
+        }
 
         
     </script>
