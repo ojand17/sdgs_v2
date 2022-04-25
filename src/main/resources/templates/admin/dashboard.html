@@ -89,17 +89,26 @@
 	                    	</div>
 	                    	<br/>
 	                    	<div class="row-fluid">
-	                    		<div class="span6">
+	                    		<div class="span12">
 	                    			<div id="bar-2a"></div>
-	                    		</div>
-	                    		<div class="span6">
-	                    			<div id="pie-2a"></div>
 	                    		</div>
 	                    	</div>
 	                    	<br/>
 	                    	<div class="row-fluid">
 	                    		<div class="span6">
+	                    			<div id="pie-2a"></div>
+	                    		</div>
+	                    		<div class="span6">
 	                    			<div id="pie1-2a"></div>
+	                    		</div>
+	                    	</div>
+	                    	<br/>
+	                    	<div class="row-fluid">
+	                    		<div class="span6">
+	                    			<div id="spider"></div>
+	                    		</div>
+	                    		<div class="span6">
+	                    			<div id="spider1"></div>
 	                    		</div>
 	                    	</div>
 	                    </div>
@@ -134,10 +143,20 @@
 	                    			<div id="stacked-capaian"></div>
 	                    		</div>
 	                    	</div>
+	                    	<br/>
+	                    	<div class="row-fluid">
+	                    		<div class="span6">
+	                    			<div id="kuadran"></div>
+	                    		</div>
+	                    		<div class="span6">
+	                    			<div id="kuadran1"></div>
+	                    		</div>
+	                    	</div>
 	                    </div>
 	            	</div>
             	</div>
             </div>
+            
             <!-- <div class="row-fluid">
                 <div class="widget-box">
                     <div class="widget-title"><span class="icon"><i class="icon-tasks"></i></span>
@@ -203,7 +222,6 @@
     </div>
 
     <div th:include="admin/layout :: footer"></div>
-
     <script th:inline="javascript">
         function goPage (newURL) {
             if (newURL != "") {
@@ -791,6 +809,161 @@
                                 data: datapie1
                             }]
                         });
+
+                        var hasilSpider = result.spider;
+                        var kategoriSpider = [];
+                        var valueSpider = [];
+                        for(var i = 0, len = hasilSpider.length; i < len; i++){
+                        	kategoriSpider.push(hasilSpider[i][1]);
+                        	valueSpider.push(hasilSpider[i][2]);
+                        }
+
+                        Highcharts.chart('spider', {
+
+                    	    chart: {
+                    	        polar: true,
+                    	        type: 'line'
+                    	    },
+
+                    	    accessibility: {
+                    	        description: 'A spiderweb chart compares the allocated budget against actual spending within an organization. The spider chart has six spokes. Each spoke represents one of the 6 departments within the organization: sales, marketing, development, customer support, information technology and administration. The chart is interactive, and each data point is displayed upon hovering. The chart clearly shows that 4 of the 6 departments have overspent their budget with Marketing responsible for the greatest overspend of $20,000. The allocated budget and actual spending data points for each department are as follows: Sales. Budget equals $43,000; spending equals $50,000. Marketing. Budget equals $19,000; spending equals $39,000. Development. Budget equals $60,000; spending equals $42,000. Customer support. Budget equals $35,000; spending equals $31,000. Information technology. Budget equals $17,000; spending equals $26,000. Administration. Budget equals $10,000; spending equals $14,000.'
+                    	    },
+
+                    	    title: {
+                    	        text: 'Capaian Indikator SDGs',
+                    	        x: -80
+                    	    },
+
+                    	    pane: {
+                    	        size: '80%'
+                    	    },
+
+                    	    xAxis: {
+                    	        categories: kategoriSpider,
+                    	        tickmarkPlacement: 'on',
+                    	        lineWidth: 0
+                    	    },
+
+                    	    yAxis: {
+                    	        gridLineInterpolation: 'polygon',
+                    	        lineWidth: 0,
+                    	        min: 0
+                    	    },
+
+                    	    tooltip: {
+                    	        shared: true,
+                    	        pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y}</b><br/>'
+                    	    },
+
+                    	    legend: {
+                    	        align: 'right',
+                    	        verticalAlign: 'middle',
+                    	        layout: 'vertical'
+                    	    },
+
+                    	    series: [{
+                    	        name: '2021',
+                    	        data: valueSpider,
+                    	        pointPlacement: 'on'
+                    	    },],
+
+                    	    responsive: {
+                    	        rules: [{
+                    	            condition: {
+                    	                maxWidth: 500
+                    	            },
+                    	            chartOptions: {
+                    	                legend: {
+                    	                    align: 'center',
+                    	                    verticalAlign: 'bottom',
+                    	                    layout: 'horizontal'
+                    	                },
+                    	                pane: {
+                    	                    size: '70%'
+                    	                }
+                    	            }
+                    	        }]
+                    	    }
+
+                    	});
+
+
+                        var hasilSpider1 = result.spider1;
+                        var kategoriSpider1 = [];
+                        var valueSpider1 = [];
+                        for(var i = 0, len = hasilSpider1.length; i < len; i++){
+                        	kategoriSpider1.push(hasilSpider1[i][1]);
+                        	valueSpider1.push(hasilSpider1[i][2]);
+                        }
+
+                        Highcharts.chart('spider1', {
+
+                    	    chart: {
+                    	        polar: true,
+                    	        type: 'line'
+                    	    },
+
+                    	    accessibility: {
+                    	        description: 'A spiderweb chart compares the allocated budget against actual spending within an organization. The spider chart has six spokes. Each spoke represents one of the 6 departments within the organization: sales, marketing, development, customer support, information technology and administration. The chart is interactive, and each data point is displayed upon hovering. The chart clearly shows that 4 of the 6 departments have overspent their budget with Marketing responsible for the greatest overspend of $20,000. The allocated budget and actual spending data points for each department are as follows: Sales. Budget equals $43,000; spending equals $50,000. Marketing. Budget equals $19,000; spending equals $39,000. Development. Budget equals $60,000; spending equals $42,000. Customer support. Budget equals $35,000; spending equals $31,000. Information technology. Budget equals $17,000; spending equals $26,000. Administration. Budget equals $10,000; spending equals $14,000.'
+                    	    },
+
+                    	    title: {
+                    	        text: 'Realisasi Anggaran SDGs',
+                    	        x: -80
+                    	    },
+
+                    	    pane: {
+                    	        size: '80%'
+                    	    },
+
+                    	    xAxis: {
+                    	        categories: kategoriSpider1,
+                    	        tickmarkPlacement: 'on',
+                    	        lineWidth: 0
+                    	    },
+
+                    	    yAxis: {
+                    	        gridLineInterpolation: 'polygon',
+                    	        lineWidth: 0,
+                    	        min: 0
+                    	    },
+
+                    	    tooltip: {
+                    	        shared: true,
+                    	        pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y}</b><br/>'
+                    	    },
+
+                    	    legend: {
+                    	        align: 'right',
+                    	        verticalAlign: 'middle',
+                    	        layout: 'vertical'
+                    	    },
+
+                    	    series: [{
+                    	        name: '2021',
+                    	        data: valueSpider1,
+                    	        pointPlacement: 'on'
+                    	    },],
+
+                    	    responsive: {
+                    	        rules: [{
+                    	            condition: {
+                    	                maxWidth: 500
+                    	            },
+                    	            chartOptions: {
+                    	                legend: {
+                    	                    align: 'center',
+                    	                    verticalAlign: 'bottom',
+                    	                    layout: 'horizontal'
+                    	                },
+                    	                pane: {
+                    	                    size: '70%'
+                    	                }
+                    	            }
+                    	        }]
+                    	    }
+
+                    	});
                     }
            		});
             	
@@ -943,7 +1116,108 @@
             }
         }
 
-        
+        Highcharts.chart({
+            chart: {
+                renderTo: 'kuadran',
+                defaultSeriesType: 'scatter'
+            },
+            title: {
+                text: 'Indikator SDGs'
+            },
+            xAxis: {
+                min:-100,
+                max:100,
+                tickInterval:25,
+                plotLines:[{
+                    value:0,
+                    color:'#666',
+                    width:1
+                }],
+                gridLineWidth:1,
+                showLastLabel:true
+            },
+            yAxis: {
+                min:-100,
+                max:100,
+                tickInterval:25,
+                plotLines:[{
+                    value:0,
+                    color:'#666',
+                    width:1
+                }]
+            },
+            legend: {
+                enabled:false
+            },
+            tooltip: {
+                formatter: function() {
+                    return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y;
+                }
+            },
+            plotOptions: {
+            },
+            series: [{
+                name : 'Indikator tercapai, RO tercapai',
+                data: [{x:10,y:10},{x:30,y:30},{x:50,y:50},{x:70,y:70}]
+            },
+            {
+                name : 'Indikator tidak tercapai, RO tidak tercapai',
+                data: [{x:-70,y:-70},{x:-50,y:-50},{x:-30,y:-30},{x:-10,y:-10}]
+            },
+            ]
+        });
+        Highcharts.chart({
+            chart: {
+                renderTo: 'kuadran1',
+                defaultSeriesType: 'scatter'
+            },
+            title: {
+                text: 'Realisasi Anggaran'
+            },
+            xAxis: {
+                min:-100,
+                max:100,
+                tickInterval:25,
+                plotLines:[{
+                    value:0,
+                    color:'#666',
+                    width:1
+                }],
+                gridLineWidth:1,
+                showLastLabel:true
+            },
+            yAxis: {
+                min:-100,
+                max:100,
+                tickInterval:25,
+                plotLines:[{
+                    value:0,
+                    color:'#666',
+                    width:1
+                }]
+            },
+            legend: {
+                enabled:false
+            },
+            tooltip: {
+                formatter: function() {
+                    return '<b>'+ this.series.name +'</b><br/>'+
+                        this.x +': '+ this.y;
+                }
+            },
+            plotOptions: {
+            },
+            series: [{
+                name : 'Indikator tercapai, RO tercapai',
+                data: [{x:10,y:10},{x:30,y:30},{x:50,y:50},{x:70,y:70}]
+            },
+            {
+                name : 'Indikator tidak tercapai, RO tidak tercapai',
+                data: [{x:-70,y:-70},{x:-50,y:-50},{x:-30,y:-30},{x:-10,y:-10}]
+            },
+            ]
+        });
     </script>
 </body>
 </html>
