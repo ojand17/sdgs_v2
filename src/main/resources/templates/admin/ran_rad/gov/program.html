@@ -68,9 +68,9 @@
                                 <table class="table table-bordered table-striped" id="tabel-goals">
                                     <thead>
                                     	<tr>
-                                    		<th style="text-align:center;font-size:80%;"  class="head-tabel" data-lang_eng="SDG E-Monev Code" data-lang_indo="Kode SDG E-Monev">
-                                            </th>
-                                            <th style="text-align:center;font-size:80%;" class="head-tabel" data-lang_eng="Code" data-lang_indo="Kode">
+                                    		<!-- <th style="text-align:center;font-size:80%;"  class="head-tabel" data-lang_eng="SDG E-Monev Code" data-lang_indo="Kode SDG E-Monev">
+                                            </th> -->
+                                            <th width="10%" style="text-align:center;font-size:80%;" class="head-tabel" data-lang_eng="Code" data-lang_indo="Kode">
                                             </th>
                                             <th style="text-align:center;font-size:80%;">
                                             	Program
@@ -446,9 +446,9 @@
 				},
 				"searching": true,
 				"columns": [
-					{"data": function (row, data, index, display) {
+					/* {"data": function (row, data, index, display) {
 						return "<div style='font-size:90%;'>"+(row.internal_code?row.internal_code:'')+"</div>";
-					}},
+					}}, */
 					{"data": function (row, data, index, display) {
 							return "<div style='font-size:90%;'>"+row.id_program+"</div>";
 						}},

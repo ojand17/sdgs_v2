@@ -38,12 +38,12 @@
 				<div class="widget-box">
 					<div class="widget-content">
 							Program : 
-							<a th:href="@{/admin/ran_rad/gov/program}" th:text="${govProg.internal_code+' - '+govProg.nm_program}" class="lang_indo"></a>
-						<a th:href="@{/admin/ran_rad/gov/program}" th:text="${govProg.internal_code+' - '+govProg.nm_program_eng}" class="lang_eng" style="display:none"></a>
+							<a th:href="@{/admin/ran_rad/gov/program}" th:text="${govProg.id_program+' - '+govProg.nm_program}" class="lang_indo"></a>
+						<a th:href="@{/admin/ran_rad/gov/program}" th:text="${govProg.id_program+' - '+govProg.nm_program_eng}" class="lang_eng" style="display:none"></a>
 							<br/>
 							<span class="lang_eng" style="display:none">Activity : </span><span class="lang_indo">Kegiatan : </span>
-							<a th:href="@{'/admin/ran_rad/gov/program/'+${govProg.id}+'/activity'}" th:text="${govProg.internal_code+'.'+govActivity.internal_code+' - '+govActivity.nm_activity}" class="lang_indo"></a>
-							<a th:href="@{'/admin/ran_rad/gov/program/'+${govProg.id}+'/activity'}" th:text="${govProg.internal_code+'.'+govActivity.internal_code+' - '+govActivity.nm_activity_eng}" class="lang_eng" style="display:none"></a>
+							<a th:href="@{'/admin/ran_rad/gov/program/'+${govProg.id}+'/activity'}" th:text="${govActivity.id_activity+' - '+govActivity.nm_activity}" class="lang_indo"></a>
+							<a th:href="@{'/admin/ran_rad/gov/program/'+${govProg.id}+'/activity'}" th:text="${govActivity.id_activity+' - '+govActivity.nm_activity_eng}" class="lang_eng" style="display:none"></a>
 					</div>
 				</div>
 			</div>
@@ -79,8 +79,8 @@
 	                                    <thead>
 	                                        <tr>
 	                                            <th style="text-align:center;font-size:80%;" width="5%">
-	                                            	<span class="lang_eng" style="display:none">SDG E-Monev Code</span>
-	                                            	<span class="lang_indo">Kode SDG E-Monev</span>
+	                                            	<span class="lang_eng" style="display:none">Code</span>
+	                                            	<span class="lang_indo">Kode</span>
 	                                            </th>
 	                                            <!-- <th style="text-align:center;font-size:80%;" width="50%">
 	                                            	<span class="lang_eng" style="display:none">Activity Indicator</span>
@@ -238,7 +238,7 @@
                     </table>
                     </form>
                 	</div>
-                  <div class="control-group">
+                  <div class="control-group" style="display:none">
 				    <label class="lang_eng control-label" style="display:none">Baseline</label>
 				    <label class="lang_indo control-label">Dasar</label>
 				    <div class="controls">
@@ -246,7 +246,7 @@
 				    	<span class="help-block" id="error_baseline"></span>
 				    </div>
 				  </div>
-				  <div class="control-group">
+				  <div class="control-group" style="display:none">
 				    <label class="lang_eng control-label" style="display:none">Funding Source</label>
 				    <label class="lang_indo control-label">Sumber Pendanaan</label>
 				    <div class="controls">
@@ -511,7 +511,7 @@
 				"searching": true,
 				"columns": [
 					{"data": function (row, data, index, display) {
-							return "<div style='font-size:90%;'>"+[[${govProg.internal_code}]]+"."+[[${govActivity.internal_code}]]+"."+row[6]+"</div>";
+							return "<div style='font-size:90%;'>"+row[1]+"</div>";
 						}},
 
 					{"data": function (row, data, index, display) {

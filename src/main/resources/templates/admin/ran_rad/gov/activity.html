@@ -35,8 +35,8 @@
 				<div class="widget-box">
 					<div class="widget-content">
 						Program : 
-						<a th:href="@{/admin/ran_rad/gov/program}" th:text="${govProg.internal_code+' - '+govProg.nm_program}" class="lang_indo"></a>
-						<a th:href="@{/admin/ran_rad/gov/program}" th:text="${govProg.internal_code+' - '+govProg.nm_program_eng}" class="lang_eng" style="display:none"></a>
+						<a th:href="@{/admin/ran_rad/gov/program}" th:text="${govProg.id_program+' - '+govProg.nm_program}" class="lang_indo"></a>
+						<a th:href="@{/admin/ran_rad/gov/program}" th:text="${govProg.id_program+' - '+govProg.nm_program_eng}" class="lang_eng" style="display:none"></a>
 					</div>
 				</div>
 			</div>
@@ -71,9 +71,9 @@
 	                                <table class="table table-bordered table-striped" id="tabel-target">
 	                                    <thead>
 	                                        <tr>
-	                                        	<th style="text-align:center;font-size:80%;" class="head-tabel" data-lang_eng="SDG E-Monev Code" data-lang_indo="Kode SDG E-Monev">
-	                                            </th>
-	                                            <th style="text-align:center;font-size:80%;" class="head-tabel" data-lang_eng="Code" data-lang_indo="Kode">
+	                                        	<!-- <th style="text-align:center;font-size:80%;" class="head-tabel" data-lang_eng="SDG E-Monev Code" data-lang_indo="Kode SDG E-Monev">
+	                                            </th> -->
+	                                            <th width="10%" style="text-align:center;font-size:80%;" class="head-tabel" data-lang_eng="Code" data-lang_indo="Kode">
 	                                            </th>
 	                                            <th style="text-align:center;font-size:80%;" class="head-tabel" data-lang_eng="Activity" data-lang_indo="Kegiatan">
 	                                            	<span class="lang_eng" style="display:none"></span>
@@ -308,9 +308,9 @@
 				},
 				"searching": true,
 				"columns": [
-					{"data": function (row, data, index, display) {
+					/* {"data": function (row, data, index, display) {
 						return "<div style='font-size:90%;'>"+[[${govProg.internal_code}]]+"."+(row.internal_code?row.internal_code:'')+"</div>";
-					}},
+					}}, */
 					{"data": function (row, data, index, display) {
 							return "<div style='font-size:90%;'>"+(row.id_activity?row.id_activity:'')+"</div>";
 					}},
