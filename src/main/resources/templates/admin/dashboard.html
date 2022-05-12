@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <html lang="en"
       xmlns:="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
@@ -991,15 +991,18 @@
                         var datapie = [
                             {
 	                        	'name':'Realisasi Fisik RO < 75%',
-	                    		'y':hasil[0][0]
+	                    		'y':hasil[0][0],
+	                    		'color': '#FF3633'
                             },
                             {
 	                        	'name':'Realisasi Fisik RO 75-95%',
-	                    		'y':hasil[0][1]
+	                    		'y':hasil[0][1],
+	                    		'color': '#E3FF33'
                             },
                             {
 	                        	'name':'Realisasi Fisik RO > 95%',
-	                    		'y':hasil[0][2]
+	                    		'y':hasil[0][2],
+	                    		'color': '#33FF46'
                             },
                             ];
 
@@ -1102,13 +1105,16 @@
                             },
                             series: [{
                                 name: 'Realisasi Fisik RO > 95%',
-                                data: dataBaik
+                                data: dataBaik,
+                                color: '#33FF46'
                             }, {
                                 name: 'Realisasi Fisik RO 75-95%',
-                                data: dataSedang
+                                data: dataSedang,
+                                color: '#E3FF33'
                             }, {
                                 name: 'Realisasi Fisik RO < 75%',
-                                data: dataKurang
+                                data: dataKurang,
+                                color: '#FF3633'
                             }]
                         });
                     }
