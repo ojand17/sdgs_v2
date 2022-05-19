@@ -1056,12 +1056,40 @@
                             },
                             ];
 
+                        var hasilByKl = result.roByKl;
+                        var dataKl = [];
+                        var dataKurang = [];
+                        var dataSedang = [];
+                        var dataBaik = [];
+                        for(var i = 0, len = hasilByKl.length; i < len; i++){
+                        	dataKl.push(hasilByKl[i][1]);
+                        	dataKurang.push(hasilByKl[i][2]);
+                        	dataSedang.push(hasilByKl[i][3]);
+                        	dataBaik.push(hasilByKl[i][4]);
+                        }
+
                         Highcharts.chart('pie-capaian', {
                             chart: {
                                 plotBackgroundColor: null,
                                 plotBorderWidth: null,
                                 plotShadow: false,
-                                type: 'pie'
+                                type: 'pie',
+                                events: {
+                                    render: function() {
+                                      let series = this.series
+                                      let sum = 0
+                                      let kl = 0
+                                      for(let i = 0; i < series.length; i++) {
+                                        if(series[i].visible){
+                                          for(let j = 0; j < series[i].data.length; j++) {
+                                            sum += series[i].data[j].y
+                                            kl++
+                                          }
+                                        }
+                                      }
+                                    this.setTitle({text: "Jumlah RO Menurut Capaian Kinerja Fisik<br/><h5>Total : "+sum+" RO dari "+(dataKl.length)+" K/L</h5>"}, false, false) 
+                                    }
+                                  }
                             },
                             title: {
                                 text: 'Jumlah RO Menurut Capaian Kinerja Fisik'
@@ -1091,21 +1119,25 @@
                             }]
                         });
 
-                        var hasilByKl = result.roByKl;
-                        var dataKl = [];
-                        var dataKurang = [];
-                        var dataSedang = [];
-                        var dataBaik = [];
-                        for(var i = 0, len = hasilByKl.length; i < len; i++){
-                        	dataKl.push(hasilByKl[i][1]);
-                        	dataKurang.push(hasilByKl[i][2]);
-                        	dataSedang.push(hasilByKl[i][3]);
-                        	dataBaik.push(hasilByKl[i][4]);
-                        }
-
                         Highcharts.chart('stacked-capaian', {
                             chart: {
-                                type: 'column'
+                                type: 'column',
+                                	events: {
+                                        render: function() {
+                                          let series = this.series
+                                          let sum = 0
+                                          let kl = 0
+                                          for(let i = 0; i < series.length; i++) {
+                                            if(series[i].visible){
+                                              for(let j = 0; j < series[i].data.length; j++) {
+                                                sum += series[i].data[j].y
+                                                kl++
+                                              }
+                                            }
+                                          }
+                                        this.setTitle({text: "Jumlah RO Menurut Capaian Kinerja Fisik Per K/L<br/><h5>Total : "+sum+" RO dari "+(dataKl.length)+" K/L</h5>"}, false, false) 
+                                        }
+                                      }
                             },
                             title: {
                                 text: 'Jumlah RO Menurut Capaian Kinerja Fisik Per K/L'
@@ -1132,14 +1164,14 @@
                             legend: {
                                 align: 'right',
                                 x: -30,
-                                verticalAlign: 'top',
+                                verticalAlign: 'bottom',
                                 y: 25,
-                                floating: true,
+                                floating: false,
                                 backgroundColor:
                                 Highcharts.defaultOptions.legend.backgroundColor || 'white',
                                 borderColor: '#CCC',
                                 borderWidth: 1,
-                                shadow: false
+                                shadow: true
                             },
                             tooltip: {
                                 headerFormat: '<b>{point.x}</b><br/>',
