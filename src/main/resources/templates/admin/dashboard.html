@@ -120,6 +120,37 @@
             		<div class="widget-box">
 	            		<div class="widget-title">
 	                        <span class="icon"><i class="icon-tasks"></i></span>
+	                        <h5>Analisis Kuadran Form 2a</h5>
+	                    </div>
+	                    <div class="widget-content">
+	                    	<div class="row-fluid">
+	                    		<select class="span3 select2" id="periodeNas2">
+		                    		<option></option>
+		                    		<option th:each="per: ${periodeNas}" th:value="${per.id_monper}" th:text="${per.start_year+' - '+per.end_year}"></option>
+	                            </select>
+	                            <select class="span9 select2" id="target">
+		                    		<option></option>
+		                    		<option th:each="data: ${target}" th:value="${data[0]}" th:text="${data[1]+' '+data[2]}"></option>
+	                            </select>
+	                    	</div>
+	                    	<br/>
+	                    	<div class="row-fluid">
+	                    		<div class="span6">
+	                    			<div id="kuadran"></div>
+	                    		</div>
+	                    		<div class="span6">
+	                    			<div id="kuadran1"></div>
+	                    		</div>
+	                    	</div>
+	                    </div>
+	            	</div>
+            	</div>
+            </div>
+            <div class="row-fluid">
+            	<div class="span12">
+            		<div class="widget-box">
+	            		<div class="widget-title">
+	                        <span class="icon"><i class="icon-tasks"></i></span>
 	                        <h5>Analisis Data Kinerja Rincian Output Form 2a</h5>
 	                    </div>
 	                    <div class="widget-content">
@@ -145,20 +176,10 @@
 	                    			<div id="stacked-capaian"></div>
 	                    		</div>
 	                    	</div>
-	                    	<br/>
-	                    	<div class="row-fluid">
-	                    		<div class="span6">
-	                    			<div id="kuadran"></div>
-	                    		</div>
-	                    		<div class="span6">
-	                    			<div id="kuadran1"></div>
-	                    		</div>
-	                    	</div>
 	                    </div>
 	            	</div>
             	</div>
             </div>
-            
             <!-- <div class="row-fluid">
                 <div class="widget-box">
                     <div class="widget-title"><span class="icon"><i class="icon-tasks"></i></span>
@@ -294,14 +315,17 @@
             var $result = $('<span style="padding-left:' + (20 * node.level) + 'px;">' + node.text + '</span>');
             return $result;
           };
-		$('#periodeNas,#periodeNas1').select2({
-			placeholder: 'Select Periode',
+		$('#periodeNas,#periodeNas1,#periodeNas2').select2({
+			placeholder: 'Pilih Periode',
 		});
 		$('#goals').select2({
-			placeholder: 'Select Goals',
+			placeholder: 'Pilih Goals',
+		});
+		$('#target').select2({
+			placeholder: 'Pilih Target',
 		});
 		$('#indicator').select2({
-			placeholder: 'Select RO',
+			placeholder: 'Pilih Indikator',
 		});
         $("#filter_sdg").select2({
           placeholder: 'Select an option',
@@ -1028,6 +1052,10 @@
         	capaianChart();
         });
 
+        $("#periodeNas2,#target").on('change', function(){
+        	kuadranChart();
+        });
+
         function capaianChart(){
         	var id_monper = $("#periodeNas1").val();
             var indicator = $("#indicator").val();
@@ -1199,7 +1227,20 @@
                                 color: '#FF3633'
                             }]
                         });
+                    }
+            	});
+            }
+        }
 
+        function kuadranChart(){
+        	var id_monper = $("#periodeNas2").val();
+            var target = $("#target").val();
+
+            if(id_monper && target){
+            	$.ajax({
+                    type: "GET",
+                    url: urls+'dashboard/get-kuadran/'+id_monper+'/'+target,
+                    success: function (result) {
                         var hasilQuadran = result.quadran;
                         var dataQuadrana1 = [];
                         var dataQuadrana2 = [];
@@ -1207,29 +1248,29 @@
                         var dataQuadrana4 = [];
                         
                         for(var i = 0, len = hasilQuadran.length; i < len; i++){
-                            if(hasilQuadran[i][6]=='Indikator & RO tercapai'){
+                            if(hasilQuadran[i][8]=='Indikator & RO tercapai'){
                             	dataQuadrana1.push({
-                            		'name':hasilQuadran[i][0],
-                            		'x':hasilQuadran[i][2],
-                            		'y':hasilQuadran[i][5],
+                            		'name':hasilQuadran[i][0]+" "+hasilQuadran[i][1],
+                            		'x':(hasilQuadran[i][4]>100?100:hasilQuadran[i][4]),
+                            		'y':(hasilQuadran[i][7]>100?100:hasilQuadran[i][7]),
                                 });
-                            }else if(hasilQuadran[i][6]=='Indikator tidak & RO tercapai'){
+                            } if(hasilQuadran[i][8]=='Indikator tidak & RO tercapai'){
                             	dataQuadrana2.push({
-                            		'name':hasilQuadran[i][0],
-                            		'x':hasilQuadran[i][2],
-                            		'y':hasilQuadran[i][5]*-1,
+                            		'name':hasilQuadran[i][0]+" "+hasilQuadran[i][1],
+                            		'x':(hasilQuadran[i][4]>100?100:hasilQuadran[i][4]),
+                            		'y':(hasilQuadran[i][7]>100?-100:hasilQuadran[i][7]*-1),
                                 });
-                            }else if(hasilQuadran[i][6]=='Indikator tercapai & RO tidak tercapai'){
+                            } if(hasilQuadran[i][8]=='Indikator tercapai & RO tidak tercapai'){
                             	dataQuadrana3.push({
-                            		'name':hasilQuadran[i][0],
-                            		'x':hasilQuadran[i][2]*-1,
-                            		'y':hasilQuadran[i][5],
+                            		'name':hasilQuadran[i][0]+" "+hasilQuadran[i][1],
+                            		'x':(hasilQuadran[i][4]>100?-100:hasilQuadran[i][4]*-1),
+                            		'y':(hasilQuadran[i][7]>100?100:hasilQuadran[i][7]),
                                 });
-                            }else if(hasilQuadran[i][6]=='Indikator & RO tidak tercapai'){
+                            } if(hasilQuadran[i][8]=='Indikator & RO tidak tercapai'){
                             	dataQuadrana4.push({
-                            		'name':hasilQuadran[i][0],
-                            		'x':hasilQuadran[i][2]*-1,
-                            		'y':hasilQuadran[i][5]*-1,
+                            		'name':hasilQuadran[i][0]+" "+hasilQuadran[i][1],
+                            		'x':(hasilQuadran[i][4]>100?-100:hasilQuadran[i][4]*-1),
+                            		'y':(hasilQuadran[i][7]>100?-100:hasilQuadran[i][7]*-1),
                                 });
                             }
                         	
@@ -1244,9 +1285,9 @@
                                 text: 'Indikator SDGs'
                             },
                             xAxis: {
-                               // min:-10000,
-                               // max:10000,
-                               // tickInterval:25,
+                                min:-100,
+                                max:100,
+                                tickInterval:25,
                                 plotLines:[{
                                     value:0,
                                     color:'#666',
@@ -1256,9 +1297,12 @@
                                 showLastLabel:true
                             },
                             yAxis: {
-                              //  min:-10000,
-                              //  max:10000,
-                              //  tickInterval:25,
+                                min:-100,
+                                max:100,
+                                title: {
+                                    text: 'Capaian Rincian Output'
+                                },
+                                tickInterval:25,
                                 plotLines:[{
                                     value:0,
                                     color:'#666',
@@ -1270,9 +1314,10 @@
                             },
                             tooltip: {
                                 formatter: function() {
-                                    return '<b>'+ this.series.name 
-                                    +'</b><br/>Nilai RO : '+this.x 
-                                    +'<br/>Nilai SDGs : '+ this.y;
+                                	 return '<b>'+ this.series.name+'</b><br/>'+
+                                     '<b>'+ this.key+'</b>'+
+                                     '<br/>RO : '+Math.abs(this.x)+'%'
+                                     +'<br/>Indikator SDGs : '+ Math.abs(this.y)+'%';
                                 }
                             },
                             plotOptions: {
@@ -1303,29 +1348,32 @@
                         var dataQuadran3 = [];
                         var dataQuadran4 = [];
                         for(var i = 0, len = hasilQuadran1.length; i < len; i++){
-                            if(hasilQuadran1[i][5]=='Realisasi & RO tercapai'){
+                            if(hasilQuadran1[i][8]=='Realisasi & RO tercapai'){
                             	dataQuadran1.push({
-                            		'name':hasilQuadran1[i][0],
-                            		'x':hasilQuadran1[i][2],
-                            		'y':hasilQuadran1[i][4],
+                            		'name':hasilQuadran1[i][0]+" "+hasilQuadran1[i][1],
+                            		'x':(hasilQuadran1[i][4]>100?100:hasilQuadran1[i][4]),
+                            		'y':(hasilQuadran1[i][7]>100?100:hasilQuadran1[i][7]),
                                 });
-                            }else if(hasilQuadran1[i][5]=='Realisasi tidak & RO tercapai'){
+                            }
+							if(hasilQuadran1[i][8]=='Realisasi tidak & RO tercapai'){
                             	dataQuadran2.push({
-                            		'name':hasilQuadran1[i][0],
-                            		'x':hasilQuadran1[i][2],
-                            		'y':hasilQuadran1[i][4]*-1,
+                            		'name':hasilQuadran1[i][0]+" "+hasilQuadran1[i][1],
+                            		'x':(hasilQuadran1[i][4]>100?100:hasilQuadran1[i][4]),
+                            		'y':(hasilQuadran1[i][7]>100?-100:hasilQuadran1[i][7]*-1),
                                 });
-                            }else if(hasilQuadran1[i][5]=='Realisasi tercapai & RO tidak tercapai'){
+                            }
+                            if(hasilQuadran1[i][8]=='Realisasi tercapai & RO tidak tercapai'){
                             	dataQuadran3.push({
-                            		'name':hasilQuadran1[i][0],
-                            		'x':hasilQuadran1[i][2]*-1,
-                            		'y':hasilQuadran1[i][4],
+                            		'name':hasilQuadran1[i][0]+" "+hasilQuadran1[i][1],
+                            		'x':(hasilQuadran1[i][4]>100?-100:hasilQuadran1[i][4]*-1),
+                            		'y':(hasilQuadran1[i][7]>100?100:hasilQuadran1[i][7]),
                                 });
-                            }else if(hasilQuadran1[i][5]=='Realisasi & RO tidak tercapai'){
+                            }
+                            if(hasilQuadran1[i][8]=='Realisasi & RO tidak tercapai'){
                             	dataQuadran4.push({
-                            		'name':hasilQuadran1[i][0],
-                            		'x':hasilQuadran1[i][2]*-1,
-                            		'y':hasilQuadran1[i][4]*-1,
+                            		'name':hasilQuadran1[i][0]+" "+hasilQuadran1[i][1],
+                            		'x':(hasilQuadran1[i][4]>100?-100:hasilQuadran1[i][4]*-1),
+                            		'y':(hasilQuadran1[i][7]>100?-100:hasilQuadran1[i][7]*-1),
                                 });
                             }
                         	
@@ -1340,9 +1388,9 @@
                                 text: 'Realisasi Anggaran'
                             },
                             xAxis: {
-                               // min:-10000,
-                               // max:10000,
-                               // tickInterval:25,
+                                min:-100,
+                                max:100,
+                                tickInterval:25,
                                 plotLines:[{
                                     value:0,
                                     color:'#666',
@@ -1352,9 +1400,12 @@
                                 showLastLabel:true
                             },
                             yAxis: {
-                              //  min:-10000,
-                              //  max:10000,
-                              //  tickInterval:25,
+                                min:-100,
+                                max:100,
+                                title: {
+                                    text: 'Capaian Rincian Output'
+                                },
+                                tickInterval:25,
                                 plotLines:[{
                                     value:0,
                                     color:'#666',
@@ -1366,9 +1417,10 @@
                             },
                             tooltip: {
                                 formatter: function() {
-                                    return '<b>'+ this.series.name 
-                                    +'</b><br/>Nilai RO : '+this.x 
-                                    +'<br/>Nilai Realisasi : '+ this.y;
+                                    return '<b>'+ this.series.name+'</b><br/>'+
+                                    '<b>'+ this.key+'</b>'+
+                                    '<br/>RO : '+Math.abs(this.x)+'%'
+                                    +'<br/>Realisasi : '+ Math.abs(this.y)+'%';
                                 }
                             },
                             plotOptions: {
