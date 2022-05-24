@@ -728,7 +728,7 @@ public class AdminController {
 	    		"left join gov_target g on a.id_gov_indicator = g.id_gov_indicator\r\n" + 
 	    		"left join gov_indicator h on a.id_gov_indicator = h.id\r\n" + 
 	    		"left join gov_activity i on h.id_activity = i.id\r\n" + 
-	    		"left join entry_gov_budget j on i.id_activity = j.id_gov_activity\r\n" + 
+	    		"left join entry_gov_budget j on h.id = j.id_gov_activity\r\n" + 
 	    		"LEFT JOIN ref_role k on i.id_role = k.id_role\r\n" + 
 	    		"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_target = '"+id_target+"'\r\n" + 
 	    		"GROUP BY CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator), i.id_role\r\n" + 
