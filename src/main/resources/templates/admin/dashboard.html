@@ -142,6 +142,15 @@
 	                    			<div id="kuadran1"></div>
 	                    		</div>
 	                    	</div>
+	                    	<br/>
+	                    	<div class="row-fluid">
+	                    		<div class="span6">
+	                    			<div id="kuadranRo"></div>
+	                    		</div>
+	                    		<div class="span6">
+	                    			<div id="kuadran1Ro"></div>
+	                    		</div>
+	                    	</div>
 	                    </div>
 	            	</div>
             	</div>
@@ -801,7 +810,7 @@
                                 text: 'Sebaran Kegiatan'
                             },
                             tooltip: {
-                                pointFormat: '{series.name}: <b>{point.percentage:.1f}% <br>value: {point.y}</b>'
+                                pointFormat: '{series.name}: <b>{point.percentage:.1f}% <br>Kegiatan: {point.y}</b>'
                             },
                             accessibility: {
                                 point: {
@@ -814,7 +823,7 @@
                                     cursor: 'pointer',
                                     dataLabels: {
                                         enabled: true,
-                                        format: '<b>{point.name}</b>: {point.percentage:.1f} %<br>value: {point.y}'
+                                        format: '<b>{point.name}</b>: {point.percentage:.1f} %<br>Kegiatan: {point.y}'
                                     }
                                 }
                             },
@@ -860,7 +869,7 @@
                                 text: 'Sebaran Rincian Output'
                             },
                             tooltip: {
-                                pointFormat: '{series.name}: <b>{point.percentage:.1f}% <br>value: {point.y}</b>'
+                                pointFormat: '{series.name}: <b>{point.percentage:.1f}% <br>RO: {point.y}</b>'
                             },
                             accessibility: {
                                 point: {
@@ -873,7 +882,7 @@
                                     cursor: 'pointer',
                                     dataLabels: {
                                         enabled: true,
-                                        format: '<b>{point.name}</b>: {point.percentage:.1f} %<br>value: {point.y}'
+                                        format: '<b>{point.name}</b>: {point.percentage:.1f} %<br>RO: {point.y}'
                                     }
                                 }
                             },
@@ -1123,7 +1132,7 @@
                                 text: 'Jumlah RO Menurut Capaian Kinerja Fisik'
                             },
                             tooltip: {
-                                pointFormat: '{series.name}: <b>{point.percentage:.1f}% <br>value: {point.y}</b>'
+                                pointFormat: '{series.name}: <b>{point.percentage:.1f}% <br>RO: {point.y}</b>'
                             },
                             accessibility: {
                                 point: {
@@ -1136,7 +1145,7 @@
                                     cursor: 'pointer',
                                     dataLabels: {
                                         enabled: true,
-                                        format: '<b>{point.name}</b>: {point.percentage:.1f} %<br>value: {point.y}'
+                                        format: '<b>{point.name}</b>: {point.percentage:.1f} %<br>RO: {point.y}'
                                     }
                                 }
                             },
@@ -1342,6 +1351,107 @@
                             ]
                         });
 
+                        var hasilQuadranRo = result.quadranRo;
+                        var dataQuadranaRo1 = [];
+                        var dataQuadranaRo2 = [];
+                        var dataQuadranaRo3 = [];
+                        var dataQuadranaRo4 = [];
+                        
+                        for(var i = 0, len = hasilQuadranRo.length; i < len; i++){
+                            if(hasilQuadranRo[i][8]=='Indikator & RO tercapai'){
+                            	dataQuadranaRo1.push({
+                            		'name':hasilQuadranRo[i][0]+" "+hasilQuadranRo[i][1],
+                            		'x':(hasilQuadranRo[i][4]>100?100:hasilQuadranRo[i][4]),
+                            		'y':(hasilQuadranRo[i][7]>100?100:hasilQuadranRo[i][7]),
+                                });
+                            } if(hasilQuadranRo[i][8]=='Indikator tidak & RO tercapai'){
+                            	dataQuadranaRo2.push({
+                            		'name':hasilQuadranRo[i][0]+" "+hasilQuadranRo[i][1],
+                            		'x':(hasilQuadranRo[i][4]>100?100:hasilQuadranRo[i][4]),
+                            		'y':(hasilQuadranRo[i][7]>100?-100:hasilQuadranRo[i][7]*-1),
+                                });
+                            } if(hasilQuadranRo[i][8]=='Indikator tercapai & RO tidak tercapai'){
+                            	dataQuadranaRo3.push({
+                            		'name':hasilQuadranRo[i][0]+" "+hasilQuadranRo[i][1],
+                            		'x':(hasilQuadranRo[i][4]>100?-100:hasilQuadranRo[i][4]*-1),
+                            		'y':(hasilQuadranRo[i][7]>100?100:hasilQuadranRo[i][7]),
+                                });
+                            } if(hasilQuadranRo[i][8]=='Indikator & RO tidak tercapai'){
+                            	dataQuadranaRo4.push({
+                            		'name':hasilQuadranRo[i][0]+" "+hasilQuadranRo[i][1],
+                            		'x':(hasilQuadranRo[i][4]>100?-100:hasilQuadranRo[i][4]*-1),
+                            		'y':(hasilQuadranRo[i][7]>100?-100:hasilQuadranRo[i][7]*-1),
+                                });
+                            }
+                        	
+                        }
+
+                        Highcharts.chart({	
+                            chart: {
+                                renderTo: 'kuadranRo',
+                                defaultSeriesType: 'scatter'
+                            },
+                            title: {
+                                text: 'Indikator SDGs'
+                            },
+                            xAxis: {
+                                min:-100,
+                                max:100,
+                                tickInterval:25,
+                                plotLines:[{
+                                    value:0,
+                                    color:'#666',
+                                    width:1
+                                }],
+                                gridLineWidth:1,
+                                showLastLabel:true
+                            },
+                            yAxis: {
+                                min:-100,
+                                max:100,
+                                title: {
+                                    text: 'Capaian Rincian Output'
+                                },
+                                tickInterval:25,
+                                plotLines:[{
+                                    value:0,
+                                    color:'#666',
+                                    width:1
+                                }]
+                            },
+                            legend: {
+                                enabled:false
+                            },
+                            tooltip: {
+                                formatter: function() {
+                                	 return '<b>'+ this.series.name+'</b><br/>'+
+                                     '<b>'+ this.key+'</b>'+
+                                     '<br/>RO : '+Math.abs(this.x)+'%'
+                                     +'<br/>Indikator SDGs : '+ Math.abs(this.y)+'%';
+                                }
+                            },
+                            plotOptions: {
+                            },
+                            series: [{
+                                name : 'Indikator tercapai, RO tercapai',
+                                data: dataQuadranaRo1,
+                                color:'green'
+                            },{
+                                name : 'Indikator tidak & RO tercapai',
+                                data: dataQuadranaRo2,
+                                color:'yellow'
+                            },{
+                                name : 'Indikator tercapai & RO tidak tercapai',
+                                data: dataQuadranaRo3,
+                                color:'blue'
+                            },{
+                                name : 'Indikator & RO tidak tercapai',
+                                data: dataQuadranaRo4,
+                                color:'red'
+                            },
+                            ]
+                        });
+
                         var hasilQuadran1 = result.quadran1;
                         var dataQuadran1 = [];
                         var dataQuadran2 = [];
@@ -1440,6 +1550,109 @@
                             },{
                                 name : 'Realisasi & RO tidak tercapai',
                                 data: dataQuadran4,
+                                color:'red'
+                            },
+                            ]
+                        });
+
+                        var hasilQuadran1Ro = result.quadran1Ro;
+                        var dataQuadran1Ro = [];
+                        var dataQuadran2Ro = [];
+                        var dataQuadran3Ro = [];
+                        var dataQuadran4Ro = [];
+                        for(var i = 0, len = hasilQuadran1Ro.length; i < len; i++){
+                            if(hasilQuadran1Ro[i][8]=='Realisasi & RO tercapai'){
+                            	dataQuadran1Ro.push({
+                            		'name':hasilQuadran1Ro[i][0]+" "+hasilQuadran1Ro[i][1],
+                            		'x':(hasilQuadran1Ro[i][4]>100?100:hasilQuadran1Ro[i][4]),
+                            		'y':(hasilQuadran1Ro[i][7]>100?100:hasilQuadran1Ro[i][7]),
+                                });
+                            }
+							if(hasilQuadran1Ro[i][8]=='Realisasi tidak & RO tercapai'){
+                            	dataQuadran2Ro.push({
+                            		'name':hasilQuadran1Ro[i][0]+" "+hasilQuadran1Ro[i][1],
+                            		'x':(hasilQuadran1Ro[i][4]>100?100:hasilQuadran1Ro[i][4]),
+                            		'y':(hasilQuadran1Ro[i][7]>100?-100:hasilQuadran1Ro[i][7]*-1),
+                                });
+                            }
+                            if(hasilQuadran1Ro[i][8]=='Realisasi tercapai & RO tidak tercapai'){
+                            	dataQuadran3Ro.push({
+                            		'name':hasilQuadran1Ro[i][0]+" "+hasilQuadran1Ro[i][1],
+                            		'x':(hasilQuadran1Ro[i][4]>100?-100:hasilQuadran1Ro[i][4]*-1),
+                            		'y':(hasilQuadran1Ro[i][7]>100?100:hasilQuadran1Ro[i][7]),
+                                });
+                            }
+                            if(hasilQuadran1Ro[i][8]=='Realisasi & RO tidak tercapai'){
+                            	dataQuadran4Ro.push({
+                            		'name':hasilQuadran1Ro[i][0]+" "+hasilQuadran1Ro[i][1],
+                            		'x':(hasilQuadran1Ro[i][4]>100?-100:hasilQuadran1Ro[i][4]*-1),
+                            		'y':(hasilQuadran1Ro[i][7]>100?-100:hasilQuadran1Ro[i][7]*-1),
+                                });
+                            }
+                        	
+                        }
+                        
+                        Highcharts.chart({	
+                            chart: {
+                                renderTo: 'kuadran1Ro',
+                                defaultSeriesType: 'scatter'
+                            },
+                            title: {
+                                text: 'Realisasi Anggaran'
+                            },
+                            xAxis: {
+                                min:-100,
+                                max:100,
+                                tickInterval:25,
+                                plotLines:[{
+                                    value:0,
+                                    color:'#666',
+                                    width:1
+                                }],
+                                gridLineWidth:1,
+                                showLastLabel:true
+                            },
+                            yAxis: {
+                                min:-100,
+                                max:100,
+                                title: {
+                                    text: 'Capaian Rincian Output'
+                                },
+                                tickInterval:25,
+                                plotLines:[{
+                                    value:0,
+                                    color:'#666',
+                                    width:1
+                                }]
+                            },
+                            legend: {
+                                enabled:false
+                            },
+                            tooltip: {
+                                formatter: function() {
+                                    return '<b>'+ this.series.name+'</b><br/>'+
+                                    '<b>'+ this.key+'</b>'+
+                                    '<br/>RO : '+Math.abs(this.x)+'%'
+                                    +'<br/>Realisasi : '+ Math.abs(this.y)+'%';
+                                }
+                            },
+                            plotOptions: {
+                            },
+                            series: [{
+                                name : 'Realisasi & RO tercapai',
+                                data: dataQuadran1Ro,
+                                color:'green'
+                            },{
+                                name : 'Realisasi tidak & RO tercapai',
+                                data: dataQuadran2Ro,
+                                color:'yellow'
+                            },{
+                                name : 'Realisasi tercapai & RO tidak tercapai',
+                                data: dataQuadran3Ro,
+                                color:'blue'
+                            },{
+                                name : 'Realisasi & RO tidak tercapai',
+                                data: dataQuadran4Ro,
                                 color:'red'
                             },
                             ]
