@@ -38,7 +38,7 @@
                                 <option data-prev="USER" value="Government">Government</option>
                                 <option data-prev="USER" value="NSA">Non Government : NSA</option>
                                 <option data-prev="USER" value="Institution">Non Government : Institution</option>
-                                <option data-prev="USER" value="gri_ojk">GRI/OJK</option>
+                                <option data-prev="USER" value="Corporation">Corporation</option>
                             </select>
                             <button class="btn btn-warning btn-small pull-right" id="addNew" data-toggle="modal" data-target="#myModal">
                             	<span class="lang_eng" style="display:none">Add New</span>
@@ -138,7 +138,7 @@
 	                                <option value="Government">Government</option>
 	                                <option value="NSA">Non Government : NSA</option>
 	                                <option value="Institution">Non Government : Institution</option>
-	                                <option value="gri_ojk">GRI/OJK</option>
+	                                <option value="Corporation">Corporation</option>
 	                            </select>
 	                            <span class="help-block" id="error_cat_role"></span>
 	                         </div>
@@ -541,6 +541,9 @@
 			privilege = "USER";
 		}else if(cat_role=="gri_ojk") {
 			status_role = "Admin gri_ojk";
+			privilege = "USER";
+		}else if(cat_role=="Corporation") {
+			status_role = "Admin Corporation";
 			privilege = "USER";
 		}else{
 			status_role = "";

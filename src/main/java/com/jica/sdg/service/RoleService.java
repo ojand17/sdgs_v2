@@ -93,4 +93,14 @@ public class RoleService implements IRoleService{
 		return role.findByProvinceUserForm(id_prov);
 	}
 
+	@Override
+	public List<Role> findRoleCor(String id_prov) {
+		return role.findRoleCor(id_prov);
+	}
+
+	@Override
+	public List<Role> findAllRoleCor() {
+		return role.findAllRoleCor();
+	}
+
 }

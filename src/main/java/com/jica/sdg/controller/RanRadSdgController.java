@@ -82,6 +82,12 @@ import com.jica.sdg.model.SdgGoals;
 import com.jica.sdg.model.SdgIndicator;
 import com.jica.sdg.model.SdgTarget;
 import com.jica.sdg.model.Unit;
+import com.jica.sdg.model.UsahaActivity;
+import com.jica.sdg.model.UsahaFunding;
+import com.jica.sdg.model.UsahaIndicator;
+import com.jica.sdg.model.UsahaMap;
+import com.jica.sdg.model.UsahaProgram;
+import com.jica.sdg.model.UsahaTarget;
 import com.jica.sdg.service.IBestMapService;
 import com.jica.sdg.service.IGovActivityService;
 import com.jica.sdg.service.IGovFundingService;
@@ -104,81 +110,105 @@ import com.jica.sdg.service.ISdgGoalsService;
 import com.jica.sdg.service.ISdgIndicatorService;
 import com.jica.sdg.service.ISdgTargetService;
 import com.jica.sdg.service.IUnitService;
+import com.jica.sdg.service.IUsahaActivityService;
+import com.jica.sdg.service.IUsahaFundingService;
+import com.jica.sdg.service.IUsahaIndicatorService;
+import com.jica.sdg.service.IUsahaMapService;
+import com.jica.sdg.service.IUsahaProgramService;
+import com.jica.sdg.service.IUsahaTargetService;
 
 @Controller
 public class RanRadSdgController {
 
 	@Autowired
-	ISdgGoalsService sdgGoalsService;
+	private ISdgGoalsService sdgGoalsService;
 	
 	@Autowired
-	ISdgTargetService sdgTargetService;
+	private ISdgTargetService sdgTargetService;
 	
 	@Autowired
-	ISdgIndicatorService sdgIndicatorService;
+	private ISdgIndicatorService sdgIndicatorService;
 	
 	@Autowired
-	ISdgDisaggreService sdgDisaggreService;
+	private ISdgDisaggreService sdgDisaggreService;
 	
 	@Autowired
-	ISdgDisaggreDetailService sdgDisaggreDetailService;
+	private ISdgDisaggreDetailService sdgDisaggreDetailService;
 	
 	@Autowired
-	IMonPeriodService monPerService;
+	private IMonPeriodService monPerService;
 	
 	@Autowired
-	IGovProgramService govProgService;
+	private IGovProgramService govProgService;
 	
 	@Autowired
-	IProvinsiService prov;
+	private IProvinsiService prov;
 	
 	@Autowired
-	IMonPeriodService monPeriodService;
+	private IMonPeriodService monPeriodService;
 	
 	@Autowired
-	IRoleService roleService;
+	private IRoleService roleService;
 	
 	@Autowired
-	IGovActivityService govActivityService;
+	private IGovActivityService govActivityService;
 	
 	@Autowired
-	IGovIndicatorService govIndicatorService;
+	private IGovIndicatorService govIndicatorService;
 	
 	@Autowired
-	INsaProgramService nsaProgService;
+	private INsaProgramService nsaProgService;
 	
 	@Autowired
-	INsaActivityService nsaActivityService;
+	private IUsahaProgramService usahaProgService;
 	
 	@Autowired
-	INsaIndicatorService nsaIndicatorService;
+	private INsaActivityService nsaActivityService;
 	
 	@Autowired
-	IGovMapService govMapService;
+	private IUsahaActivityService usahaActivityService;
 	
 	@Autowired
-	IUnitService unitService;
+	private INsaIndicatorService nsaIndicatorService;
 	
 	@Autowired
-	INsaMapService nsaMapService;
+	private IUsahaIndicatorService usahaIndicatorService;
+	
+	@Autowired
+	private IGovMapService govMapService;
+	
+	@Autowired
+	private IUnitService unitService;
+	
+	@Autowired
+	private INsaMapService nsaMapService;
+	
+	@Autowired
+	private IUsahaMapService usahaMapService;
         
 	@Autowired
 	private EntityManager em;
 	
 	@Autowired
-	IGovTargetService govTargetService;
+	private IGovTargetService govTargetService;
 	
 	@Autowired
-	IGovFundingService govFundingService;
+	private IGovFundingService govFundingService;
 	
 	@Autowired
-	INsaTargetService nsaTargetService;
+	private INsaTargetService nsaTargetService;
 	
 	@Autowired
-	INsaFundingService nsaFundingService;
+	private IUsahaTargetService usahaTargetService;
 	
 	@Autowired
-	IBestMapService bestMapService;
+	private INsaFundingService nsaFundingService;
+	
+	@Autowired
+	private IUsahaFundingService usahaFundingService;
+	
+	@Autowired
+	private IBestMapService bestMapService;
 	
 	//*********************** SDG ***********************
 	@GetMapping("admin/ran_rad/sdg/increment_decrement")
@@ -534,6 +564,21 @@ public class RanRadSdgController {
         if (bhs == null) {bhs = "0";}
         model.addAttribute("lang", bhs);
         return "admin/ran_rad/non-gov/export";
+    }
+    
+    @GetMapping("admin/ran_rad/preview-corporation-program/{id_prov}/{id_monper}")
+    public String corProgram(Model model, HttpSession session,@PathVariable("id_monper") String id_monper,@PathVariable("id_prov") String id_prov) {
+    	Optional<Provinsi> list1 = prov.findOne(id_prov);
+    	Optional<RanRad> monper = monPerService.findOne(Integer.parseInt(id_monper));
+    	model.addAttribute("prov", list1.get().getNm_prov());
+    	model.addAttribute("monper", monper.get().getStart_year().toString()+"-"+monper.get().getEnd_year().toString());
+    	model.addAttribute("id_prov", id_prov);
+    	model.addAttribute("id_monper", id_monper);
+        model.addAttribute("name", session.getAttribute("name"));
+        String bhs = (String) session.getAttribute("bahasa");
+        if (bhs == null) {bhs = "0";}
+        model.addAttribute("lang", bhs);
+        return "admin/ran_rad/corporation/export";
     }
     
     @PostMapping(path = "admin/save-govProg")
@@ -1295,6 +1340,323 @@ public class RanRadSdgController {
         return hasil;
     }
     
+  //*********************** CORPORATION PROGRAM ***********************
+    @GetMapping("admin/list-corporationProg/{id_role}/{id_monper}")
+    public @ResponseBody Map<String, Object> corporationProgList(@PathVariable("id_role") String id_role, @PathVariable("id_monper") String id_monper) {
+        List<UsahaProgram> list = usahaProgService.findAllBy(id_role, id_monper);
+		Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
+    }
+    
+    @GetMapping("admin/list-corporationProg-assign/{id_monper}/{id_prov}")
+    public @ResponseBody Map<String, Object> corporationProgListAssign(@PathVariable("id_monper") Integer id_monper, @PathVariable("id_prov") String id_prov) {
+        List<UsahaProgram> list = usahaProgService.findAllByMonperProv(id_monper, id_prov);
+		Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
+    }
+    
+    @PostMapping(path = "admin/save-corporationProg", consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	@Transactional
+	public Map<String, Object> savCorProg(@RequestBody UsahaProgram gov) {
+    	gov.setCreated_by(1);
+    	gov.setDate_created(new Date());
+    	usahaProgService.saveProgram(gov);
+    	if(gov.getInternal_code()==null || gov.getInternal_code()==0) {
+    		em.createNativeQuery("UPDATE usaha_program set internal_code = "
+    				+ "(select IFNULL(max(internal_code)+1,1) as no from usaha_program where id_monper = '"+gov.getId_monper()+"') where id ='"+gov.getId()+"'").executeUpdate();
+    	}
+    	Map<String, Object> hasil = new HashMap<>();
+        hasil.put("id_program",gov.getId());
+        return hasil;
+	}
+    
+    @GetMapping("admin/get-corporationProg/{id}")
+    public @ResponseBody Map<String, Object> getCorProg(@PathVariable("id") Integer id) {
+        Optional<UsahaProgram> list = usahaProgService.findOne(id);
+		Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
+    }
+    
+    @DeleteMapping("admin/delete-corporationProg/{id}")
+	@ResponseBody
+	public void deleteCorProg(@PathVariable("id") Integer id) {
+    	usahaProgService.deleteProgram(id);
+	}
+
+    @GetMapping("admin/ran_rad/corporation/program/{id_program}/activity")
+    public String cor_kegiatan(Model model, @PathVariable("id_program") Integer id_program, HttpSession session) {
+    	Optional<UsahaProgram> list = usahaProgService.findOne(id_program);
+    	Optional<RanRad> ranrad = monPeriodService.findOne(list.get().getId_monper());
+    	Optional<Provinsi> provin = prov.findOne(ranrad.get().getId_prov());
+    	Optional<RanRad> monper = monPeriodService.findOne(list.get().getId_monper());
+    	Optional<Role> role = roleService.findOne((Integer) session.getAttribute("id_role"));
+    	provin.ifPresent(foundUpdateObject -> model.addAttribute("prov", foundUpdateObject));
+    	monper.ifPresent(foundUpdateObject -> model.addAttribute("monPer", foundUpdateObject));
+    	model.addAttribute("role", roleService.findRoleCor(ranrad.get().getId_prov()));
+        list.ifPresent(foundUpdateObject -> model.addAttribute("govProg", foundUpdateObject));
+        model.addAttribute("lang", session.getAttribute("bahasa"));
+        model.addAttribute("name", session.getAttribute("name"));
+        model.addAttribute("privilege", role.get().getPrivilege());
+        model.addAttribute("id_role", session.getAttribute("id_role"));
+        return "admin/ran_rad/corporation/activity";
+    }
+    
+    @GetMapping("admin/list-corporationActivity/{id_program}/{id_role}")
+    public @ResponseBody Map<String, Object> corActivityList(@PathVariable("id_program") Integer id_program,@PathVariable("id_role") Integer id_role) {
+        List<UsahaActivity> list = usahaActivityService.findAll(id_program,id_role);
+		Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
+    }
+    
+    @GetMapping("admin/list-corporationActivity/{id_monper}")
+    public @ResponseBody Map<String, Object> corProgListMon(@PathVariable("id_monper") String id_monper, HttpSession session) {
+    	Optional<Role> role = roleService.findOne((Integer) session.getAttribute("id_role"));
+    	String id_role="";
+    	if(role.get().getPrivilege().equals("USER")) {
+    		id_role = " and a.id_role = '"+role.get().getId_role()+"'";
+    	}
+    	String sql = "select a.id, a.nm_program, a.nm_program_eng, a.internal_code,b.nm_role "
+    			+ "from usaha_program a "
+    			+ "left join ref_role b on a.id_role = b.id_role "
+    			+ "where a.id_monper=:id_monper "+id_role+" order by CAST(a.internal_code AS UNSIGNED)";
+        Query query = em.createNativeQuery(sql);
+        query.setParameter("id_monper", id_monper);
+        List list   = query.getResultList();
+		Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
+    }
+    
+    @GetMapping("admin/list-corporationActivityExp/{id_program}")
+    public @ResponseBody Map<String, Object> corActivityList(@PathVariable("id_program") Integer id_program, HttpSession session) {
+    	Optional<Role> role = roleService.findOne((Integer) session.getAttribute("id_role"));
+    	String id_role="";
+    	if(role.get().getPrivilege().equals("USER")) {
+    		id_role = " and a.id_role = '"+role.get().getId_role()+"'";
+    	}
+    	String sql = "select a.id, a.nm_activity, a.nm_activity_eng, a.internal_code,b.nm_role "
+    			+ "from usaha_activity a "
+    			+ "left join ref_role b on a.id_role = b.id_role "
+    			+ "where a.id_program=:id_program "+id_role+" order by CAST(a.internal_code AS UNSIGNED)";
+        Query query = em.createNativeQuery(sql);
+        query.setParameter("id_program", id_program);
+        List list   = query.getResultList();
+		Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
+    }
+    
+    @GetMapping("admin/list-corporationActivity/{id_program}")
+    public @ResponseBody Map<String, Object> corActivityListByProg(@PathVariable("id_program") Integer id_program) {
+        List<UsahaActivity> list = usahaActivityService.findAll(id_program);
+		Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
+    }
+    
+    @GetMapping("admin/count-corporationActivity/{id_program}")
+    public @ResponseBody Map<String, Object> countCorActivity(@PathVariable("id_program") Integer id_program) {
+        Integer list = usahaActivityService.countActivity(id_program);
+		Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
+    }
+    
+    @PostMapping(path = "admin/save-corporationActivity/{id_monper}", consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	@Transactional
+	public void saveCorActivity(@RequestBody UsahaActivity gov,@PathVariable("id_monper") Integer id_monper) {
+    	gov.setCreated_by(1);
+    	gov.setDate_created(new Date());
+    	usahaActivityService.saveActivity(gov);
+    	if(gov.getInternal_code()==null || gov.getInternal_code()==0) {
+    		em.createNativeQuery("UPDATE usaha_activity set internal_code = "
+    				+ "(select IFNULL(max(a.internal_code)+1,1) as no " + 
+    				"   from usaha_activity a left join usaha_program b on a.id_program = b.id " + 
+    				"   where b.id_monper = '"+id_monper+"' and a.id_program = '"+gov.getId_program()+"') where id ='"+gov.getId()+"'").executeUpdate();
+    	}
+	}
+    
+    @GetMapping("admin/get-corporationActivity/{id}")
+    public @ResponseBody Map<String, Object> getCorActivity(@PathVariable("id") Integer id) {
+        Optional<UsahaActivity> list = usahaActivityService.findOne(id);
+		Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
+    }
+    
+    @DeleteMapping("admin/delete-corporationActivity/{id}")
+	@ResponseBody
+	public void deleteCorActivity(@PathVariable("id") Integer id) {
+    	usahaActivityService.deleteActivity(id);
+	}
+    
+    @GetMapping("admin/ran_rad/corporation/program/{id_program}/activity/{id_activity}/indicator")
+    public String corIndikator(Model model, @PathVariable("id_program") Integer id_program,
+                                @PathVariable("id_activity") Integer id_activity, HttpSession session) {
+    	Optional<UsahaProgram> list = usahaProgService.findOne(id_program);
+    	Optional<UsahaActivity> list1 = usahaActivityService.findOne(id_activity);
+    	Optional<Role> role = roleService.findOne((Integer) session.getAttribute("id_role"));
+    	Optional<Role> roleDrop = roleService.findOne(list.get().getId_role());
+    	Optional<Provinsi> provin = prov.findOne(roleDrop.get().getId_prov());
+    	Optional<RanRad> monper = monPeriodService.findOne(list.get().getId_monper());
+    	Integer id_role = (Integer) session.getAttribute("id_role");
+    	Optional<Role> listRole = roleService.findOne(id_role);
+    	String privilege = listRole.get().getPrivilege();
+    	String id_prov = listRole.get().getId_prov();
+    	String sql;
+    	if(privilege.equals("SUPER")) {
+    		sql = "select * from ref_unit";
+    	}else {
+    		sql = "select a.* from ref_unit a left join ref_role b on a.id_role = b.id_role where b.id_prov = '"+id_prov+"' or a.id_role = 1";
+    	}
+    	Query listUnit = em.createNativeQuery(sql);
+        List<Object[]> rows = listUnit.getResultList();
+        List<Unit> result = new ArrayList<>(rows.size());
+        Map<String, Object> hasil = new HashMap<>();
+        for (Object[] row : rows) {
+            result.add(
+                        new Unit((Integer)row[0], (String) row[1], (Integer)row[2],(Integer)row[3])
+            );
+        }
+    	provin.ifPresent(foundUpdateObject -> model.addAttribute("prov", foundUpdateObject));
+        monper.ifPresent(foundUpdateObject -> model.addAttribute("monPer", foundUpdateObject));
+        roleDrop.ifPresent(foundUpdateObject -> model.addAttribute("role", foundUpdateObject));
+        list.ifPresent(foundUpdateObject -> model.addAttribute("govProg", foundUpdateObject));
+        list1.ifPresent(foundUpdateObject1 -> model.addAttribute("govActivity", foundUpdateObject1));
+        model.addAttribute("lang", session.getAttribute("bahasa"));
+        model.addAttribute("name", session.getAttribute("name"));
+        model.addAttribute("unit", result);
+        model.addAttribute("sdgIndicator", sdgIndicatorService.findAll());
+        model.addAttribute("privilege", role.get().getPrivilege());
+        return "admin/ran_rad/corporation/indicator";
+    }
+    
+    @GetMapping("admin/list-corporationIndicator/{id_program}/{id_activity}")
+    public @ResponseBody Map<String, Object> corIndicatorList(@PathVariable("id_program") Integer id_program, @PathVariable("id_activity") Integer id_activity) {
+        List<UsahaIndicator> list = usahaIndicatorService.findAllIndi(id_program, id_activity);
+		Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
+    }
+    
+    @GetMapping("admin/count-corporationIndicator/{id_program}/{id_activity}")
+    public @ResponseBody Map<String, Object> countCorIndicator(@PathVariable("id_program") Integer id_program, @PathVariable("id_activity") Integer id_activity) {
+        Integer list = usahaIndicatorService.countIndicator(id_program, id_activity);
+		Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
+    }
+    
+    @PostMapping(path = "admin/save-corporationIndicator/{sdg_indicator}/{id_monper}/{id_prov}", consumes = "application/json", produces = "application/json")
+    @Transactional
+    public @ResponseBody Map<String, Object> saveCorIndicator(@RequestBody UsahaIndicator gov,
+			@PathVariable("sdg_indicator") String sdg_indicator,
+			@PathVariable("id_monper") Integer id_monper,
+			@PathVariable("id_prov") String id_prov) {
+    	gov.setCreated_by(1);
+    	gov.setDate_created(new Date());
+    	usahaIndicatorService.saveIndicator(gov);
+    	if(gov.getInternal_code()==null || gov.getInternal_code()==0) {
+    		em.createNativeQuery("UPDATE usaha_indicator set internal_code = "
+    				+ "(select IFNULL(max(a.internal_code)+1,1) as no " + 
+    				"  from usaha_indicator a " + 
+    				"  left join usaha_program b on a.id_program = b.id " + 
+    				"  where b.id_monper = '"+id_monper+"' and a.id_activity = '"+gov.getId_activity()+"') where id ='"+gov.getId()+"'").executeUpdate();
+    	}
+    	if(!sdg_indicator.equals("0")) {
+    		usahaMapService.deleteMapByInd(gov.getId());
+    		String[] sdg = sdg_indicator.split(",");
+    		for(int i=0;i<sdg.length;i++) {
+    			String[] a = sdg[i].split("---");
+    			Integer id_goals = Integer.parseInt(a[0]);
+        		Integer id_target = Integer.parseInt(a[1]);
+        		Integer id_indicator = Integer.parseInt(a[2]);
+        		UsahaMap map = new UsahaMap();
+        		map.setId_goals(id_goals);
+        		if(id_target!=0) {
+        			map.setId_target(id_target);
+        		}
+        		if(id_indicator!=0) {
+        			map.setId_indicator(id_indicator);
+        		}
+        		map.setId_usaha_indicator(gov.getId());
+        		map.setId_monper(id_monper);
+        		map.setId_prov(id_prov);
+        		usahaMapService.saveMap(map);
+    		}
+    	}
+    	Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",gov.getId());
+        return hasil;
+	}
+    
+    @GetMapping("admin/get-corporationIndicator/{id}")
+    public @ResponseBody Map<String, Object> getCorIndicator(@PathVariable("id") Integer id) {
+        Optional<UsahaIndicator> list = usahaIndicatorService.findOne(id);
+		Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
+    }
+    
+    @DeleteMapping("admin/delete-corporationIndicator/{id}")
+	@ResponseBody
+	public void deleteCorIndicator(@PathVariable("id") Integer id) {
+    	usahaIndicatorService.deleteIndicator(id);
+	}
+    
+    @PostMapping(path = "admin/save-corporationTarget/{id_nsa_indicator}/{id_role}", consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	public void saveCorTarget(@RequestBody Map<String, Object> payload,@PathVariable("id_nsa_indicator") Integer id_nsa_indicator,@PathVariable("id_role") Integer id_role) {
+    	JSONObject jsonObject = new JSONObject(payload);
+        JSONObject catatan = jsonObject.getJSONObject("target");
+        JSONArray c = catatan.getJSONArray("target");
+        usahaTargetService.deleteByInd(id_nsa_indicator);
+        for (int i = 0 ; i < c.length(); i++) {
+        	JSONObject obj = c.getJSONObject(i);
+        	String year = obj.getString("year");
+        	String value = obj.getString("nilai");
+        	if(!value.equals("")) {
+        		UsahaTarget nsa = new UsahaTarget();
+        		nsa.setId_usaha_indicator(id_nsa_indicator);
+        		nsa.setId_role(id_role);
+        		nsa.setYear(Integer.parseInt(year));
+        		nsa.setValue(Integer.parseInt(value));
+        		usahaTargetService.saveTarget(nsa);
+        	}
+        }
+    }
+    
+    @GetMapping("admin/get-corporationTarget/{id}/{year}")
+    public @ResponseBody Map<String, Object> getCorTarget(@PathVariable("id") Integer id, @PathVariable("year") Integer year) {
+        List<UsahaTarget> list = usahaTargetService.findByYear(id, year);
+		Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
+    }
+    
+    @PostMapping(path = "admin/save-corporationFunding", consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	public void saveUsahaFunding(@RequestBody UsahaFunding gov) {
+    	usahaFundingService.deleteByInd(gov.getId_usaha_indicator(), gov.getId_monper());
+    	if(!gov.getBaseline().equals("") || !gov.getFunding_source().equals("")) {
+    		usahaFundingService.saveFunding(gov);
+    	}
+	}
+    
+    @GetMapping("admin/get-corporationFunding/{id_nsa_indicator}/{id_monper}")
+    public @ResponseBody Map<String, Object> getCorFunding(@PathVariable("id_nsa_indicator") Integer id_nsa_indicator, @PathVariable("id_monper") Integer id_monper) {
+        List<UsahaFunding> list = usahaFundingService.findByMon(id_nsa_indicator, id_monper);
+		Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
+    }
+    
   //*********************** RAN / RAD ***********************
     
     @GetMapping("admin/list-monPer/{id_prov}")
@@ -1731,6 +2093,14 @@ public class RanRadSdgController {
     @GetMapping("admin/list-getNsaMapByGovInd/{id}")
     public @ResponseBody Map<String, Object> getNsaMapByGovInd(HttpSession session, @PathVariable("id") Integer id) {
         List <NsaMap> list = nsaMapService.findAllByNsaInd(id);
+		Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
+    }
+    
+    @GetMapping("admin/list-getCorMapByGovInd/{id}")
+    public @ResponseBody Map<String, Object> getCorMapByGovInd(HttpSession session, @PathVariable("id") Integer id) {
+        List <UsahaMap> list = usahaMapService.findAllByInd(id);
 		Map<String, Object> hasil = new HashMap<>();
         hasil.put("content",list);
         return hasil;
