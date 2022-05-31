@@ -500,6 +500,33 @@ public class AdminController {
 //        System.out.println(privilege);
         return "admin/ran_rad/non-gov/program";
     }
+    
+    @GetMapping("admin/ran_rad/corporation/program")
+    public String corProgram(Model model, HttpSession session) {
+    	Integer id_role = (Integer) session.getAttribute("id_role");
+    	Optional<Role> list = roleService.findOne(id_role);
+    	String id_prov = list.get().getId_prov();
+    	String privilege = list.get().getPrivilege();
+    	if(privilege.equals("SUPER")) {
+    		model.addAttribute("prov", prov.findAllProvinsi());
+    	}else {
+    		Optional<Provinsi> list1 = prov.findOne(id_prov);
+    		list1.ifPresent(foundUpdateObject1 -> model.addAttribute("prov", foundUpdateObject1));
+    	}
+    	if(privilege.equals("SUPER") || privilege.equals("ADMIN")) {
+    		model.addAttribute("role", roleService.findRoleNonGov(id_prov));
+    	}else {
+    		Optional<Role> list1 = roleService.findOne(id_role);
+    		list1.ifPresent(foundUpdateObject1 -> model.addAttribute("role", foundUpdateObject1));
+    	}
+        model.addAttribute("monPer", monPeriodService.findAll(id_prov));
+        model.addAttribute("name", session.getAttribute("name"));
+        model.addAttribute("privilege", privilege);
+        String bhs = (String) session.getAttribute("bahasa");
+        if (bhs == null) {bhs = "0";}
+        model.addAttribute("lang", bhs);
+        return "admin/ran_rad/corporation/program";
+    }
 
     @GetMapping("admin/ran_rad")
     public String ran_goals(Model model, HttpSession session) {
