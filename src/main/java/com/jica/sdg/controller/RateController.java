@@ -4,6 +4,9 @@ import com.jica.sdg.model.EntryGovBudget;
 import com.jica.sdg.model.EntryGovIndicator;
 import com.jica.sdg.model.EntryNsaBudget;
 import com.jica.sdg.model.EntryNsaIndicator;
+import com.jica.sdg.model.EntryUsahaBudget;
+import com.jica.sdg.model.EntryUsahaIndicator;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -147,7 +150,15 @@ public class RateController {
                         "select distinct a.id_role, a.nm_role, a.cat_role, '2' as kode, '111' as show_report \n" +
                         "from ref_role a\n" +
                         "inner join nsa_activity as m on a.id_role = m.id_role \n" +
-                        "where a.cat_role = 'NSA' and a.id_role <> '1' and a.id_prov = :id_prov ";
+                        "where a.cat_role = 'NSA' and a.id_role <> '1' and a.id_prov = :id_prov "+
+                        "union all\n" +
+                        "select '11111' as id, 'Corporation' as nm, 'Corporation' as ket, '1' as kode, \n" +
+                        "(select count(*) as nn from entry_show_report where id_monper = :id_monper and year = :year and type = 'entry_usaha_indicator' and period = :period) as show_report \n" +
+                        "union all\n" +
+                        "select distinct a.id_role, a.nm_role, a.cat_role, '2' as kode, '111' as show_report \n" +
+                        "from ref_role a\n" +
+                        "inner join usaha_activity as m on a.id_role = m.id_role \n" +
+                        "where a.cat_role = 'Corporation' and a.id_role <> '1' and a.id_prov = :id_prov ";
             query = em.createNativeQuery(sql);
             query.setParameter("id_prov", id_prov);
             query.setParameter("period", period);
@@ -179,7 +190,20 @@ public class RateController {
             query.setParameter("period", period);
             query.setParameter("id_monper", id_monper);
             query.setParameter("year", year);
-        }else{
+        }else if(id_role.equals("9999993")){
+            String sql  = "select '11111' as id, 'Corporation' as nm, 'Corporation' as ket, '1' as kode, \n" +
+                    "(select count(*) as nn from entry_show_report where id_monper = :id_monper and year = :year and type = 'entry_usaha_indicator' and period = :period) as show_report \n" +
+                    "union all\n" +
+                    "select distinct a.id_role, a.nm_role, a.cat_role, '2' as kode, '111' as show_report \n" +
+                    "from ref_role a\n" +
+                    "inner join usaha_activity as m on a.id_role = m.id_role \n" +
+                    "where a.cat_role = 'Corporation' and a.id_role <> '1' and a.id_prov = :id_prov ";
+        query = em.createNativeQuery(sql);
+        query.setParameter("id_prov", id_prov);
+        query.setParameter("period", period);
+        query.setParameter("id_monper", id_monper);
+        query.setParameter("year", year);
+    }else{
             String sql  = "select '00000' as id_role, 'Government' as nm_role, 'Government' as cat_role, '1' as kode, \n" +
                         "(select count(*) as nn from entry_show_report where id_monper = :id_monper and year = :year and type = 'entry_gov_indicator' and period = :period) as show_report \n" +
                         "union all\n" +
@@ -192,7 +216,14 @@ public class RateController {
                         "union all\n" +
                         "select a.id_role, a.nm_role, a.cat_role, '2' as kode, '111' as show_report \n" +
                         "from ref_role a\n" +
-                        "where a.cat_role = 'NSA' and a.id_prov = :id_prov and a.id_role = :id_role ";
+                        "where a.cat_role = 'NSA' and a.id_prov = :id_prov and a.id_role = :id_role "+
+						"union all\n" +
+						"select '11111' as id, 'Corporation' as nm, 'Corporation' as ket, '1' as kode, \n" +
+						"(select count(*) as nn from entry_show_report where id_monper = :id_monper and year = :year and type = 'entry_usaha_indicator' and period = :period) as show_report \n" +
+						"union all\n" +
+						"select a.id_role, a.nm_role, a.cat_role, '2' as kode, '111' as show_report \n" +
+						"from ref_role a\n" +
+						"where a.cat_role = 'Corporation' and a.id_prov = :id_prov and a.id_role = :id_role ";
             query = em.createNativeQuery(sql);
             query.setParameter("id_prov", id_prov);
             query.setParameter("period", period);
@@ -226,7 +257,15 @@ public class RateController {
                         "select distinct a.id_role, a.nm_role, a.cat_role, '2' as kode, '111' as show_report \n" +
                         "from ref_role a\n" +
                         "inner join nsa_activity as m on a.id_role = m.id_role \n" +
-                        "where a.cat_role = 'NSA' and a.id_role <> '1' and a.id_prov = :id_prov ";
+                        "where a.cat_role = 'NSA' and a.id_role <> '1' and a.id_prov = :id_prov "+
+                        "union all\n" +
+                        "select '22222' as id, 'Corporation' as nm, 'Corporation' as ket, '1' as kode, \n" +
+                        "(select count(*) as nn from entry_show_report where id_monper = :id_monper and year = :year and type = 'entry_usaha_budget' and period = :period) as show_report \n" +
+                        "union all\n" +
+                        "select distinct a.id_role, a.nm_role, a.cat_role, '2' as kode, '111' as show_report \n" +
+                        "from ref_role a\n" +
+                        "inner join usaha_activity as m on a.id_role = m.id_role \n" +
+                        "where a.cat_role = 'Corporation' and a.id_role <> '1' and a.id_prov = :id_prov ";
             query = em.createNativeQuery(sql);
             query.setParameter("id_prov", id_prov);
             query.setParameter("period", period);
@@ -258,7 +297,20 @@ public class RateController {
             query.setParameter("period", period);
             query.setParameter("id_monper", id_monper);
             query.setParameter("year", year);
-        }else{
+        }else if(id_role.equals("9999993")){
+            String sql  = "select '11111' as id, 'Corporation' as nm, 'Corporation' as ket, '1' as kode, \n" +
+                    "(select count(*) as nn from entry_show_report where id_monper = :id_monper and year = :year and type = 'entry_usaha_budget' and period = :period) as show_report \n" +
+                    "union all\n" +
+                    "select distinct a.id_role, a.nm_role, a.cat_role, '2' as kode, '111' as show_report \n" +
+                    "from ref_role a\n" +
+                    "inner join usaha_activity as m on a.id_role = m.id_role \n" +
+                    "where a.cat_role = 'Corporation' and a.id_role <> '1' and a.id_prov = :id_prov ";
+        query = em.createNativeQuery(sql);
+        query.setParameter("id_prov", id_prov);
+        query.setParameter("period", period);
+        query.setParameter("id_monper", id_monper);
+        query.setParameter("year", year);
+    }else{
             String sql  = "select '00000' as id_role, 'Government' as nm_role, 'Government' as cat_role, '1' as kode, \n" +
                         "(select count(*) as nn from entry_show_report where id_monper = :id_monper and year = :year and type = 'entry_gov_budget' and period = :period) as show_report \n" +
                         "union all\n" +
@@ -271,7 +323,15 @@ public class RateController {
                         "union all\n" +
                         "select a.id_role, a.nm_role, a.cat_role, '2' as kode, '111' as show_report \n" +
                         "from ref_role a\n" +
-                        "where a.cat_role = 'NSA' and a.id_prov = :id_prov and a.id_role = :id_role ";
+                        "where a.cat_role = 'NSA' and a.id_prov = :id_prov and a.id_role = :id_role "+
+                        "union all\n" +
+                        "select '11111' as id, 'Corporation' as nm, 'Corporation' as ket, '1' as kode, \n" +
+                        "(select count(*) as nn from entry_show_report where id_monper = :id_monper and year = :year and type = 'entry_usaha_budget' and period = :period) as show_report \n" +
+                        "union all\n" +
+                        "select distinct a.id_role, a.nm_role, a.cat_role, '2' as kode, '111' as show_report \n" +
+                        "from ref_role a\n" +
+                        "inner join usaha_activity as m on a.id_role = m.id_role \n" +
+                        "where a.cat_role = 'Corporation' and a.id_role = :id_role and a.id_prov = :id_prov ";
             query = em.createNativeQuery(sql);
             query.setParameter("id_prov", id_prov);
             query.setParameter("period", period);
@@ -393,8 +453,10 @@ public class RateController {
         System.out.println("isi tipe = "+type);
         if(type.equals("entry_gov_indicator")){
             prog = "gov_program";
-        }else{
+        }else if(type.equals("entry_nsa_indicator")){
             prog = "nsa_program";
+        }else{
+            prog = "usaha_program";
         }
         String sql  = "select \n" +
                     "(\n" +
@@ -465,9 +527,12 @@ public class RateController {
         if(type.equals("entry_gov_budget")){
             id_activity_1 = "d.id_gov_activity";
             prog = "gov_program";
-        }else{
-            id_activity_1 = "d.id_nsa_activity";
+        }else if(type.equals("entry_nsa_budget")){
+        	id_activity_1 = "d.id_nsa_activity";
             prog = "nsa_program";
+        }else{
+            id_activity_1 = "d.id_usaha_activity";
+            prog = "usaha_program";
         }
         String sql  = "select \n" +
                     "(\n" +
@@ -559,8 +624,10 @@ public class RateController {
         String prog = "";
         if(type.equals("entry_gov_indicator")){
             prog = "gov_program";
-        }else{
+        }else if(type.equals("entry_nsa_indicator")){
             prog = "nsa_program";
+        }else{
+            prog = "usaha_program";
         }
         System.out.println("tgdate = "+tg_date);
         String sql  = "select \n" +
@@ -656,9 +723,12 @@ public class RateController {
         if(type.equals("entry_gov_budget")){
             id_activity_1 = "d.id_gov_activity";
             prog = "gov_program";
-        }else{
+        }else if(type.equals("entry_nsa_budget")){
             id_activity_1 = "d.id_nsa_activity";
             prog = "nsa_program";
+        }else{
+            id_activity_1 = "d.id_usaha_activity";
+            prog = "usaha_program";
         }
         System.out.println("tgdate = "+tg_date);
         String sql  = "select \n" +
@@ -715,7 +785,15 @@ public class RateController {
             query = em.createNativeQuery(sql);
             query.setParameter("id_role", id_role);
             query.setParameter("id_monper", id_monper);
-        }else{}
+        }else if(catrole.equals("Corporation")){
+            String sql  = "select distinct a.id, a.nm_program, a.nm_program_eng, a.internal_code from usaha_program a \n" +
+                    "inner join usaha_activity b on a.id = b.id_program \n" +
+                    "inner join usaha_indicator c on b.id = c.id_activity \n" +
+                    "where a.id_monper = :id_monper and a.id_role = :id_role ";
+        query = em.createNativeQuery(sql);
+        query.setParameter("id_role", id_role);
+        query.setParameter("id_monper", id_monper);
+    }else{}
         
         
         List list   = query.getResultList();
@@ -743,7 +821,14 @@ public class RateController {
             query = em.createNativeQuery(sql);
             query.setParameter("id_role", id_role);
             query.setParameter("id_program", id_program);
-        }else{}
+        }else if(catrole.equals("Corporation")){
+            String sql  = "select distinct a.id, a.nm_activity, a.nm_activity_eng, a.internal_code from usaha_activity a\n" +
+                    "inner join usaha_indicator c on a.id = c.id_activity \n" +
+                    "where a.id_program = :id_program and a.id_role = :id_role ";
+        query = em.createNativeQuery(sql);
+        query.setParameter("id_role", id_role);
+        query.setParameter("id_program", id_program);
+    }else{}
         
         
         List list   = query.getResultList();
@@ -809,7 +894,20 @@ public class RateController {
             query.setParameter("id_program", id_program);
             query.setParameter("year", year);
             query.setParameter("id_monper", id_monper);
-        }else{}
+        }else if(catrole.equals("Corporation")){
+            String sql  = "select a.id, a.nm_activity, a.nm_activity_eng, "
+                    + "'' as nama_unit,"
+                    + "c.id as id_entry, case when ( COALESCE(NULLIF(c.new_value1,''),c.achievement1) is null) then 0 else COALESCE(NULLIF(c.new_value1,''),c.achievement1) end, case when (COALESCE(NULLIF(c.new_value2,''),c.achievement2) is null) then 0 else COALESCE(NULLIF(c.new_value2,''),c.achievement2) end, case when ( COALESCE(NULLIF(c.new_value3,''),c.achievement3) is null) then 0 else COALESCE(NULLIF(c.new_value3,''),c.achievement3) end, case when ( COALESCE(NULLIF(c.new_value4,''),c.achievement4) is null) then 0 else COALESCE(NULLIF(c.new_value4,''),c.achievement4) end,"
+                    + "c.date_created, c.date_created2, c.date_created3, c.date_created4, a.internal_code "
+                    + "from usaha_activity a \n"
+                    + "inner join (select * from entry_usaha_budget where year_entry = :year and id_monper = :id_monper "+tg_date_1+") c on a.id = c.id_usaha_activity " +
+                    "where a.id_program = :id_program and a.id_role = :id_role ";
+        query = em.createNativeQuery(sql);
+        query.setParameter("id_role", id_role);
+        query.setParameter("id_program", id_program);
+        query.setParameter("year", year);
+        query.setParameter("id_monper", id_monper);
+    }else{}
         
         
         List list   = query.getResultList();
@@ -878,7 +976,22 @@ public class RateController {
             query.setParameter("id_activity", id_activity);
             query.setParameter("year", year);
             query.setParameter("id_monper", id_monper);
-        }else{}
+        }else if(catrole.equals("Corporation")){
+            String sql  = "select a.id, a.nm_indicator, a.nm_indicator_eng, \n" +
+                    "(SELECT nm_unit FROM ref_unit WHERE id_unit = a.unit) as nama_unit,\n" +
+                    "c.id as id_entry, case when (COALESCE(NULLIF(c.new_value1,''),c.achievement1) is null) then 0 else COALESCE(NULLIF(c.new_value1,''),c.achievement1) end, case when ( COALESCE(NULLIF(c.new_value2,''),c.achievement2) is null) then 0 else COALESCE(NULLIF(c.new_value2,''),c.achievement2) end, case when ( COALESCE(NULLIF(c.new_value3,''),c.achievement3) is null) then 0 else COALESCE(NULLIF(c.new_value3,''),c.achievement3) end, case when ( COALESCE(NULLIF(c.new_value4,''),c.achievement4) is null) then 0 else COALESCE(NULLIF(c.new_value4,''),c.achievement4) end, \n" +
+                    "c.date_created, c.date_created2, c.date_created3, c.date_created4, a.internal_code \n" +
+                    "from usaha_indicator a\n" +
+                    "left join usaha_activity b on a.id_activity = b.id\n" +
+                    "inner join (select * from entry_usaha_indicator where year_entry = :year and id_monper = :id_monper "+tg_date_1+") c on a.id = c.id_assign\n" +
+                    "where a.id_program = :id_program and a.id_activity = :id_activity and b.id_role = :id_role ";
+        query = em.createNativeQuery(sql);
+        query.setParameter("id_role", id_role);
+        query.setParameter("id_program", id_program);
+        query.setParameter("id_activity", id_activity);
+        query.setParameter("year", year);
+        query.setParameter("id_monper", id_monper);
+    }else{}
         
         
         List list   = query.getResultList();
@@ -915,7 +1028,18 @@ public class RateController {
             query.setParameter("catrole", catrole);
             query.setParameter("id_monper", id_monper);
             query.setParameter("id_prov", id_prov);
-        }else{}
+        }else if(catrole.equals("Corporation")){
+            String sql  = "select distinct b.id, b.nm_program, b.nm_program_eng, b.internal_code as kode_program\n" +
+                    "from ref_role a\n" +
+                    "inner join ( select * from usaha_program where id_monper = :id_monper ) b on a.id_role = b.id_role\n" +
+                    "inner join usaha_activity c on b.id = c.id_program\n" +
+                    "inner join usaha_indicator d on c.id = d.id_activity\n" +
+                    "where a.cat_role = :catrole and a.id_prov = :id_prov and b.id is not null";
+        query = em.createNativeQuery(sql);
+        query.setParameter("catrole", catrole);
+        query.setParameter("id_monper", id_monper);
+        query.setParameter("id_prov", id_prov);
+    }else{}
         
         
         List list   = query.getResultList();
@@ -949,7 +1073,17 @@ public class RateController {
             query.setParameter("catrole", catrole);
             query.setParameter("id_prov", id_prov);
             query.setParameter("id_program", id_program);
-        }else{}
+        }else if(catrole.equals("Corporation")){
+            String sql  = "select distinct b.id, b.nm_activity, b.nm_activity_eng, b.internal_code as kode_activity\n" +
+                    "from ref_role a\n" +
+                    "inner join usaha_activity b on a.id_role = b.id_role\n" +
+                    "inner join usaha_indicator c on b.id = c.id_activity\n" +
+                    "where a.cat_role = :catrole and a.id_prov = :id_prov and b.id_program = :id_program and b.id is not null";
+        query = em.createNativeQuery(sql);
+        query.setParameter("catrole", catrole);
+        query.setParameter("id_prov", id_prov);
+        query.setParameter("id_program", id_program);
+    }else{}
         
         
         List list   = query.getResultList();
@@ -1017,7 +1151,21 @@ public class RateController {
             query.setParameter("id_program", id_program);
             query.setParameter("year", year);
             query.setParameter("id_monper", id_monper);
-        }else{}
+        }else if(catrole.equals("Corporation")){
+            String sql  = "select b.id, b.nm_activity, b.nm_activity_eng, '' as nama_unit, c.id as id_entry, \n" +
+                    "case when ( COALESCE(NULLIF(c.new_value1,''),c.achievement1) is null) then 0 else COALESCE(NULLIF(c.new_value1,''),c.achievement1) end, case when (COALESCE(NULLIF(c.new_value2,''),c.achievement2) is null) then 0 else COALESCE(NULLIF(c.new_value2,''),c.achievement2) end, case when ( COALESCE(NULLIF(c.new_value3,''),c.achievement3) is null) then 0 else COALESCE(NULLIF(c.new_value3,''),c.achievement3) end, case when ( COALESCE(NULLIF(c.new_value4,''),c.achievement4) is null) then 0 else COALESCE(NULLIF(c.new_value4,''),c.achievement4) end,\n" +
+                    "c.date_created, c.date_created2, c.date_created3, c.date_created4, b.internal_code as kode_activity\n" +
+                    "from ref_role a\n" +
+                    "inner join usaha_activity b on a.id_role = b.id_role\n" +
+                    "left join (select * from entry_usaha_budget where year_entry = :year and id_monper = :id_monper "+tg_date_1+") c on b.id = c.id_usaha_activity \n" +
+                    "where a.cat_role = :catrole and a.id_prov = :id_prov and b.id_program = :id_program ";
+        query = em.createNativeQuery(sql);
+        query.setParameter("catrole", catrole);
+        query.setParameter("id_prov", id_prov);
+        query.setParameter("id_program", id_program);
+        query.setParameter("year", year);
+        query.setParameter("id_monper", id_monper);
+    }else{}
         
         
         List list   = query.getResultList();
@@ -1093,7 +1241,25 @@ public class RateController {
             query.setParameter("id_activity", id_activity);
             query.setParameter("year", year);
             query.setParameter("id_monper", id_monper);
-        }else{}
+        }else if(catrole.equals("Corporation")){
+            String sql  = "select c.id, c.nm_indicator, c.nm_indicator_eng,\n" +
+                    "(SELECT nm_unit FROM ref_unit WHERE id_unit = c.unit) as nama_unit,\n" +
+                    "d.id as id_entry, case when (COALESCE(NULLIF(d.new_value1,''),d.achievement1) is null) then 0 else COALESCE(NULLIF(d.new_value1,''),d.achievement1) end, case when ( COALESCE(NULLIF(d.new_value2,''),d.achievement2) is null) then 0 else COALESCE(NULLIF(d.new_value2,''),d.achievement2) end, case when ( COALESCE(NULLIF(d.new_value3,''),d.achievement3) is null) then 0 else COALESCE(NULLIF(d.new_value3,''),d.achievement3) end, case when ( COALESCE(NULLIF(d.new_value4,''),d.achievement4) is null) then 0 else COALESCE(NULLIF(d.new_value4,''),d.achievement4) end,\n" +
+                    "d.date_created, d.date_created2, d.date_created3, d.date_created4,\n" +
+                    "c.internal_code as kode_indicator\n" +
+                    "from ref_role a\n" +
+                    "inner join usaha_activity b on a.id_role = b.id_role\n" +
+                    "inner join usaha_indicator c on b.id = c.id_activity\n" +
+                    "left join (select * from entry_usaha_indicator where year_entry = :year and id_monper = :id_monper "+tg_date_1+") d on c.id = d.id_assign\n" +
+                    "where a.cat_role = :catrole and a.id_prov = :id_prov and c.id_program = :id_program and c.id_activity = :id_activity ";
+        query = em.createNativeQuery(sql);
+        query.setParameter("catrole", catrole);
+        query.setParameter("id_prov", id_prov);
+        query.setParameter("id_program", id_program);
+        query.setParameter("id_activity", id_activity);
+        query.setParameter("year", year);
+        query.setParameter("id_monper", id_monper);
+    }else{}
         
         
         List list   = query.getResultList();
@@ -1137,9 +1303,12 @@ public class RateController {
         if(type.equals("entry_gov_indicator")){
             prog = "gov_program";
             id_indi = "d.id_gov_indicator";
-        }else{
+        }else if(type.equals("entry_nsa_indicator")){
             prog = "nsa_program";
             id_indi = "d.id_nsa_indicator";
+        }else{
+            prog = "usaha_program";
+            id_indi = "d.id_usaha_indicator";
         }
         String sql  = "select count(*) as tot from\n" +
                     "(\n" +
@@ -1203,9 +1372,12 @@ public class RateController {
         if(type.equals("entry_gov_budget")){
             prog = "gov_program";
             id_indi = "f.id_gov_activity";
+        }else if(type.equals("entry_nsa_budget")){
+            prog = "gov_program";
+            id_indi = "f.id_gov_activity";
         }else{
-            prog = "nsa_program";
-            id_indi = "f.id_nsa_activity";
+            prog = "usaha_program";
+            id_indi = "f.id_usaha_activity";
         }
         String sql  = "select count(*) as tot from\n" +
                     "(\n" +
@@ -1372,6 +1544,58 @@ public class RateController {
                     }
                 }
             }
+        }else if(catrole.equals("Corporation")){
+            if(!dat_id_indicator.equals("0")) {
+                String[] data_indicator      = dat_id_indicator.split(",");
+                String[] data_achievement    = dat_achievement.split(",");
+                String[] data_entry          = dat_entry.split(",");
+                for(int i=0;i<data_entry.length;i++) {
+                    if(!data_entry[i].equals("null")) {
+                        query = em.createNativeQuery("update entry_usaha_indicator set achievement"+period+" = :achievement where id=:id");
+//                            query.setParameter("created_by", data_indicator[i]);  
+                        query.setParameter("achievement", data_achievement[i]);
+                        query.setParameter("id", data_entry[i]);
+                        query.executeUpdate();
+                    }else {
+                        System.out.println("null : "+data_entry[i]);
+                        if(period.equals("1")) {
+                            EntryUsahaIndicator entryUsahaIndicator = new EntryUsahaIndicator();
+                            entryUsahaIndicator.setId_assign(Integer.parseInt(data_indicator[i]));
+                            entryUsahaIndicator.setAchievement1(Integer.parseInt(data_achievement[i]));
+                            entryUsahaIndicator.setYear_entry(tahun);
+                            entryUsahaIndicator.setDate_created(new Date());
+                            entryUsahaIndicator.setId_monper(id_monper);
+                            entrySdgService.saveEntryUsahaIndicator(entryUsahaIndicator);
+                        }else if(period.equals("2")) {
+                        	EntryUsahaIndicator entryUsahaIndicator = new EntryUsahaIndicator();
+                        	entryUsahaIndicator.setId_assign(Integer.parseInt(data_indicator[i]));
+                        	entryUsahaIndicator.setAchievement2(Integer.parseInt(data_achievement[i]));
+                        	entryUsahaIndicator.setYear_entry(tahun);
+                        	entryUsahaIndicator.setDate_created(new Date());
+                        	entryUsahaIndicator.setId_monper(id_monper);
+                            entrySdgService.saveEntryUsahaIndicator(entryUsahaIndicator);
+                        }else if(period.equals("3")) {
+                            EntryUsahaIndicator entryUsahaIndicator = new EntryUsahaIndicator();
+                            entryUsahaIndicator.setId_assign(Integer.parseInt(data_indicator[i]));
+                            entryUsahaIndicator.setAchievement3(Integer.parseInt(data_achievement[i]));
+                            entryUsahaIndicator.setYear_entry(tahun);
+                            entryUsahaIndicator.setDate_created(new Date());
+                            entryUsahaIndicator.setId_monper(id_monper);
+                            entrySdgService.saveEntryUsahaIndicator(entryUsahaIndicator);
+                        }else if(period.equals("4")) {
+                            EntryUsahaIndicator entryUsahaIndicator = new EntryUsahaIndicator();
+                            entryUsahaIndicator.setId_assign(Integer.parseInt(data_indicator[i]));
+                            entryUsahaIndicator.setAchievement4(Integer.parseInt(data_achievement[i]));
+                            entryUsahaIndicator.setYear_entry(tahun);
+                            entryUsahaIndicator.setDate_created(new Date());
+                            entryUsahaIndicator.setId_monper(id_monper);
+                            entrySdgService.saveEntryUsahaIndicator(entryUsahaIndicator);
+                        }else{
+                            System.out.println("ke gak ada");
+                        };
+                    }
+                }
+            }
         }
         
     }
@@ -1509,6 +1733,57 @@ public class RateController {
                             entryNsaBudget.setDate_created(new Date());
                             entryNsaBudget.setId_monper(id_monper);
                             entrySdgService.saveEntryNsaBudget(entryNsaBudget);
+                        }else{
+                            System.out.println("ke gak ada");
+                        };
+                    }
+                }
+            }
+        }else if(catrole.equals("Corporation")){
+            if(!dat_id_indicator.equals("0")) {
+                String[] data_indicator      = dat_id_indicator.split(",");
+                String[] data_achievement    = dat_achievement.split(",");
+                String[] data_entry          = dat_entry.split(",");
+                for(int i=0;i<data_entry.length;i++) {
+                    if(!data_entry[i].equals("null")) {
+                        query = em.createNativeQuery("update entry_usaha_budget set achievement"+period+" = :achievement where id=:id");
+//                            query.setParameter("created_by", data_indicator[i]);  
+                        query.setParameter("achievement", data_achievement[i]);
+                        query.setParameter("id", data_entry[i]);
+                        query.executeUpdate();
+                    }else {
+                        if(period.equals("1")) {
+                            EntryUsahaBudget entryUsahaBudget = new EntryUsahaBudget();
+                            entryUsahaBudget.setId_usaha_activity(Integer.parseInt(data_indicator[i]));
+                            entryUsahaBudget.setAchievement1(Integer.parseInt(data_achievement[i]));
+                            entryUsahaBudget.setYear_entry(tahun);
+                            entryUsahaBudget.setDate_created(new Date());
+                            entryUsahaBudget.setId_monper(id_monper);
+                            entrySdgService.saveEntryUsahaBudget(entryUsahaBudget);
+                        }else if(period.equals("2")) {
+                        	EntryUsahaBudget entryUsahaBudget = new EntryUsahaBudget();
+                        	entryUsahaBudget.setId_usaha_activity(Integer.parseInt(data_indicator[i]));
+                        	entryUsahaBudget.setAchievement2(Integer.parseInt(data_achievement[i]));
+                        	entryUsahaBudget.setYear_entry(tahun);
+                        	entryUsahaBudget.setDate_created(new Date());
+                        	entryUsahaBudget.setId_monper(id_monper);
+                            entrySdgService.saveEntryUsahaBudget(entryUsahaBudget);
+                        }else if(period.equals("3")) {
+                        	EntryUsahaBudget entryUsahaBudget = new EntryUsahaBudget();
+                        	entryUsahaBudget.setId_usaha_activity(Integer.parseInt(data_indicator[i]));
+                        	entryUsahaBudget.setAchievement3(Integer.parseInt(data_achievement[i]));
+                        	entryUsahaBudget.setYear_entry(tahun);
+                        	entryUsahaBudget.setDate_created(new Date());
+                        	entryUsahaBudget.setId_monper(id_monper);
+                            entrySdgService.saveEntryUsahaBudget(entryUsahaBudget);
+                        }else if(period.equals("4")) {
+                        	EntryUsahaBudget entryUsahaBudget = new EntryUsahaBudget();
+                        	entryUsahaBudget.setId_usaha_activity(Integer.parseInt(data_indicator[i]));
+                        	entryUsahaBudget.setAchievement4(Integer.parseInt(data_achievement[i]));
+                        	entryUsahaBudget.setYear_entry(tahun);
+                        	entryUsahaBudget.setDate_created(new Date());
+                        	entryUsahaBudget.setId_monper(id_monper);
+                            entrySdgService.saveEntryUsahaBudget(entryUsahaBudget);
                         }else{
                             System.out.println("ke gak ada");
                         };

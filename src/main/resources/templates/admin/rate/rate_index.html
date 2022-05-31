@@ -328,6 +328,7 @@
                     $("#idrole").append('<option value="999999" >All</option>');
                     $("#idrole").append('<option value="9999991" >All Government</option>');
                     $("#idrole").append('<option value="9999992" >All Non Government</option>');
+                    $("#idrole").append('<option value="9999993" >All Corporation</option>');
                     var array = result.content;
                     if (array != '') {
                         for (i in array) {
@@ -380,6 +381,7 @@
                     $("#idrole").html('<option value="999999" >All</option>');
                     $("#idrole").append('<option value="9999991" >All Government</option>');
                     $("#idrole").append('<option value="9999992" >All Non Government</option>');
+                    $("#idrole").append('<option value="9999993" >All Corporation</option>');
                     var array = result.content;
                     if (array != '') {
                         for (i in array) {
@@ -481,6 +483,26 @@
                                 }
                             }
                         });
+                    }else if(catrole == 'Corporation' || role == '9999993'){
+                        $.ajax({
+                            type: "GET",
+                            url: urls+'list-get-sts-monper-corporation/'+data[0],
+                            success: function (result1) {
+                                var sts = result1.content;
+                                console.log(sts);
+                                if(sts == 'yearly'){
+                                    var s_html = '<option value="0" >-- Pilih --</option><option value="1" selected>End of fiscal year</option>';
+                                }else if(sts == 'semesterly'){
+                                    var s_html = '<option value="0" >-- Pilih --</option><option value="1" >Semester 1</option><option value="2" >Semester 2</option>';
+                                }else if(sts == 'quarterly'){
+                                    var s_html = '<option value="0" >-- Pilih --</option><option value="1" >Quarter 1</option><option value="2" >Quarter 2<option value="3" >Quarter 3</option><option value="4" >Quarter 4</option>';
+                                }else{}
+                                $("#period").html(s_html);
+                                if(sts == 'yearly'){
+                                    $("#period").trigger('change');
+                                }
+                            }
+                        });
                     }else{
                         var s_html = '<option value="0" >-- Pilih --</option>';
                         $("#period").html(s_html);
@@ -516,6 +538,26 @@
                         $.ajax({
                             type: "GET",
                             url: urls+'list-get-sts-monper-nongov_act/'+data[0],
+                            success: function (result1) {
+                                var sts = result1.content;
+                                console.log(sts);
+                                if(sts == 'yearly'){
+                                    var s_html = '<option value="0" >-- Pilih --</option><option value="1" selected>End of fiscal year</option>';
+                                }else if(sts == 'semesterly'){
+                                    var s_html = '<option value="0" >-- Pilih --</option><option value="1" >Semester 1</option><option value="2" >Semester 2</option>';
+                                }else if(sts == 'quarterly'){
+                                    var s_html = '<option value="0" >-- Pilih --</option><option value="1" >Quarter 1</option><option value="2" >Quarter 2<option value="3" >Quarter 3</option><option value="4" >Quarter 4</option>';
+                                }else{}
+                                $("#period").html(s_html);
+                                if(sts == 'yearly'){
+                                    $("#period").trigger('change');
+                                }
+                            }
+                        });
+                    }else if(catrole == 'Corporation' || role == '9999993'){
+                        $.ajax({
+                            type: "GET",
+                            url: urls+'list-get-sts-monper-corporation/'+data[0],
                             success: function (result1) {
                                 var sts = result1.content;
                                 console.log(sts);
@@ -604,6 +646,26 @@
                                 }
                             }
                         });
+                    }else if(catrole == 'Corporation' || role == '9999993'){
+                        $.ajax({
+                            type: "GET",
+                            url: urls+'list-get-sts-monper-corporation/'+data[0],
+                            success: function (result1) {
+                                var sts = result1.content;
+                                console.log(sts);
+                                if(sts == 'yearly'){
+                                    var s_html = '<option value="0" >-- Pilih --</option><option value="1" selected>End of fiscal year</option>';
+                                }else if(sts == 'semesterly'){
+                                    var s_html = '<option value="0" >-- Pilih --</option><option value="1" >Semester 1</option><option value="2" >Semester 2</option>';
+                                }else if(sts == 'quarterly'){
+                                    var s_html = '<option value="0" >-- Pilih --</option><option value="1" >Quarter 1</option><option value="2" >Quarter 2<option value="3" >Quarter 3</option><option value="4" >Quarter 4</option>';
+                                }else{}
+                                $("#period").html(s_html);
+                                if(sts == 'yearly'){
+                                    $("#period").trigger('change');
+                                }
+                            }
+                        });
                     }else{
                         var s_html = '<option value="0" >-- Pilih --</option>';
                         $("#period").html(s_html);
@@ -639,6 +701,26 @@
                         $.ajax({
                             type: "GET",
                             url: urls+'list-get-sts-monper-nongov_act/'+data[0],
+                            success: function (result1) {
+                                var sts = result1.content;
+                                console.log(sts);
+                                if(sts == 'yearly'){
+                                    var s_html = '<option value="0" >-- Pilih --</option><option value="1" selected>End of fiscal year</option>';
+                                }else if(sts == 'semesterly'){
+                                    var s_html = '<option value="0" >-- Pilih --</option><option value="1" >Semester 1</option><option value="2" >Semester 2</option>';
+                                }else if(sts == 'quarterly'){
+                                    var s_html = '<option value="0" >-- Pilih --</option><option value="1" >Quarter 1</option><option value="2" >Quarter 2<option value="3" >Quarter 3</option><option value="4" >Quarter 4</option>';
+                                }else{}
+                                $("#period").html(s_html);
+                                if(sts == 'yearly'){
+                                    $("#period").trigger('change');
+                                }
+                            }
+                        });
+                    }else if(catrole == 'Corporation' || role == '9999993'){
+                        $.ajax({
+                            type: "GET",
+                            url: urls+'list-get-sts-monper-corporation_act/'+data[0],
                             success: function (result1) {
                                 var sts = result1.content;
                                 console.log(sts);
@@ -727,6 +809,26 @@
                                 }
                             }
                         });
+                    }else if(catrole == 'Corporation' || role == '9999993'){
+                        $.ajax({
+                            type: "GET",
+                            url: urls+'list-get-sts-monper-corporation/'+data[0],
+                            success: function (result1) {
+                                var sts = result1.content;
+                                console.log(sts);
+                                if(sts == 'yearly'){
+                                    var s_html = '<option value="0" >-- Pilih --</option><option value="1" selected>End of fiscal year</option>';
+                                }else if(sts == 'semesterly'){
+                                    var s_html = '<option value="0" >-- Pilih --</option><option value="1" >Semester 1</option><option value="2" >Semester 2</option>';
+                                }else if(sts == 'quarterly'){
+                                    var s_html = '<option value="0" >-- Pilih --</option><option value="1" >Quarter 1</option><option value="2" >Quarter 2<option value="3" >Quarter 3</option><option value="4" >Quarter 4</option>';
+                                }else{}
+                                $("#period").html(s_html);
+                                if(sts == 'yearly'){
+                                    $("#period").trigger('change');
+                                }
+                            }
+                        });
                     }else{
                         var s_html = '<option value="0" >-- Pilih --</option>';
                         $("#period").html(s_html);
@@ -762,6 +864,26 @@
                         $.ajax({
                             type: "GET",
                             url: urls+'list-get-sts-monper-nongov_act/'+data[0],
+                            success: function (result1) {
+                                var sts = result1.content;
+                                console.log(sts);
+                                if(sts == 'yearly'){
+                                    var s_html = '<option value="0" >-- Pilih --</option><option value="1" selected>End of fiscal year</option>';
+                                }else if(sts == 'semesterly'){
+                                    var s_html = '<option value="0" >-- Pilih --</option><option value="1" >Semester 1</option><option value="2" >Semester 2</option>';
+                                }else if(sts == 'quarterly'){
+                                    var s_html = '<option value="0" >-- Pilih --</option><option value="1" >Quarter 1</option><option value="2" >Quarter 2<option value="3" >Quarter 3</option><option value="4" >Quarter 4</option>';
+                                }else{}
+                                $("#period").html(s_html);
+                                if(sts == 'yearly'){
+                                    $("#period").trigger('change');
+                                }
+                            }
+                        });
+                    }else if(catrole == 'Corporation' || role == '9999993'){
+                        $.ajax({
+                            type: "GET",
+                            url: urls+'list-get-sts-monper-corporation_act/'+data[0],
                             success: function (result1) {
                                 var sts = result1.content;
                                 console.log(sts);
@@ -945,6 +1067,8 @@
                     var type = 'entry_gov_indicator';
                 }else if(catrole == 'NSA'){
                     var type = 'entry_nsa_indicator';
+                }else if(catrole == 'Corporation'){
+                    var type = 'entry_usaha_indicator';
                 }
                 console.log('get-status-approve/'+id_role+'/'+id_monper+'/'+tahun+'/'+type+'/'+v_period);
                 $.ajax({
@@ -988,6 +1112,8 @@
                     var type = 'entry_gov_budget';
                 }else if(catrole == 'NSA'){
                     var type = 'entry_nsa_budget';
+                }else if(catrole == 'Corporation'){
+                    var type = 'entry_usaha_budget';
                 }
                 console.log('get-status-approve/'+id_role+'/'+id_monper+'/'+tahun+'/'+type+'/'+v_period);
                 $.ajax({
@@ -1049,6 +1175,11 @@
                     var type_b  = 'entry_nsa_budget';
                     var tb      = 'nsa_activity';
                     var tb2     = 'nsa_indicator';
+                }else if(catrole == 'Corporation'){
+                    var type    = 'entry_usaha_indicator';
+                    var type_b  = 'entry_usaha_budget';
+                    var tb      = 'usaha_activity';
+                    var tb2     = 'usaha_indicator';
                 }else{}
                 if(v_pil_prog == 'indicator'){
                     var link2 = urls+'get-cek-data-all/'+id_role+'/'+tahun+'/'+v_period+'/'+type+'/'+tb+'/'+tb2+'/'+isi_time+'/'+id_monper;
@@ -1199,6 +1330,11 @@
                     var type_b  = 'entry_nsa_budget';
                     var tb      = 'nsa_activity';
                     var tb2     = 'nsa_indicator';
+                }else if(catrole == 'Corporation'){
+                    var type    = 'entry_usaha_indicator';
+                    var type_b  = 'entry_usaha_budget';
+                    var tb      = 'usaha_activity';
+                    var tb2     = 'usaha_indicator';
                 }else{}
                 if(v_pil_prog == 'indicator'){
                     var link2 = urls+'get-cek-data-all/'+id_role+'/'+tahun+'/'+v_period+'/'+type+'/'+tb+'/'+tb2+'/'+isi_time+'/'+id_monper;
@@ -1337,6 +1473,11 @@
                     var type_b  = 'entry_nsa_budget';
                     var tb      = 'nsa_activity';
                     var tb2     = 'nsa_indicator';
+                }else if(catrole == 'Corporation'){
+                    var type    = 'entry_usaha_indicator';
+                    var type_b  = 'entry_usaha_budget';
+                    var tb      = 'usaha_activity';
+                    var tb2     = 'usaha_indicator';
                 }else{}
                 if(v_pil_prog == 'indicator'){
                     var link2 = urls+'get-cek-data-all/'+id_role+'/'+tahun+'/'+v_period+'/'+type+'/'+tb+'/'+tb2+'/'+isi_time+'/'+id_monper;
@@ -1508,6 +1649,11 @@
                     var type_b  = 'entry_nsa_budget';
                     var tb      = 'nsa_activity';
                     var tb2     = 'nsa_indicator';
+                }else if(catrole == 'Corporation'){
+                    var type    = 'entry_usaha_indicator';
+                    var type_b  = 'entry_usaha_budget';
+                    var tb      = 'usaha_activity';
+                    var tb2     = 'usaha_indicator';
                 }else{}
                 if(v_pil_prog == 'indicator'){
                     var link2 = urls+'get-cek-data-all/'+id_role+'/'+tahun+'/'+v_period+'/'+type+'/'+tb+'/'+tb2+'/'+isi_time+'/'+id_monper;
@@ -1665,6 +1811,11 @@
                     var type_b  = 'entry_nsa_budget';
                     var tb      = 'nsa_activity';
                     var tb2     = 'nsa_indicator';
+                }else if(catrole == 'Corporation'){
+                    var type    = 'entry_usaha_indicator';
+                    var type_b  = 'entry_usaha_budget';
+                    var tb      = 'usaha_activity';
+                    var tb2     = 'usaha_indicator';
                 }else{}
                 if(v_pil_prog == 'indicator'){
                     var link2 = urls+'get-cek-data-all/'+id_role+'/'+tahun+'/'+v_period+'/'+type+'/'+tb+'/'+tb2+'/'+isi_time+'/'+id_monper;
@@ -1881,6 +2032,73 @@
                                                                             }else{}
                                                                         }else{}
 
+                                                                    }else if(catrole == 'Corporation'){
+                                                                        $.ajax({
+                                                                            type: "GET",
+                                                                            async:false,
+                                                                            url: urls+'list-get-sts-monper-corporation_act/'+id_monper,
+                                                                            success: function (resultmonper) {
+                                                                                sts = resultmonper.content;
+                                                                            }
+                                                                        });
+                                                                        if(sts == 'yearly'){
+                                                                            if(v_period == '1'){
+                                                                                var ket_input = '<input name="achievement11" id="submission[][achievement11]" type="text" value="'+level3[p][5]+'" class="input-block-level" readonly><input name="achievement21" id="submission[][achievement21]" type="hidden" value="'+level3[p][6]+'" class="input-block-level" readonly><input name="achievement31" id="submission[][achievement31]" type="hidden" value="'+level3[p][7]+'" class="input-block-level" readonly><input name="achievement41" id="submission[][achievement41]" type="hidden" value="'+level3[p][8]+'" class="input-block-level" readonly>';
+                                                                                if(level3[p][9] <= (tahun+1)+'-01-15'){
+                                                                                    var warna = '';
+                                                                                }else{
+                                                                                    var warna = 'style="background-color: #ffa5a5"';
+                                                                                }
+                                                                            }else{}
+                                                                        }else if(sts == 'semesterly'){
+                                                                            if(v_period == '1'){
+                                                                                var ket_input = '<input name="achievement11" id="submission[][achievement11]" type="text" value="'+level3[p][5]+'" class="input-block-level" readonly><input name="achievement21" id="submission[][achievement21]" type="hidden" value="'+level3[p][6]+'" class="input-block-level" readonly><input name="achievement31" id="submission[][achievement31]" type="hidden" value="'+level3[p][7]+'" class="input-block-level" readonly><input name="achievement41" id="submission[][achievement41]" type="hidden" value="'+level3[p][8]+'" class="input-block-level" readonly>';
+                                                                                if(level3[p][9] <= tahun+'-07-15'){
+                                                                                    var warna = '';
+                                                                                }else{
+                                                                                    var warna = 'style="background-color: #ffa5a5"';
+                                                                                }
+                                                                            }else if(v_period == '2'){
+                                                                                var ket_input = '<input name="achievement11" id="submission[][achievement11]" type="hidden" value="'+level3[p][5]+'" class="input-block-level" readonly><input name="achievement21" id="submission[][achievement21]" type="text" value="'+level3[p][6]+'" class="input-block-level" readonly><input name="achievement31" id="submission[][achievement31]" type="hidden" value="'+level3[p][7]+'" class="input-block-level" readonly><input name="achievement41" id="submission[][achievement41]" type="hidden" value="'+level3[p][8]+'" class="input-block-level" readonly>';
+                                                                                if(level3[p][10] <= (tahun+1)+'-01-15'){
+                                                                                    var warna = '';
+                                                                                }else{
+                                                                                    var warna = 'style="background-color: #ffa5a5"';
+                                                                                }
+                                                                            }else{}
+
+                                                                        }else if(sts == 'quarterly'){
+                                                                            if(v_period == '1'){
+                                                                                var ket_input = '<input name="achievement11" id="submission[][achievement11]" type="text" value="'+level3[p][5]+'" class="input-block-level" readonly><input name="achievement21" id="submission[][achievement21]" type="hidden" value="'+level3[p][6]+'" class="input-block-level" readonly><input name="achievement31" id="submission[][achievement31]" type="hidden" value="'+level3[p][7]+'" class="input-block-level" readonly><input name="achievement41" id="submission[][achievement41]" type="hidden" value="'+level3[p][8]+'" class="input-block-level" readonly>';
+                                                                                if(level3[p][9] <= tahun+'-04-15'){
+                                                                                    var warna = '';
+                                                                                }else{
+                                                                                    var warna = 'style="background-color: #ffa5a5"';
+                                                                                }
+                                                                            }else if(v_period == '2'){
+                                                                                var ket_input = '<input name="achievement11" id="submission[][achievement11]" type="hidden" value="'+level3[p][5]+'" class="input-block-level" readonly><input name="achievement21" id="submission[][achievement21]" type="text" value="'+level3[p][6]+'" class="input-block-level" readonly><input name="achievement31" id="submission[][achievement31]" type="hidden" value="'+level3[p][7]+'" class="input-block-level" readonly><input name="achievement41" id="submission[][achievement41]" type="hidden" value="'+level3[p][8]+'" class="input-block-level" readonly>';
+                                                                                if(level3[p][10] <= tahun+'-07-15'){
+                                                                                    var warna = '';
+                                                                                }else{
+                                                                                    var warna = 'style="background-color: #ffa5a5"';
+                                                                                }
+                                                                            }else if(v_period == '3'){
+                                                                                var ket_input = '<input name="achievement11" id="submission[][achievement11]" type="hidden" value="'+level3[p][5]+'" class="input-block-level" readonly><input name="achievement21" id="submission[][achievement21]" type="hidden" value="'+level3[p][6]+'" class="input-block-level" readonly><input name="achievement31" id="submission[][achievement31]" type="text" value="'+level3[p][7]+'" class="input-block-level" readonly><input name="achievement41" id="submission[][achievement41]" type="hidden" value="'+level3[p][8]+'" class="input-block-level" readonly>';
+                                                                                if(level3[p][11] <= tahun+'-10-15'){
+                                                                                    var warna = '';
+                                                                                }else{
+                                                                                    var warna = 'style="background-color: #ffa5a5"';
+                                                                                }
+                                                                            }else if(v_period == '4'){
+                                                                                var ket_input = '<input name="achievement11" id="submission[][achievement11]" type="hidden" value="'+level3[p][5]+'" class="input-block-level" readonly><input name="achievement21" id="submission[][achievement21]" type="hidden" value="'+level3[p][6]+'" class="input-block-level" readonly><input name="achievement31" id="submission[][achievement31]" type="hidden" value="'+level3[p][7]+'" class="input-block-level" readonly><input name="achievement41" id="submission[][achievement41]" type="text" value="'+level3[p][8]+'" class="input-block-level" readonly>';
+                                                                                if(level3[p][12] <= (tahun+1)+'-01-15'){
+                                                                                    var warna = '';
+                                                                                }else{
+                                                                                    var warna = 'style="background-color: #ffa5a5"';
+                                                                                }
+                                                                            }else{}
+                                                                        }else{}
+
                                                                     }else{}
 
 
@@ -1935,6 +2153,11 @@
                     var type_b  = 'entry_nsa_budget';
                     var tb      = 'nsa_activity';
                     var tb2     = 'nsa_indicator';
+                }else if(catrole == 'Corporation'){
+                    var type    = 'entry_usaha_indicator';
+                    var type_b  = 'entry_usaha_budget';
+                    var tb      = 'usaha_activity';
+                    var tb2     = 'usaha_indicator';
                 }else{}
                 if(v_pil_prog == 'indicator'){
                     var link2 = urls+'get-cek-data-all/'+id_role+'/'+tahun+'/'+v_period+'/'+type+'/'+tb+'/'+tb2+'/'+isi_time+'/'+id_monper;
@@ -2072,6 +2295,73 @@
                                                             type: "GET",
                                                             async:false,
                                                             url: urls+'list-get-sts-monper-nongov_act/'+id_monper,
+                                                            success: function (resultmonper) {
+                                                                sts = resultmonper.content;
+                                                            }
+                                                        });
+                                                        if(sts == 'yearly'){
+                                                            if(v_period == '1'){
+                                                                var ket_input = '<input name="achievement11" id="submission[][achievement11]" type="text" value="'+level3[p][5]+'" class="input-block-level" readonly><input name="achievement21" id="submission[][achievement21]" type="hidden" value="'+level3[p][6]+'" class="input-block-level" readonly><input name="achievement31" id="submission[][achievement31]" type="hidden" value="'+level3[p][7]+'" class="input-block-level" readonly><input name="achievement41" id="submission[][achievement41]" type="hidden" value="'+level3[p][8]+'" class="input-block-level" readonly>';
+                                                                if(level3[p][9] <= (tahun+1)+'-01-15'){
+                                                                    var warna = '';
+                                                                }else{
+                                                                    var warna = 'style="background-color: #ffa5a5"';
+                                                                }
+                                                            }else{}
+                                                        }else if(sts == 'semesterly'){
+                                                            if(v_period == '1'){
+                                                                var ket_input = '<input name="achievement11" id="submission[][achievement11]" type="text" value="'+level3[p][5]+'" class="input-block-level" readonly><input name="achievement21" id="submission[][achievement21]" type="hidden" value="'+level3[p][6]+'" class="input-block-level" readonly><input name="achievement31" id="submission[][achievement31]" type="hidden" value="'+level3[p][7]+'" class="input-block-level" readonly><input name="achievement41" id="submission[][achievement41]" type="hidden" value="'+level3[p][8]+'" class="input-block-level" readonly>';
+                                                                if(level3[p][9] <= tahun+'-07-15'){
+                                                                    var warna = '';
+                                                                }else{
+                                                                    var warna = 'style="background-color: #ffa5a5"';
+                                                                }
+                                                            }else if(v_period == '2'){
+                                                                var ket_input = '<input name="achievement11" id="submission[][achievement11]" type="hidden" value="'+level3[p][5]+'" class="input-block-level" readonly><input name="achievement21" id="submission[][achievement21]" type="text" value="'+level3[p][6]+'" class="input-block-level" readonly><input name="achievement31" id="submission[][achievement31]" type="hidden" value="'+level3[p][7]+'" class="input-block-level" readonly><input name="achievement41" id="submission[][achievement41]" type="hidden" value="'+level3[p][8]+'" class="input-block-level" readonly>';
+                                                                if(level3[p][10] <= (tahun+1)+'-01-15'){
+                                                                    var warna = '';
+                                                                }else{
+                                                                    var warna = 'style="background-color: #ffa5a5"';
+                                                                }
+                                                            }else{}
+
+                                                        }else if(sts == 'quarterly'){
+                                                            if(v_period == '1'){
+                                                                var ket_input = '<input name="achievement11" id="submission[][achievement11]" type="text" value="'+level3[p][5]+'" class="input-block-level" readonly><input name="achievement21" id="submission[][achievement21]" type="hidden" value="'+level3[p][6]+'" class="input-block-level" readonly><input name="achievement31" id="submission[][achievement31]" type="hidden" value="'+level3[p][7]+'" class="input-block-level" readonly><input name="achievement41" id="submission[][achievement41]" type="hidden" value="'+level3[p][8]+'" class="input-block-level" readonly>';
+                                                                if(level3[p][9] <= tahun+'-04-15'){
+                                                                    var warna = '';
+                                                                }else{
+                                                                    var warna = 'style="background-color: #ffa5a5"';
+                                                                }
+                                                            }else if(v_period == '2'){
+                                                                var ket_input = '<input name="achievement11" id="submission[][achievement11]" type="hidden" value="'+level3[p][5]+'" class="input-block-level" readonly><input name="achievement21" id="submission[][achievement21]" type="text" value="'+level3[p][6]+'" class="input-block-level" readonly><input name="achievement31" id="submission[][achievement31]" type="hidden" value="'+level3[p][7]+'" class="input-block-level" readonly><input name="achievement41" id="submission[][achievement41]" type="hidden" value="'+level3[p][8]+'" class="input-block-level" readonly>';
+                                                                if(level3[p][10] <= tahun+'-07-15'){
+                                                                    var warna = '';
+                                                                }else{
+                                                                    var warna = 'style="background-color: #ffa5a5"';
+                                                                }
+                                                            }else if(v_period == '3'){
+                                                                var ket_input = '<input name="achievement11" id="submission[][achievement11]" type="hidden" value="'+level3[p][5]+'" class="input-block-level" readonly><input name="achievement21" id="submission[][achievement21]" type="hidden" value="'+level3[p][6]+'" class="input-block-level" readonly><input name="achievement31" id="submission[][achievement31]" type="text" value="'+level3[p][7]+'" class="input-block-level" readonly><input name="achievement41" id="submission[][achievement41]" type="hidden" value="'+level3[p][8]+'" class="input-block-level" readonly>';
+                                                                if(level3[p][11] <= tahun+'-10-15'){
+                                                                    var warna = '';
+                                                                }else{
+                                                                    var warna = 'style="background-color: #ffa5a5"';
+                                                                }
+                                                            }else if(v_period == '4'){
+                                                                var ket_input = '<input name="achievement11" id="submission[][achievement11]" type="hidden" value="'+level3[p][5]+'" class="input-block-level" readonly><input name="achievement21" id="submission[][achievement21]" type="hidden" value="'+level3[p][6]+'" class="input-block-level" readonly><input name="achievement31" id="submission[][achievement31]" type="hidden" value="'+level3[p][7]+'" class="input-block-level" readonly><input name="achievement41" id="submission[][achievement41]" type="text" value="'+level3[p][8]+'" class="input-block-level" readonly>';
+                                                                if(level3[p][12] <= (tahun+1)+'-01-15'){
+                                                                    var warna = '';
+                                                                }else{
+                                                                    var warna = 'style="background-color: #ffa5a5"';
+                                                                }
+                                                            }else{}
+                                                        }else{}
+
+                                                    }else if(catrole == 'Corporation'){
+                                                        $.ajax({
+                                                            type: "GET",
+                                                            async:false,
+                                                            url: urls+'list-get-sts-monper-corporation_act/'+id_monper,
                                                             success: function (resultmonper) {
                                                                 sts = resultmonper.content;
                                                             }
@@ -2482,6 +2772,11 @@
                                     var type_b  = 'entry_nsa_budget';
                                     var tb      = 'nsa_activity';
                                     var tb2     = 'nsa_indicator';
+                                }else if(row[2] == 'Corporation'){
+                                    var type    = 'entry_usaha_indicator';
+                                    var type_b  = 'entry_usaha_budget';
+                                    var tb      = 'usaha_activity';
+                                    var tb2     = 'usaha_indicator';
                                 }else{}
                                 if(v_pil_prog == 'indicator'){
                                     var link2 = urls+'get-jumlah-catrole/'+d_tahun+'/'+d_period+'/'+type+'/'+tb+'/'+tb2+'/'+isi_time+'/'+d_id_monper+'/'+row[2]+'/'+v_idprov;
@@ -2534,6 +2829,11 @@
                                 var type_b  = 'entry_nsa_budget';
                                 var tb      = 'nsa_activity';
                                 var tb2     = 'nsa_indicator';
+                            }else if(row[2] == 'Corporation'){
+                                var type    = 'entry_usaha_indicator';
+                                var type_b  = 'entry_usaha_budget';
+                                var tb      = 'usaha_activity';
+                                var tb2     = 'usaha_indicator';
                             }else{}
                             if(v_pil_prog == 'indicator'){
                                 var link2 = urls+'get-cek-data-all/'+d_id_role+'/'+d_tahun+'/'+d_period+'/'+type+'/'+tb+'/'+tb2+'/'+isi_time+'/'+d_id_monper;
@@ -2591,6 +2891,11 @@
                                 var type_b  = 'entry_nsa_budget';
                                 var tb      = 'nsa_activity';
                                 var tb2     = 'nsa_indicator';
+                            }else if(row[2] == 'Corporation'){
+                                var type    = 'entry_usaha_indicator';
+                                var type_b  = 'entry_usaha_budget';
+                                var tb      = 'usaha_activity';
+                                var tb2     = 'usaha_indicator';
                             }else{}
                             if(v_pil_prog == 'indicator'){
                                 var link2 = urls+'get-cek-data-all/'+d_id_role+'/'+d_tahun+'/'+d_period+'/'+type+'/'+tb+'/'+tb2+'/'+isi_time+'/'+d_id_monper;
@@ -2657,6 +2962,11 @@
                                 var type_b  = 'entry_nsa_budget';
                                 var tb      = 'nsa_activity';
                                 var tb2     = 'nsa_indicator';
+                            }else if(row[2] == 'Corporation'){
+                                var type    = 'entry_usaha_indicator';
+                                var type_b  = 'entry_usaha_budget';
+                                var tb      = 'usaha_activity';
+                                var tb2     = 'usaha_indicator';
                             }else{}
                             
                             
@@ -2706,6 +3016,45 @@
                                     type: "GET",
                                     async:false,
                                     url: urls+'list-get-sts-monper-nongov_act/'+id_monper,
+                                    success: function (resultmonper) {
+                                        sts = resultmonper.content;
+                                    }
+                                });
+                                
+                                if(v_pil_prog == 'indicator'){
+                                    var link3 = urls+'get-cek-data-all-deadline/'+d_id_role+'/'+d_tahun+'/'+d_period+'/'+type+'/'+tb+'/'+tb2+'/'+sts+'/'+isi_time+'/'+d_id_monper;
+                                }else{
+                                    var link3 = urls+'get-cek-data-all-deadline-budget/'+d_id_role+'/'+d_tahun+'/'+d_period+'/'+type_b+'/'+tb+'/'+tb2+'/'+sts+'/'+isi_time+'/'+d_id_monper;
+                                }
+                                
+                                $.ajax({
+                                    type: "GET",
+                                    async:false,
+                                    url: link3,
+                                    success: function (result3) {
+                                        dt = result3.content[0];
+                                    }
+                                });
+                                if(row[3] == '1'){
+                                    return "<div style='font-size:90%;'></div>";
+                                }else{
+                                    if(dt[0] == null){
+                                        var ketdt = '0';
+                                    }else{
+                                        var ketdt = dt[0];
+                                    }
+                                    if(dt[1] == null){
+                                        var ketdt1 = '0';
+                                    }else{
+                                        var ketdt1 = dt[1];
+                                    }
+                                    return "<div style='font-size:90%;'><span style='display:none'>'</span><a class='id_role_date' data-id_role='"+row[0]+"' data-catrole='"+row[2]+"' href='#'>"+ketdt+"</a> / <a class='id_role_date' data-id_role='"+row[0]+"' data-catrole='"+row[2]+"' href='#'>"+ketdt1+"</a></div>";
+                                }
+                            }else if(row[2] == 'Corporation'){
+                                $.ajax({
+                                    type: "GET",
+                                    async:false,
+                                    url: urls+'list-get-sts-monper-corporation_act/'+id_monper,
                                     success: function (resultmonper) {
                                         sts = resultmonper.content;
                                     }
@@ -2771,6 +3120,11 @@
                                 var type_b  = 'entry_nsa_budget';
                                 var tb      = 'nsa_activity';
                                 var tb2     = 'nsa_indicator';
+                            }else if(row[2] == 'Corporation'){
+                                var type    = 'entry_usaha_indicator';
+                                var type_b  = 'entry_usaha_budget';
+                                var tb      = 'usaha_activity';
+                                var tb2     = 'usaha_indicator';
                             }else{}
                             if(row[2] == 'Government'){
                                 $.ajax({
@@ -2824,6 +3178,53 @@
                                     type: "GET",
                                     async:false,
                                     url: urls+'list-get-sts-monper-nongov_act/'+id_monper,
+                                    success: function (resultmonper) {
+                                        sts = resultmonper.content;
+                                    }
+                                });
+                                
+                                if(v_pil_prog == 'indicator'){
+                                    var link3 = urls+'get-cek-data-all-deadline/'+d_id_role+'/'+d_tahun+'/'+d_period+'/'+type+'/'+tb+'/'+tb2+'/'+sts+'/'+isi_time+'/'+d_id_monper;
+                                }else{
+                                    var link3 = urls+'get-cek-data-all-deadline-budget/'+d_id_role+'/'+d_tahun+'/'+d_period+'/'+type_b+'/'+tb+'/'+tb2+'/'+sts+'/'+isi_time+'/'+d_id_monper;
+                                }
+                                
+                                $.ajax({
+                                    type: "GET",
+                                    async:false,
+                                    url: link3,
+                                    success: function (result3) {
+                                        dt = result3.content[0];
+                                    }
+                                });
+                                if(dt[0] == null){
+                                    var ketdt = '0';
+                                }else{
+                                    var ketdt = dt[0];
+                                }
+                                if(dt[1] == null){
+                                    var ketdt1 = '0';
+                                }else{
+                                    var ketdt1 = dt[1];
+                                }
+                                var hsl_ps = (ketdt/ketdt1)*100
+                                if(row[3] == '1'){
+                                    return "<div style='font-size:90%;'></div>";
+                                }else{
+                                    var kk = hsl_ps+'1';
+    //                                console.log(" - - "+kk+' -- '+ketdt1+' -- '+(ketdt/ketdt1)*100);
+                                    if(kk == 'NaN1'){
+                                        var hsl_ps1 = '0.00';
+                                    }else{
+                                        var hsl_ps1 = hsl_ps.toFixed(2);
+                                    }
+                                    return "<div style='font-size:90%;'>"+hsl_ps1+"%</div>";
+                                }
+                            }else if(row[2] == 'Corporation'){
+                                $.ajax({
+                                    type: "GET",
+                                    async:false,
+                                    url: urls+'list-get-sts-monper-corporation_act/'+id_monper,
                                     success: function (resultmonper) {
                                         sts = resultmonper.content;
                                     }
@@ -2954,6 +3355,12 @@
                                     var type    = 'entry_nsa_indicator';
                                 }else{
                                     var type    = 'entry_nsa_budget';
+                                }
+                            }else if(row[2] == 'Corporation'){
+                                if(v_pil_prog == 'indicator'){
+                                    var type    = 'entry_usaha_indicator';
+                                }else{
+                                    var type    = 'entry_usaha_budget';
                                 }
                             }else{}
                             
@@ -3227,6 +3634,12 @@
                     }else if(pil_prog == "indicator"){
                         var tipe_approve = "entry_nsa_indicator";
                     }else{}
+                }else if(cat_role == "Corporation"){
+                    if(pil_prog == "budget"){
+                        var tipe_approve = "entry_usaha_budget";
+                    }else if(pil_prog == "indicator"){
+                        var tipe_approve = "entry_usaha_indicator";
+                    }else{}
                 }else{}
                 var approval    = "1";
                 var type        = tipe_approve;
@@ -3289,6 +3702,12 @@
                         var tipe_approve = "entry_nsa_budget";
                     }else if(pil_prog == "indicator"){
                         var tipe_approve = "entry_nsa_indicator";
+                    }else{}
+                }else if(cat_role == "Corporation"){
+                    if(pil_prog == "budget"){
+                        var tipe_approve = "entry_usaha_budget";
+                    }else if(pil_prog == "indicator"){
+                        var tipe_approve = "entry_usaha_indicator";
                     }else{}
                 }else{}
                 var approval    = "1";
