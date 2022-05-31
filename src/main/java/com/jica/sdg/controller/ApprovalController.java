@@ -34,8 +34,10 @@ import com.jica.sdg.service.IEntrySdgDetailService;
 import com.jica.sdg.service.IEntrySdgService;
 import com.jica.sdg.service.IProvinsiService;
 import com.jica.sdg.service.IRoleService;
+import com.jica.sdg.service.IUsahaProfileService;
 import com.jica.sdg.service.ModelCrud;
 import com.jica.sdg.service.NsaProfileService;
+import com.jica.sdg.service.UsahaProfileService;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -45,28 +47,31 @@ import java.util.ArrayList;
 @Controller
 public class ApprovalController {
 	@Autowired
-    IEntryApprovalService approvalService;
+	private IEntryApprovalService approvalService;
 	
 	@Autowired
     private EntityManager em;
 	
 	@Autowired
-    NsaProfileService nsaProfilrService;
+	private NsaProfileService nsaProfilrService;
 	
 	@Autowired
-    IRoleService roleService;
+	private IUsahaProfileService usahaProfileService; 
 	
 	@Autowired
-    IProvinsiService provinsiService;
+	private IRoleService roleService;
 	
 	@Autowired
-	IEntrySdgService sdgService;
+	private IProvinsiService provinsiService;
 	
 	@Autowired
-	IEntrySdgDetailService sdgDetailService;
+	private IEntrySdgService sdgService;
 	
 	@Autowired
-    ModelCrud modelCrud;
+	private IEntrySdgDetailService sdgDetailService;
+	
+	@Autowired
+	private ModelCrud modelCrud;
 	
 	
 	@PostMapping(path = "admin/save-approval", consumes = "application/json", produces = "application/json")
@@ -553,7 +558,29 @@ public class ApprovalController {
            em.createNativeQuery("UPDATE entry_gri_ojk set description = '"+description+"',approval = '"+approval+"' where id ='"+id+"'").executeUpdate();
         
 	}
+    
+    //approval corporation
+    @GetMapping("admin/data-approval/corporation")
+    public String appvCor(Model model, HttpSession session) {
+        model.addAttribute("title", "SDG Indicators Monitoring");
         
+        Integer id_role = (Integer) session.getAttribute("id_role");
+        model.addAttribute("lang", session.getAttribute("bahasa"));
+        model.addAttribute("name", session.getAttribute("name"));
+        model.addAttribute("id_role", session.getAttribute("id_role"));
+    	Optional<Role> list = roleService.findOne(id_role);
+    	String id_prov      = list.get().getId_prov();
+    	String privilege    = list.get().getPrivilege();
+    	if(id_prov.equals("000")) {
+            model.addAttribute("listprov", provinsiService.findAllProvinsi());
+    	}else {
+            Optional<Provinsi> list1 = provinsiService.findOne(id_prov);
+            list1.ifPresent(foundUpdateObject1 -> model.addAttribute("listprov", foundUpdateObject1));
+    	}
+        model.addAttribute("id_prov", id_prov);
+        model.addAttribute("privilege", privilege);
+        return "admin/approval/entry_cor";
+    }    
         
     // approval best practice
     @GetMapping("admin/data-approval/best-practice")

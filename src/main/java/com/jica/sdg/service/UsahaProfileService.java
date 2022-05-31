@@ -41,7 +41,7 @@ public class UsahaProfileService implements IUsahaProfileService{
         
 	@Override
 	public List<Role> findRoleAll() {
-            return (List<Role>) nsaRoleRepo.findRoleAll();
+            return (List<Role>) nsaRoleRepo.findRoleCor();
 	}
 	@Override
 	public List<Role> findRoleGov() {

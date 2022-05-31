@@ -496,10 +496,10 @@
                         if(cektabel==0){
                         	var tabel = $('#tabel-entri-sdg > tbody').find('tr:last');
                         	//Indicator
-                        	var btnApply1=(cek1>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_indicator###1" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
-                        	var btnApply2=(cek2>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_indicator###2" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
-                        	var btnApply3=(cek3>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_indicator###3" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
-                        	var btnApply4=(cek4>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_indicator###4" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
+                        	var btnApply1=(cek1>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_indicator###1" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
+                        	var btnApply2=(cek2>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_indicator###2" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
+                        	var btnApply3=(cek3>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_indicator###3" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
+                        	var btnApply4=(cek4>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_indicator###4" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
                         	$.ajax({
             					type: "GET",
                                 url: urls+'get-approve/entry_usaha_indicator/'+tahun+'/'+id_monper+'/1'+'/'+v_idrole,
@@ -508,7 +508,7 @@
                                 	apply = result.content;
                                 	if(apply.length>0){
                                 		if(apply[0][1]=="1"){
-                                			btnApply1='<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_indicator###1" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
+                                			btnApply1='<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_indicator###1" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
                                 		}else if(apply[0][1]=="2"){
                                 			if($("#fs").is(':checked')){
                                 				btnApply1 = "<span class='label label-success'>Disetujui</span>";
@@ -531,7 +531,7 @@
                                 			if(cek1>0){
                                 				btnApply1=label;
                                 			}else{
-                                				btnApply1=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_indicator###1" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
+                                				btnApply1=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_indicator###1" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
                                 			}
                                 		}else if(apply[0][1]=="5"){
                                 			var label;
@@ -543,7 +543,7 @@
                                 			if(cek1>0){
                                 				btnApply1=label
                                 			}else{
-                                				btnApply1=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_indicator###1" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
+                                				btnApply1=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_indicator###1" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
                                 			}
                                 		}
                                 	}
@@ -557,7 +557,7 @@
                                 	apply = result.content;
                                 	if(apply.length>0){
                                 		if(apply[0][1]=="1"){
-                                			btnApply2=' <a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_indicator###2" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
+                                			btnApply2=' <a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_indicator###2" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
                                 		}else if(apply[0][1]=="2"){
                                 			if($("#fs").is(':checked')){
                                 				btnApply2 = "<span class='label label-success'>Disetujui</span>";
@@ -580,7 +580,7 @@
                                 			if(cek2>0){
                                 				btnApply2=label;
                                 			}else{
-                                				btnApply2=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_indicator###2" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';	
+                                				btnApply2=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_indicator###2" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';	
                                 			}
                                 		}else if(apply[0][1]=="5"){
                                 			var label;
@@ -592,7 +592,7 @@
                                 			if(cek2>0){
                                 				btnApply2=label;
                                 			}else{
-                                				btnApply2=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_indicator###2" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';	
+                                				btnApply2=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_indicator###2" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';	
                                 			}
                                 		}
                                 		
@@ -607,7 +607,7 @@
                                 	apply = result.content;
                                 	if(apply.length>0){
                                 		if(apply[0][1]=="1"){
-                                			btnApply3=' <a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_indicator###3" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
+                                			btnApply3=' <a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_indicator###3" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
                                 		}else if(apply[0][1]=="2"){
                                 			if($("#fs").is(':checked')){
                                 				btnApply3 = "<span class='label label-success'>Disetujui</span>";
@@ -630,7 +630,7 @@
                                 			if(cek3>0){
                                 				btnApply3=label
                                 			}else{
-                                				btnApply3=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_indicator###3" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';	
+                                				btnApply3=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_indicator###3" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';	
                                 			}
                                 		}else if(apply[0][1]=="5"){
                                 			var label;
@@ -642,7 +642,7 @@
                                 			if(cek3>0){
                                 				btnApply3=label
                                 			}else{
-                                				btnApply3=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_indicator###3" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';	
+                                				btnApply3=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_indicator###3" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';	
                                 			}
                                 		}
                                 		
@@ -657,7 +657,7 @@
                                 	apply = result.content;
                                 	if(apply.length>0){
                                 		if(apply[0][1]=="1"){
-                                			btnApply4=' <a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_indicator###4" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
+                                			btnApply4=' <a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_indicator###4" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
                                 		}else if(apply[0][1]=="2"){
                                 			if($("#fs").is(':checked')){
                                 				btnApply4 = "<span class='label label-success'>Disetujui</span>";
@@ -680,7 +680,7 @@
                                 			if(cek4>0){
                                 				btnApply4=label
                                 			}else{
-                                				btnApply4=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_indicator###4" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';	
+                                				btnApply4=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_indicator###4" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';	
                                 			}
                                 		}else if(apply[0][1]=="5"){
                                 			var label;
@@ -692,7 +692,7 @@
                                 			if(cek4>0){
                                 				btnApply4=label
                                 			}else{
-                                				btnApply4=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_indicator###4" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
+                                				btnApply4=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_indicator###4" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
                                 			}
                                 		}
                                 		
@@ -1019,10 +1019,10 @@
                         	var tabel = $('#tabel-entri-sdg > tbody').find('tr:last');
                         	
                           //Budget
-                        	var btnApplyBud1=(cek1>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###1" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
-                        	var btnApplyBud2=(cek2>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###2" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
-                        	var btnApplyBud3=(cek3>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###3" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
-                        	var btnApplyBud4=(cek4>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###4" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
+                        	var btnApplyBud1=(cek1>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_budget###1" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
+                        	var btnApplyBud2=(cek2>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_budget###2" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
+                        	var btnApplyBud3=(cek3>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_budget###3" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
+                        	var btnApplyBud4=(cek4>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_budget###4" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
                             
                         	$.ajax({
             					type: "GET",
@@ -1032,7 +1032,7 @@
                                 	apply = result.content;
                                 	if(apply.length>0){
                                 		if(apply[0][1]=="1"){
-                                			btnApplyBud1='<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###1" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
+                                			btnApplyBud1='<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_budget###1" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
                                 		}else if(apply[0][1]=="2"){
                                 			if($("#fs").is(':checked')){
                                 				btnApplyBud1 = "<span class='label label-success'>Disetujui</span>";
@@ -1055,7 +1055,7 @@
                                 			if(cek1>0){
                                 				btnApplyBud1=label;
                                 			}else{
-                                				btnApplyBud1=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###1" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
+                                				btnApplyBud1=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_budget###1" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
                                 			}
                                 		}else if(apply[0][1]=="5"){
                                 			var label;
@@ -1067,7 +1067,7 @@
                                 			if(cek1>0){
                                 				btnApplyBud1=label;
                                 			}else{
-                                				btnApplyBud1=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###1" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
+                                				btnApplyBud1=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_budget###1" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
                                 			}
                                 		}
                                 	}
@@ -1081,7 +1081,7 @@
                                 	apply = result.content;
                                 	if(apply.length>0){
                                 		if(apply[0][1]=="1"){
-                                			btnApplyBud2=' <a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###2" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
+                                			btnApplyBud2=' <a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_budget###2" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
                                 		}else if(apply[0][1]=="2"){
                                 			if($("#fs").is(':checked')){
                                 				btnApplyBud2 = "<span class='label label-success'>Disetujui</span>";
@@ -1104,7 +1104,7 @@
                                 			if(cek2>0){
                                 				btnApplyBud2=label;
                                 			}else{
-                                				btnApplyBud2=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###2" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
+                                				btnApplyBud2=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_budget###2" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
                                 			}
                                 		}else if(apply[0][1]=="5"){
                                 			var label;
@@ -1116,7 +1116,7 @@
                                 			if(cek2>0){
                                 				btnApplyBud2=label;
                                 			}else{
-                                				btnApplyBud2=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###2" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
+                                				btnApplyBud2=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_budget###2" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
                                 			}
                                 		}
                                 		
@@ -1131,7 +1131,7 @@
                                 	apply = result.content;
                                 	if(apply.length>0){
                                 		if(apply[0][1]=="1"){
-                                			btnApplyBud3=' <a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###3" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
+                                			btnApplyBud3=' <a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_budget###3" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
                                 		}else if(apply[0][1]=="2"){
                                 			if($("#fs").is(':checked')){
                                 				btnApplyBud3 = "<span class='label label-success'>Disetujui</span>";
@@ -1154,7 +1154,7 @@
                                 			if(cek3>0){
                                 				btnApplyBud3=label;
                                 			}else{
-                                				btnApplyBud3=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###3" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
+                                				btnApplyBud3=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_budget###3" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
                                 			}
                                 		}else if(apply[0][1]=="5"){
                                 			var label;
@@ -1166,7 +1166,7 @@
 											if(cek3>0){
 												btnApplyBud3=label;
                                 			}else{
-                                				btnApplyBud3=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###3" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
+                                				btnApplyBud3=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_budget###3" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
                                 			}
                                 		}
                                 		
@@ -1181,7 +1181,7 @@
                                 	apply = result.content;
                                 	if(apply.length>0){
                                 		if(apply[0][1]=="1"){
-                                			btnApplyBud4=' <a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###4" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
+                                			btnApplyBud4=' <a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_budget###4" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
                                 		}else if(apply[0][1]=="2"){
                                 			if($("#fs").is(':checked')){
                                 				btnApplyBud4 = "<span class='label label-success'>Disetujui</span>";
@@ -1204,7 +1204,7 @@
                                 			if(cek4>0){
                                 				btnApplyBud4=label;
                                 			}else{
-                                				btnApplyBud4=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###4" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
+                                				btnApplyBud4=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_budget###4" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
                                 			}
                                 		}else if(apply[0][1]=="5"){
                                 			var label;
@@ -1216,7 +1216,7 @@
                                 			if(cek4>0){
                                 				btnApplyBud4=label;
                                 			}else{
-                                				btnApplyBud4=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###4" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
+                                				btnApplyBud4=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_usaha_budget###4" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
                                 			}
                                 		}
                                 		
@@ -1506,7 +1506,7 @@
                 }else{
                 	var data = JSON.stringify({
                         'id': id,
-                        'id_nsa_activity': id_sdg_indicator,
+                        'id_usaha_activity': id_sdg_indicator,
                         'achievement1': achievement1,
                         'achievement2': achievement2,
                         'achievement3': achievement3,

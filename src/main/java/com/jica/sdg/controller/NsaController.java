@@ -240,19 +240,6 @@ public class NsaController {
         return hasil;
     }
     
-    @GetMapping("admin/list-get-option-role-corporation-profil/{id}")
-    public @ResponseBody Map<String, Object> getOptionCorporationProfilList(@PathVariable("id") String id) {
-        String id_prov = id.equals("all")?"":" and a.id_prov = '"+id+"' ";
-        
-        String sql  = "select * from ref_role as a where cat_role = 'Corporation' "+id_prov;
-        Query query = em.createNativeQuery(sql);
-        List list   = query.getResultList();
-        Map<String, Object> hasil = new HashMap<>();
-        
-        hasil.put("content",list);
-        return hasil;
-    }
-    
     @GetMapping("admin/getallnsa")
     public @ResponseBody List<Object> getallnsa() {
     	String sql  = "select a.id_role as idrl, b.* from ref_role a left join "
