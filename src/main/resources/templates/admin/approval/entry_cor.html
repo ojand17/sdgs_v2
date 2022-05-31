@@ -41,8 +41,8 @@
                             </select>
                             <select id="type" name="type" class="form-control">
                             	<option value="0" >-- Pilih --</option>
-                                <option value="entry_nsa_budget" >Budget</option>
-                                <option value="entry_nsa_indicator" >Output Kegiatan</option>
+                                <option value="entry_usaha_budget" >Budget</option>
+                                <option value="entry_usaha_indicator" >Output Kegiatan</option>
                             </select>
                             <select id="period" name="period" class="form-control">
                                 <option value="0" ><span class=""> -- Pilih -- </span> </option>
@@ -319,7 +319,7 @@
             var tipe    = $("#type").val();
             var periode = $("#periode").val();
             var data    = periode.split("###");
-            if(tipe == 'entry_nsa_budget'){
+            if(tipe == 'entry_usaha_budget'){
                 $.ajax({
                     type: "GET",
                     url: urls+'list-get-sts-monper-corporation/'+data[0],
@@ -370,7 +370,7 @@
             var tipe    = $("#type").val();
             var periode = $("#periode").val();
             var data    = periode.split("###");
-            if(tipe == 'entry_nsa_budget'){
+            if(tipe == 'entry_usaha_budget'){
                 $.ajax({
                     type: "GET",
                     url: urls+'list-get-sts-monper-corporation/'+data[0],
@@ -708,7 +708,7 @@
             $('#idrol').val(id_role);
             grid(id_role, id_monper, type, periode, nmrole, approval);
             $('.tombol-new').show();
-            if(type == 'entry_nsa_budget'){
+            if(type == 'entry_usaha_budget'){
                 $("#tabel-approve-gov-activity").show();
                 $("#tabel-approve-gov-indicator").hide();
             }else{
@@ -846,7 +846,7 @@
         //memanggil tb detail
         function grid(id_role, id_monper, type, periode, nmrole, approval)
         {
-            if(type == 'entry_nsa_budget'){
+            if(type == 'entry_usaha_budget'){
                 var v_idprov    = $("#id_prov").val();
                 var v_idrole    = id_role;
                 var v_dataid    = $("#periode").val();
@@ -978,7 +978,7 @@
 //                                        var id_role             = $('#idrole').val();
 //                                        var id_monper1           = monper_1;
 //                                        var year                = tahun_1;
-//                                        var type                = "entry_nsa_budget";
+//                                        var type                = "entry_usaha_budget";
 //                                        var apply1               = "";
 //                                        $.ajax({
 //                                            type: "GET",
@@ -1132,7 +1132,7 @@
 //                                        var id_role             = $('#idrole').val();
 //                                        var id_monper1           = monper_1;
 //                                        var year                = tahun_1;
-//                                        var type                = "entry_nsa_budget";
+//                                        var type                = "entry_usaha_budget";
 //                                        var apply1               = "";
 //                                        $.ajax({
 //                                            type: "GET",
@@ -1307,7 +1307,7 @@
 //                                        var id_role             = $('#idrole').val();
 //                                        var id_monper1           = monper_1;
 //                                        var year                = tahun_1;
-//                                        var type                = "entry_nsa_budget";
+//                                        var type                = "entry_usaha_budget";
 //                                        var apply1               = "";
 //                                        $.ajax({
 //                                            type: "GET",
@@ -2112,7 +2112,7 @@
                 var nmrol               = $("#nmrol").val();
                 var v_idrole            = $("#idrol").val();
 //                alert('yess '+id_monper);
-                if (type == 'entry_nsa_budget'){
+                if (type == 'entry_usaha_budget'){
                     var ur = 'save-entry-corporation_prog';
                     var data    = JSON.stringify({
                                 'id': id,
@@ -2130,7 +2130,7 @@
                                 'date_created': null,
                                 'id_monper': id_monper
                             });
-                }else if(type == 'entry_nsa_indicator'){
+                }else if(type == 'entry_usaha_indicator'){
                     var ur = 'save-entry-corporation_prog_indicator/'+v_dataid;
                     var data    = JSON.stringify({
                                 'id': id,
