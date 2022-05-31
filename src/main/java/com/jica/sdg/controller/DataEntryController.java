@@ -9,6 +9,8 @@ import com.jica.sdg.model.EntryNsaIndicator;
 import com.jica.sdg.model.EntryShowReport;
 import com.jica.sdg.model.EntrySdg;
 import com.jica.sdg.model.EntrySdgDetail;
+import com.jica.sdg.model.EntryUsahaBudget;
+import com.jica.sdg.model.EntryUsahaIndicator;
 import com.jica.sdg.model.GovProgram;
 import com.jica.sdg.model.NsaProgram;
 
@@ -567,6 +569,37 @@ public class DataEntryController {
         return hasil;
     }
     
+    @GetMapping("admin/list-entry-corporation/{id_prov}/{id_role}/{id_monper}/{year}")
+    public @ResponseBody Map<String, Object> listEntryCorporation(@PathVariable("id_prov") String id_prov, @PathVariable("id_role") String id_role, @PathVariable("id_monper") String id_monper,@PathVariable("year") String year) {
+    	String role = (id_role.equals("0"))?"":" and a.id_role = '"+id_role+"' ";
+    	Query query;
+    	String sql = "select b.id_program, a.id_activity, c.id_corporation_indicator, b.nm_program, "
+    			+ "b.nm_program_eng, a.nm_activity, a.nm_activity_eng, c.nm_indicator, c.nm_indicator_eng, "
+    			+ "f.nm_role, d.nm_unit, e.value, h.achievement1, h.achievement2, h.achievement3, h.achievement4, "
+    			+ "i.achievement1 as achi1, i.achievement2 as achi2, i.achievement3 as achi3, i.achievement4 as achi4, "
+    			+ "h.id, i.id as idbud, c.id as idind, a.id as idact, b.internal_code as intid_program, a.internal_code as intid_activity, c.internal_code as intid_corporation_indicator "
+    			+ "from corporation_activity as a "
+    			+ "left join corporation_program b on a.id_program = b.id "
+    			+ "left join corporation_indicator c on a.id_program = c.id_program and a.id = c.id_activity "
+    			+ "left join ref_unit d on c.unit = d.id_unit "
+    			+ "left join corporation_target e on e.id_corporation_indicator = c.id and year = :year "
+    			+ "left join ref_role f on a.id_role = f.id_role "
+    			+ "left join ran_rad g on f.id_prov = g.id_prov and b.id_monper = g.id_monper "
+    			+ "left join entry_corporation_indicator h on h.id_assign = c.id and h.year_entry = :year and h.id_monper = g.id_monper "
+    			+ "left join entry_corporation_budget i on i.id_corporation_activity = a.id and i.year_entry = :year and i.id_monper = g.id_monper "
+    			+ "where g.id_monper = :id_monper and g.id_prov = :id_prov and c.id is not null  "+role
+    			+ "order by b.id, c.id, a.id ";
+        query = em.createNativeQuery(sql);
+        query.setParameter("id_prov", id_prov);
+        query.setParameter("id_monper", id_monper);
+        query.setParameter("year", year);
+    	
+        List list   = query.getResultList();
+        Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
+    }
+    
     @GetMapping("admin/list-entry-gov-bud/{id_prov}/{id_role}/{id_monper}/{year}")
     public @ResponseBody Map<String, Object> listEntryGovBud(@PathVariable("id_prov") String id_prov, @PathVariable("id_role") String id_role, @PathVariable("id_monper") String id_monper,@PathVariable("year") String year) {
     	String role = (id_role.equals("0"))?"":" and a.id_role = '"+id_role+"' ";
@@ -608,6 +641,33 @@ public class DataEntryController {
     			+ "left join ref_role f on a.id_role = f.id_role "
     			+ "left join ran_rad g on f.id_prov = g.id_prov and b.id_monper = g.id_monper "
     			+ "left join entry_nsa_budget i on i.id_nsa_activity = a.id and i.year_entry = :year and i.id_monper = g.id_monper "
+    			+ "where g.id_monper = :id_monper and g.id_prov = :id_prov "+role
+    			+ "order by b.id, a.id ";
+        query = em.createNativeQuery(sql);
+        query.setParameter("id_prov", id_prov);
+        query.setParameter("id_monper", id_monper);
+        query.setParameter("year", year);
+    	
+        List list   = query.getResultList();
+        Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
+    }
+    
+    @GetMapping("admin/list-entry-corporation-bud/{id_prov}/{id_role}/{id_monper}/{year}")
+    public @ResponseBody Map<String, Object> listEntryCorporationBud(@PathVariable("id_prov") String id_prov, @PathVariable("id_role") String id_role, @PathVariable("id_monper") String id_monper,@PathVariable("year") String year) {
+    	String role = (id_role.equals("0"))?"":" and a.id_role = '"+id_role+"' ";
+    	Query query;
+    	String sql = "select b.id_program, a.id_activity, '' as id_corporation_indicator, b.nm_program, "
+    			+ "b.nm_program_eng, a.nm_activity, a.nm_activity_eng, '' as nm_indicator, '' as nm_indicator_eng, "
+    			+ "f.nm_role, '' as nm_unit, '' as value, '' as achievement1, '' as achievement2, '' as achievement3, '' as achievement4, "
+    			+ "i.achievement1 as achi1, i.achievement2 as achi2, i.achievement3 as achi3, i.achievement4 as achi4, "
+    			+ "'' as id, i.id as idbud, '' as idind, a.id as idact, b.internal_code as intid_program, a.internal_code as intid_activity "
+    			+ "from corporation_activity as a "
+    			+ "left join corporation_program b on a.id_program = b.id "
+    			+ "left join ref_role f on a.id_role = f.id_role "
+    			+ "left join ran_rad g on f.id_prov = g.id_prov and b.id_monper = g.id_monper "
+    			+ "left join entry_corporation_budget i on i.id_corporation_activity = a.id and i.year_entry = :year and i.id_monper = g.id_monper "
     			+ "where g.id_monper = :id_monper and g.id_prov = :id_prov "+role
     			+ "order by b.id, a.id ";
         query = em.createNativeQuery(sql);
@@ -1250,6 +1310,18 @@ public class DataEntryController {
         return hasil;
     }
     
+    @GetMapping("admin/list-get-sts-monper-corporation/{id_monper}")
+    public @ResponseBody Map<String, Object> getGetStsMonperCorporation(@PathVariable("id_monper") String id_monper) {
+        String sql  = "select corporation_prog_bud from ran_rad as a where a.id_monper = :id_monper ";
+        Query query = em.createNativeQuery(sql);
+        query.setParameter("id_monper", id_monper);
+        List list   = query.getResultList();
+        Map<String, Object> hasil = new HashMap<>();
+        
+        hasil.put("content",list);
+        return hasil;
+    }
+    
     @GetMapping("admin/list-get-sts-monper-gov_act/{id_monper}")
     public @ResponseBody Map<String, Object> getGetStsMonperGovact(@PathVariable("id_monper") String id_monper) {
         String sql  = "select gov_prog from ran_rad as a where a.id_monper = :id_monper ";
@@ -1265,6 +1337,18 @@ public class DataEntryController {
     @GetMapping("admin/list-get-sts-monper-nongov_act/{id_monper}")
     public @ResponseBody Map<String, Object> getGetStsMonpernonGovact(@PathVariable("id_monper") String id_monper) {
         String sql  = "select nsa_prog from ran_rad as a where a.id_monper = :id_monper ";
+        Query query = em.createNativeQuery(sql);
+        query.setParameter("id_monper", id_monper);
+        List list   = query.getResultList();
+        Map<String, Object> hasil = new HashMap<>();
+        
+        hasil.put("content",list);
+        return hasil;
+    }
+    
+    @GetMapping("admin/list-get-sts-monper-corporation_act/{id_monper}")
+    public @ResponseBody Map<String, Object> getGetStsMonperCorporationact(@PathVariable("id_monper") String id_monper) {
+        String sql  = "select corporation_prog from ran_rad as a where a.id_monper = :id_monper ";
         Query query = em.createNativeQuery(sql);
         query.setParameter("id_monper", id_monper);
         List list   = query.getResultList();
@@ -1577,6 +1661,71 @@ public class DataEntryController {
 //        entrySdgService.updateEntrySdg(id_sdg_indicator, achievement1, achievement2, achievement3, achievement4, year_entry, id_role, id_monper);
     }
     
+    @PostMapping(path = "admin/save-entry-corporation_prog_indicator/{achiev}", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    @Transactional
+    public void saveEntryCorporationProgIndicator(@RequestBody EntryUsahaIndicator entryUsahaIndicator,@PathVariable("achiev") String achiev, HttpSession session) {
+//        String id_sdg_indicator = entrySdg.getId_sdg_indicator();
+//        int achievement1        = entrySdg.getAchievement1();
+//        int achievement2        = entrySdg.getAchievement2();
+//        int achievement3        = entrySdg.getAchievement3();
+//        int achievement4        = entrySdg.getAchievement4();
+//        int year_entry          = entrySdg.getYear_entry();
+//        int id_role             = entrySdg.getId_role();
+//        int id_monper           = entrySdg.getId_monper();
+    	if(entryUsahaIndicator.getId()!=null) {
+    		Optional<EntryUsahaIndicator> list = entrySdgService.findOneUsahaInd((entryUsahaIndicator.getId()));
+        	if(list.isPresent()) {
+        		list.get().setId(entryUsahaIndicator.getId());
+            	list.get().setId_assign(entryUsahaIndicator.getId_assign());
+            	list.get().setAchievement1(entryUsahaIndicator.getAchievement1());
+            	list.get().setAchievement2(entryUsahaIndicator.getAchievement2());
+            	list.get().setAchievement3(entryUsahaIndicator.getAchievement3());
+            	list.get().setAchievement4(entryUsahaIndicator.getAchievement4());
+            	list.get().setNew_value1(entryUsahaIndicator.getNew_value1());
+            	list.get().setNew_value2(entryUsahaIndicator.getNew_value2());
+            	list.get().setNew_value3(entryUsahaIndicator.getNew_value3());
+            	list.get().setNew_value4(entryUsahaIndicator.getNew_value4());
+            	list.get().setYear_entry(entryUsahaIndicator.getYear_entry());
+            	list.get().setId_monper(entryUsahaIndicator.getId_monper());
+        		list.ifPresent(foundUpdateObject ->entrySdgService.saveEntryUsahaIndicator(foundUpdateObject));
+        	}else {
+        		entrySdgService.saveEntryUsahaIndicator(entryUsahaIndicator);
+        	}
+    	}else {
+    		entrySdgService.saveEntryUsahaIndicator(entryUsahaIndicator);
+    	}
+    	
+    	Query query;
+        if(achiev.equals("1")) {
+        	query = em.createNativeQuery("update entry_usaha_indicator set created_by = :created_by, date_created = :date_created where id=:id");
+			query.setParameter("created_by", (Integer) session.getAttribute("id_role"));
+	        query.setParameter("date_created", new Date());
+	        query.setParameter("id", entryUsahaIndicator.getId());
+	        query.executeUpdate();
+    	}else if(achiev.equals("2")) {
+    		query = em.createNativeQuery("update entry_usaha_indicator set created_by2 = :created_by, date_created2 = :date_created where id=:id");
+			query.setParameter("created_by", (Integer) session.getAttribute("id_role"));
+	        query.setParameter("date_created", new Date());
+	        query.setParameter("id", entryUsahaIndicator.getId());
+	        query.executeUpdate();
+    	}else if(achiev.equals("3")) {
+    		query = em.createNativeQuery("update entry_usaha_indicator set created_by3 = :created_by, date_created3 = :date_created where id=:id");
+			query.setParameter("created_by", (Integer) session.getAttribute("id_role"));
+	        query.setParameter("date_created", new Date());
+	        query.setParameter("id", entryUsahaIndicator.getId());
+	        query.executeUpdate();
+    	}else if(achiev.equals("4")) {
+    		query = em.createNativeQuery("update entry_usaha_indicator set created_by4 = :created_by, date_created4 = :date_created where id=:id");
+			query.setParameter("created_by", (Integer) session.getAttribute("id_role"));
+	        query.setParameter("date_created", new Date());
+	        query.setParameter("id", entryUsahaIndicator.getId());
+	        query.executeUpdate();
+    	}
+        
+//        entrySdgService.updateEntrySdg(id_sdg_indicator, achievement1, achievement2, achievement3, achievement4, year_entry, id_role, id_monper);
+    }
+    
     @PostMapping(path = "admin/save-entry-non-gov_prog_budget/{achiev}", consumes = "application/json", produces = "application/json")
     @ResponseBody
     @Transactional
@@ -1632,6 +1781,67 @@ public class DataEntryController {
 			query.setParameter("created_by", (Integer) session.getAttribute("id_role"));
 	        query.setParameter("date_created", new Date());
 	        query.setParameter("id", entryNsaBudget.getId());
+	        query.executeUpdate();
+    	}
+        
+//        entrySdgService.updateEntrySdg(id_sdg_indicator, achievement1, achievement2, achievement3, achievement4, year_entry, id_role, id_monper);
+    }
+    
+    @PostMapping(path = "admin/save-entry-corporation_prog_budget/{achiev}", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    @Transactional
+    public void saveEntryCorporationProgBudget(@RequestBody EntryUsahaBudget entryUsahaBudget,@PathVariable("achiev") String achiev, HttpSession session) {
+//        String id_sdg_indicator = entrySdg.getId_sdg_indicator();
+//        int achievement1        = entrySdg.getAchievement1();
+//        int achievement2        = entrySdg.getAchievement2();
+//        int achievement3        = entrySdg.getAchievement3();
+//        int achievement4        = entrySdg.getAchievement4();
+//        int year_entry          = entrySdg.getYear_entry();
+//        int id_role             = entrySdg.getId_role();
+//        int id_monper           = entrySdg.getId_monper();
+    	if(entryUsahaBudget.getId()!=null) {
+    		Optional<EntryUsahaBudget> list = entrySdgService.findOneUsahaBud((entryUsahaBudget.getId()));
+        	if(list.isPresent()) {
+                    list.get().setId(entryUsahaBudget.getId());
+                    list.get().setId_usaha_activity(entryUsahaBudget.getId_usaha_activity());
+                    list.get().setAchievement1(entryUsahaBudget.getAchievement1());
+                    list.get().setAchievement2(entryUsahaBudget.getAchievement2());
+                    list.get().setAchievement3(entryUsahaBudget.getAchievement3());
+                    list.get().setAchievement4(entryUsahaBudget.getAchievement4());
+                    list.get().setYear_entry(entryUsahaBudget.getYear_entry());
+                    list.get().setId_monper(entryUsahaBudget.getId_monper());
+                    list.ifPresent(foundUpdateObject ->entrySdgService.saveEntryUsahaBudget(foundUpdateObject));
+        	}else {
+        		entrySdgService.saveEntryUsahaBudget(entryUsahaBudget);
+        	}
+    	}else {
+    		entrySdgService.saveEntryUsahaBudget(entryUsahaBudget);
+    	}
+    	
+    	Query query;
+        if(achiev.equals("1")) {
+        	query = em.createNativeQuery("update entry_usaha_budget set created_by = :created_by, date_created = :date_created where id=:id");
+			query.setParameter("created_by", (Integer) session.getAttribute("id_role"));
+	        query.setParameter("date_created", new Date());
+	        query.setParameter("id", entryUsahaBudget.getId());
+	        query.executeUpdate();
+    	}else if(achiev.equals("2")) {
+    		query = em.createNativeQuery("update entry_usaha_budget set created_by2 = :created_by, date_created2 = :date_created where id=:id");
+			query.setParameter("created_by", (Integer) session.getAttribute("id_role"));
+	        query.setParameter("date_created", new Date());
+	        query.setParameter("id", entryUsahaBudget.getId());
+	        query.executeUpdate();
+    	}else if(achiev.equals("3")) {
+    		query = em.createNativeQuery("update entry_usaha_budget set created_by3 = :created_by, date_created3 = :date_created where id=:id");
+			query.setParameter("created_by", (Integer) session.getAttribute("id_role"));
+	        query.setParameter("date_created", new Date());
+	        query.setParameter("id", entryUsahaBudget.getId());
+	        query.executeUpdate();
+    	}else if(achiev.equals("4")) {
+    		query = em.createNativeQuery("update entry_usaha_budget set created_by4 = :created_by, date_created4 = :date_created where id=:id");
+			query.setParameter("created_by", (Integer) session.getAttribute("id_role"));
+	        query.setParameter("date_created", new Date());
+	        query.setParameter("id", entryUsahaBudget.getId());
 	        query.executeUpdate();
     	}
         
@@ -2272,5 +2482,34 @@ public class DataEntryController {
                 .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
                 .body(resource);
         }
+    
+    
+    //usaha matrix 4
+    @GetMapping("admin/entry/corporation")
+    public String entry_matrix4(Model model, HttpSession session) {
+        model.addAttribute("title", "Corporation");
+//        model.addAttribute("listprov", provinsiService.findAllProvinsi());
+//        model.addAttribute("lang", session.getAttribute("bahasa"));
+//        model.addAttribute("name", session.getAttribute("name"));
+        
+        Integer id_role = (Integer) session.getAttribute("id_role");
+        model.addAttribute("lang", session.getAttribute("bahasa"));
+        model.addAttribute("name", session.getAttribute("name"));
+        model.addAttribute("id_role", session.getAttribute("id_role"));
+        model.addAttribute("listNsaProfile", nsaProfilrService.findRoleNsa());
+    	Optional<Role> list = roleService.findOne(id_role);
+    	String id_prov      = list.get().getId_prov();
+    	String privilege    = list.get().getPrivilege();
+    	if(id_prov.equals("000")) {
+            model.addAttribute("listprov", provinsiService.findAllProvinsi());
+    	}else {
+            Optional<Provinsi> list1 = provinsiService.findOne(id_prov);
+            list1.ifPresent(foundUpdateObject1 -> model.addAttribute("listprov", foundUpdateObject1));
+    	}
+        model.addAttribute("id_prov", id_prov);
+        model.addAttribute("privilege", privilege);
+        //return "admin/dataentry/nongovprogram";
+        return "admin/dataentry/entry_matrix4";
+    }
         
 }

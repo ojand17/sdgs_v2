@@ -99,6 +99,14 @@ public class ApprovalController {
 		    			+ "left join ran_rad g on f.id_prov = g.id_prov and b.id_monper = g.id_monper "
 		    			+ "where g.id_monper = '"+app.getId_monper()+"' "
 		    			+ "order by a.id_role";
+			}else if(app.getType().equals("entry_usaha_budget") || app.getType().equals("entry_usaha_indicator")) {
+				sql = "select DISTINCT a.id_role "
+		    			+ "from usaha_activity as a "
+		    			+ "left join usaha_program b on a.id_program = b.id "
+		    			+ "left join ref_role f on a.id_role = f.id_role "
+		    			+ "left join ran_rad g on f.id_prov = g.id_prov and b.id_monper = g.id_monper "
+		    			+ "where g.id_monper = '"+app.getId_monper()+"' "
+		    			+ "order by a.id_role";
 			}else{
 				sql  = "select id_role from assign_sdg_indicator as a where a.id_monper = :id_monper and a.id_prov = :id_prov";
 			}
@@ -146,6 +154,16 @@ public class ApprovalController {
 			        query.executeUpdate();
 				}else if(app.getType().equals("entry_nsa_indicator")) {
 					query = em.createNativeQuery("update entry_nsa_indicator set new_value1 = null, new_value2 = null, new_value3 = null, new_value4 = null where year_entry=:year and id_monper=:id_monper");
+					query.setParameter("year", app.getYear());
+			        query.setParameter("id_monper", app.getId_monper());
+			        query.executeUpdate();
+				}else if(app.getType().equals("entry_usaha_budget")) {
+					query = em.createNativeQuery("update entry_usaha_budget set new_value1 = null, new_value2 = null, new_value3 = null, new_value4 = null where year_entry=:year and id_monper=:id_monper");
+					query.setParameter("year", app.getYear());
+			        query.setParameter("id_monper", app.getId_monper());
+			        query.executeUpdate();
+				}else if(app.getType().equals("entry_usaha_indicator")) {
+					query = em.createNativeQuery("update entry_usaha_indicator set new_value1 = null, new_value2 = null, new_value3 = null, new_value4 = null where year_entry=:year and id_monper=:id_monper");
 					query.setParameter("year", app.getYear());
 			        query.setParameter("id_monper", app.getId_monper());
 			        query.executeUpdate();
@@ -197,6 +215,16 @@ public class ApprovalController {
 		        query.executeUpdate();
 			}else if(app.getType().equals("entry_nsa_indicator")) {
 				query = em.createNativeQuery("update entry_nsa_indicator set new_value1 = null, new_value2 = null, new_value3 = null, new_value4 = null where year_entry=:year and id_monper=:id_monper");
+				query.setParameter("year", app.getYear());
+		        query.setParameter("id_monper", app.getId_monper());
+		        query.executeUpdate();
+			}else if(app.getType().equals("entry_usaha_budget")) {
+				query = em.createNativeQuery("update entry_usaha_budget set new_value1 = null, new_value2 = null, new_value3 = null, new_value4 = null where year_entry=:year and id_monper=:id_monper");
+				query.setParameter("year", app.getYear());
+		        query.setParameter("id_monper", app.getId_monper());
+		        query.executeUpdate();
+			}else if(app.getType().equals("entry_usaha_indicator")) {
+				query = em.createNativeQuery("update entry_usaha_indicator set new_value1 = null, new_value2 = null, new_value3 = null, new_value4 = null where year_entry=:year and id_monper=:id_monper");
 				query.setParameter("year", app.getYear());
 		        query.setParameter("id_monper", app.getId_monper());
 		        query.executeUpdate();
