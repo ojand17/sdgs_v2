@@ -6,6 +6,8 @@ import com.jica.sdg.model.EntryGovBudget;
 import com.jica.sdg.model.EntryNsaBudget;
 import com.jica.sdg.model.EntryNsaIndicator;
 import com.jica.sdg.model.EntrySdgIndicatorJoin;
+import com.jica.sdg.model.EntryUsahaBudget;
+import com.jica.sdg.model.EntryUsahaIndicator;
 import com.jica.sdg.model.SdgIndicatorTarget;
 
 import java.util.List;
@@ -21,7 +23,9 @@ public interface IEntrySdgService {
     Optional<EntryGovBudget> findOneGovBud(Integer id);
     
     Optional<EntryNsaIndicator> findOneNsaInd(Integer id);
+    Optional<EntryUsahaIndicator> findOneUsahaInd(Integer id);
     Optional<EntryNsaBudget> findOneNsaBud(Integer id);
+    Optional<EntryUsahaBudget> findOneUsahaBud(Integer id);
     
 //    List<Nsadetail> findId(String id);
 //
@@ -33,7 +37,11 @@ public interface IEntrySdgService {
     
     void saveEntryNsaBudget(EntryNsaBudget entryNsaBudget);
     
+    void saveEntryUsahaBudget(EntryUsahaBudget entryUsahaBudget);
+    
     void saveEntryNsaIndicator(EntryNsaIndicator entryNsaIndicator);
+    
+    void saveEntryUsahaIndicator(EntryUsahaIndicator entryUsahaIndicator);
     
     void saveSdgIndicatorTargetEntry(SdgIndicatorTarget sdgIndicatorTarget);
     

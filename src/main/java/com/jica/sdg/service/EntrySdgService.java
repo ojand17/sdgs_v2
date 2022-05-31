@@ -6,11 +6,15 @@ import com.jica.sdg.model.EntryNsaBudget;
 import com.jica.sdg.model.EntryNsaIndicator;
 import com.jica.sdg.model.EntrySdg;
 import com.jica.sdg.model.EntrySdgIndicatorJoin;
+import com.jica.sdg.model.EntryUsahaBudget;
+import com.jica.sdg.model.EntryUsahaIndicator;
 import com.jica.sdg.model.SdgIndicatorTarget;
 import com.jica.sdg.repository.EntryGovBudgetRepository;
 import com.jica.sdg.repository.EntrySdgRepository;
 import com.jica.sdg.repository.EntryGovIndicatorRepository;
 import com.jica.sdg.repository.EntryNsaBudgetRepository;
+import com.jica.sdg.repository.EntryUsahaBudgetRepository;
+import com.jica.sdg.repository.EntryUsahaIndicatorRepository;
 import com.jica.sdg.repository.EntryNsaIndicatorRepository;
 import com.jica.sdg.repository.SdgIndicatorTargetRepository;
 import java.util.Date;
@@ -36,6 +40,9 @@ public class EntrySdgService implements IEntrySdgService{
 	EntryNsaIndicatorRepository entryNsaIndicatorRepo;
 	
 	@Autowired
+	EntryUsahaIndicatorRepository entryUsahaIndicatorRepo;
+	
+	@Autowired
 	SdgIndicatorTargetRepository sdgIndicatorTargetRepo;
 	
 	@Autowired
@@ -43,6 +50,9 @@ public class EntrySdgService implements IEntrySdgService{
 	
 	@Autowired
 	EntryNsaBudgetRepository entryNsaBudgetRepo;
+	
+	@Autowired
+	EntryUsahaBudgetRepository entryUsahaBudgetRepo;
 	
 	@Override
 	public List<EntrySdg> findAllEntrySdg() {
@@ -91,12 +101,30 @@ public class EntrySdgService implements IEntrySdgService{
 	}
         
 	@Override
+	public void saveEntryUsahaBudget(EntryUsahaBudget entryUsahaBudget) {
+            Date date = new Date();
+            //esdg.setApproval_date(date);
+//            esdg.setShow_report_date(date);
+//            entryNsaBudget.setDate_created(date);
+            entryUsahaBudgetRepo.save(entryUsahaBudget);
+	}
+        
+	@Override
 	public void saveEntryNsaIndicator(EntryNsaIndicator entryNsaIndicator) {
             Date date = new Date();
             //esdg.setApproval_date(date);
 //            esdg.setShow_report_date(date);
 //            entryNsaIndicator.setDate_created(date);
             entryNsaIndicatorRepo.save(entryNsaIndicator);
+	}
+        
+	@Override
+	public void saveEntryUsahaIndicator(EntryUsahaIndicator entryUsahaIndicator) {
+            Date date = new Date();
+            //esdg.setApproval_date(date);
+//            esdg.setShow_report_date(date);
+//            entryNsaIndicator.setDate_created(date);
+            entryUsahaIndicatorRepo.save(entryUsahaIndicator);
 	}
         
 	@Override
@@ -170,8 +198,18 @@ public class EntrySdgService implements IEntrySdgService{
 	}
 	
 	@Override
+	public Optional<EntryUsahaIndicator> findOneUsahaInd(Integer id) {
+		return entryUsahaIndicatorRepo.findById(id);
+	}
+	
+	@Override
 	public Optional<EntryNsaBudget> findOneNsaBud(Integer id) {
             return entryNsaBudgetRepo.findById(id);
+	}
+	
+	@Override
+	public Optional<EntryUsahaBudget> findOneUsahaBud(Integer id) {
+            return entryUsahaBudgetRepo.findById(id);
 	}
         
 }
