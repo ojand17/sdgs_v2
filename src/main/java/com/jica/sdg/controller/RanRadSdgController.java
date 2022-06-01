@@ -1459,6 +1459,14 @@ public class RanRadSdgController {
         return hasil;
     }
     
+    @GetMapping("admin/list-corporationActivityByIdProg/{id_program}")
+    public @ResponseBody Map<String, Object> corActivityListBy(@PathVariable("id_program") Integer id_program) {
+        List<UsahaActivity> list = usahaActivityService.findAll(id_program);
+		Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
+    }
+    
     @GetMapping("admin/count-corporationActivity/{id_program}")
     public @ResponseBody Map<String, Object> countCorActivity(@PathVariable("id_program") Integer id_program) {
         Integer list = usahaActivityService.countActivity(id_program);

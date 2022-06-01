@@ -41,6 +41,7 @@ import com.jica.sdg.service.INsaActivityService;
 import com.jica.sdg.service.INsaProgramService;
 import com.jica.sdg.service.IProvinsiService;
 import com.jica.sdg.service.IRoleService;
+import com.jica.sdg.service.IUsahaProgramService;
 import com.jica.sdg.service.IUserRequestListService;
 import com.jica.sdg.service.IUserService;
 import com.jica.sdg.service.MenuService;
@@ -50,43 +51,46 @@ import com.jica.sdg.service.SubmenuService;
 public class AdministrasiController {
 
     @Autowired
-    IProvinsiService provinsiService;
+    private IProvinsiService provinsiService;
 
     @Autowired
-    IRoleService roleService;
+    private IRoleService roleService;
     
     @Autowired
-    IUserService userService;
+    private IUserService userService;
     
     @Autowired
-	IMonPeriodService monPeriodService;
+    private IMonPeriodService monPeriodService;
     
     @Autowired
-    IAssignSdgIndicatorService assignSdgService;
+    private IAssignSdgIndicatorService assignSdgService;
     
     @Autowired
-    IAssignGovIndicatorService assignGovService;
+    private IAssignGovIndicatorService assignGovService;
     
     @Autowired
-    IAssignNsaIndicatorService assignNsaService;
+    private IAssignNsaIndicatorService assignNsaService;
 
     @Autowired
-    MenuService menuService;
+    private MenuService menuService;
 
     @Autowired
-    SubmenuService submenuService;
+    private SubmenuService submenuService;
     
     @Autowired
-    IUserRequestListService userReqService;
+    private IUserRequestListService userReqService;
     
     @Autowired
-    IGovActivityService govActivityService;
+    private IGovActivityService govActivityService;
     
     @Autowired
-    INsaProgramService nsaProgService;
+    private INsaProgramService nsaProgService;
     
     @Autowired
-    INsaActivityService nsaActivityService;
+    private INsaActivityService nsaActivityService;
+    
+    @Autowired
+    private IUsahaProgramService usahaProgService;
     
     @Autowired
     private EntityManager em;
@@ -470,6 +474,29 @@ public class AdministrasiController {
         		}
         		if(!id_activity.equals("")) {
         			nsaActivityService.updateRole(Integer.parseInt(id_role), Integer.parseInt(id_activity));
+        		}
+        	}
+        }
+	}
+    
+    @PostMapping(path = "admin/manajemen/save-assignmentCor", consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	public void saveAssignCor(@RequestBody Map<String, Object> payload) {
+    	JSONObject jsonObject = new JSONObject(payload);
+        JSONObject catatan = jsonObject.getJSONObject("nsa");
+        JSONArray c = catatan.getJSONArray("nsa");
+        for (int i = 0 ; i < c.length(); i++) {
+        	JSONObject obj = c.getJSONObject(i);
+        	String 	id_program = obj.getString("id");
+        	String 	id_activity = obj.getString("id_activity");
+        	String 	id_role = obj.getString("id_role");
+        	
+        	if(!id_role.equals("")) {
+        		if(!id_program.equals("")) {
+        			usahaProgService.updateRole(Integer.parseInt(id_role), Integer.parseInt(id_program));
+        		}
+        		if(!id_activity.equals("")) {
+        			usahaProgService.updateRole(Integer.parseInt(id_role), Integer.parseInt(id_activity));
         		}
         	}
         }

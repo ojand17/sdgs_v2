@@ -67,6 +67,10 @@
                                         				<span class="lang_eng" style="display:none">Non Government Program</span>
                     									<span class="lang_indo">Program Non Pemerintah</span>
                                         			</a><br/>
+                                        			<a href="#" id="corporation">
+                                        				<span class="lang_eng" style="display:none">CorporationProgram</span>
+                    									<span class="lang_indo">Program Pelaku Usaha</span>
+                                        			</a><br/>
                                         		</td>
                                         		<td>
                                         			<form id="form-detail">
@@ -89,6 +93,10 @@
                 				<span class="lang_indo">Simpan</span>
                         	</button>
                         	<button class="btn btn-primary btn-small pull-right btnnongov" style="display:none">
+                        		<span class="lang_eng" style="display:none">Save</span>
+                				<span class="lang_indo">Simpan</span>
+                        	</button>
+                        	<button class="btn btn-primary btn-small pull-right btncorporation" style="display:none">
                         		<span class="lang_eng" style="display:none">Save</span>
                 				<span class="lang_indo">Simpan</span>
                         	</button>
@@ -164,6 +172,26 @@
         	var option = "<option value=''>-pilih-</option>"
         	$.ajax({
                 url: urls + 'manajemen/list-role/'+$('#id_prov').val(),
+                type: 'get',
+                dataType: 'json',
+                cache: false,
+                async : false,
+                success: function (result) {
+                    for (var k = 0; k < result.content.length; k++) {
+                    	var selected = (result.content[k].id_role==id)?'selected':'';
+                    	option += '<option value="'+result.content[k].id_role+'" '+selected+'>'
+		                            +result.content[k].nm_role+
+		                      '</option>';
+                    }
+                }
+            }); 
+        	return option;
+        }
+
+        function roleCor(id){
+        	var option = "<option value=''>-pilih-</option>"
+        	$.ajax({
+                url: urls + 'manajemen/list-role-corporation/'+$('#id_prov').val(),
                 type: 'get',
                 dataType: 'json',
                 cache: false,
@@ -273,6 +301,7 @@
         	$('.btnsdg').hide();
         	$('.btngov').hide();
         	$('.btnnongov').hide();
+        	$('.btnncorporation').hide();
         }     
         
         //get sdg
@@ -312,7 +341,7 @@
 						}else{
 							nm_goals = response.content[i].nm_goals_eng;
 						}
-                    	detail += '<tr><td style="width:50%"><label style="display:inline-block;white-space:nowrap">'+
+                    	detail += '<tr><td style="width:50%"><label style="display:inline-block;white-space:wrap">'+
                                       '<span class="toogle-sdg-bapak" data-id="'+idGoals+'" style="vertical-align:middle">'+response.content[i].id_goals+' '+nm_goals+'</span>'+
                                 '</label></td>'+
                                 '<td style="width:50%"><select class="select-bapak-sdg select-bapak-sdg'+idGoals+'" data-id="'+idGoals+'">'+roleGov('')+'</select></td>'+
@@ -332,7 +361,7 @@
             							nm_target = result.content[j].nm_target_eng;
             						}
                                 	detail += '<tr>'+
-                                				'<td style="width:50%;display:none" class="toogle-sdg-anak sdg-anak'+idGoals+' show-all" data-id="'+idGoals+'"><label style="display:inline-block;white-space:nowrap;margin-left:20px">'+
+                                				'<td style="width:50%;display:none" class="toogle-sdg-anak sdg-anak'+idGoals+' show-all" data-id="'+idGoals+'"><label style="display:inline-block;white-space:wrap;margin-left:20px">'+
         			                            	'<span style="vertical-align:middle">'+result.content[j].id_target+' '+nm_target+'</span>'+
         			                      			'</label>'+
         			                           '</td>'+
@@ -353,7 +382,7 @@
                         						}else{
                         							nm_indicator = result.content[k][6];
                         						}
-                                            	detail += '<tr><td class="sdg-cucu'+idGoals+' show-all" data-id="'+idGoals+'" style="width:50%;display:none"><label style="display:inline-block;white-space:nowrap;margin-left:40px">'+
+                                            	detail += '<tr><td class="sdg-cucu'+idGoals+' show-all" data-id="'+idGoals+'" style="width:50%;display:none"><label style="display:inline-block;white-space:wrap;margin-left:40px">'+
                     			                            '<span style="vertical-align:middle">'+result.content[k][1]+' '+nm_indicator+'</span>'+
                     			                      '</label></td>';
                     			                var id;
@@ -494,7 +523,7 @@
 				                  '</label></td>'+
 				                  '<td style="width:50%"><select class="select-bapak-sdg select-bapak-sdg'+idProgram+'" data-id="'+idProgram+'">'+roleGov('')+'</select>'+
 				                  '<tr/>'; */
-		                  detail += '<tr><td style="width:50%"><label style="display:inline-block;white-space:nowrap">'+
+		                  detail += '<tr><td style="width:50%"><label style="display:inline-block;white-space:wrap">'+
 			                        '<span class="toogle-sdg-bapak" data-id="'+idProgram+'" style="vertical-align:middle">'+response.content[i].id_program+' '+nama+'</span>'+
 			                  '</label></td>'+
 			                  '<td style="width:50%"></td>'+
@@ -514,7 +543,7 @@
         								nama = result.content[j].nm_activity_eng;
         							}
       			                   detail += '<tr>'+
-                          				'<td style="width:50%;display:none" class="show-all toogle-sdg-anak sdg-anak'+idProgram+'" data-id="'+idProgram+'"><label style="display:inline-block;white-space:nowrap;margin-left:20px">'+
+                          				'<td style="width:50%;display:none" class="show-all toogle-sdg-anak sdg-anak'+idProgram+'" data-id="'+idProgram+'"><label style="display:inline-block;white-space:wrap;margin-left:20px">'+
   			                            	'<span style="vertical-align:middle">'+result.content[j].id_activity+' '+nama+'</span>'+
   			                      			'</label>'+
   			                           '</td>'+
@@ -538,7 +567,7 @@
                     							}else{
                     								nama = result.content[k][5];
                     							}
-                                            	detail += '<tr><td class="show-all sdg-anak'+idProgram+'" data-id="'+idProgram+'" style="width:50%;display:none"><label style="display:inline-block;white-space:nowrap;margin-left:40px">'+
+                                            	detail += '<tr><td class="show-all sdg-anak'+idProgram+'" data-id="'+idProgram+'" style="width:50%;display:none"><label style="display:inline-block;white-space:wrap;margin-left:40px">'+
 		        			                            '<span style="vertical-align:middle">'+result.content[k][1]+' '+nama+'</span>'+
 		        			                      '</label></td>';
                     			               	detail += '<td class="show-all sdg-anak'+idProgram+'" style="width:50%;display:none">'+
@@ -613,7 +642,7 @@
     					}else{
     						nama = response.content[i].nm_program_eng;
     					}
-                    	detail += '<tr><td style="width:50%"><label style="display:inline-block;white-space:nowrap">'+
+                    	detail += '<tr><td style="width:50%"><label style="display:inline-block;white-space:wrap">'+
 				                        '<span class="toogle-sdg-bapak" data-id="'+idProgram+'" style="vertical-align:middle">'+response.content[i].id_program+' '+nama+'</span>'+
 				                  '</label></td>'+
 				                  '<td style="width:50%">'+
@@ -636,7 +665,7 @@
         								nama = result.content[j].nm_activity_eng;
         							}
       			                   detail += '<tr>'+
-                          				'<td style="width:50%;display:none" class="show-all toogle-sdg-anak sdg-anak'+idProgram+'" data-id="'+idProgram+'"><label style="display:inline-block;white-space:nowrap;margin-left:20px">'+
+                          				'<td style="width:50%;display:none" class="show-all toogle-sdg-anak sdg-anak'+idProgram+'" data-id="'+idProgram+'"><label style="display:inline-block;white-space:wrap;margin-left:20px">'+
   			                            	'<span style="vertical-align:middle">'+result.content[j].id_activity+' '+nama+'</span>'+
   			                      			'</label>'+
   			                           '</td>'+
@@ -660,7 +689,7 @@
 	                  							}else{
 	                  								nama = result.content[k][5];
 	                  							}
-	                                          	detail += '<tr><td class="show-all sdg-anak'+idProgram+'" data-id="'+idProgram+'" style="width:50%;display:none"><label style="display:inline-block;white-space:nowrap;margin-left:40px">'+
+	                                          	detail += '<tr><td class="show-all sdg-anak'+idProgram+'" data-id="'+idProgram+'" style="width:50%;display:none"><label style="display:inline-block;white-space:wrap;margin-left:40px">'+
 			        			                            '<span style="vertical-align:middle">'+result.content[k][1]+' '+nama+'</span>'+
 			        			                      '</label></td>';
 	                  			               	detail += '<td class="show-all sdg-anak'+idProgram+'" style="width:50%;display:none">'+
@@ -691,6 +720,134 @@
         		$.ajax({
                     type    :"POST",
                     url     :urls+'manajemen/save-assignmentNsa',
+                    headers :{'Accept':'application/json','Content-Type':'application/json'},
+                    data    : JSON.stringify({nsa}),
+                    beforeSend : function(xhr){
+                    	xhr.setRequestHeader(header,token);
+                    },
+                    success :function(result){
+                    	swal(title, messSaveOk, "success");
+                    },
+                    error : function(result){
+                    	swal(title,messSaveNOk,'error');
+                    }              
+                 });
+        	}else{
+        		swal('Assign',messRole,'error');
+        	}
+        	
+        });
+
+      //get corporation
+        $('#corporation').on('click', function(e){
+        	id_klik = '#corporation';
+        	hideBtn();
+        	$('.btncorporation').show();
+            $('#id_monper').show();
+            $('#detail').empty();
+            var detail="<table><tbody>";
+            var nama_hide="";
+        	if($("#fs").is(':checked')){
+        		nama_hide="Tampil Semua";
+			}else{
+				nama_hide="Show All";
+			}
+            detail += '<tr><td><button type="button" class="btn btn-success show-all-button">'+nama_hide+'</button></td></tr>';
+           
+            $.ajax({
+                url: urls + 'list-corporationProg-assign/'+$('#id_monper').val()+'/'+$('#id_prov').val(),
+                type: 'get',
+                dataType: 'json',
+                cache: false,
+                async : false,
+                success: function (response) {
+                    var nama;
+                    var idProgram;
+                    for (var i = 0; i < response.content.length; i++) {
+                    	idProgram=response.content[i].id;
+                    	if($("#fs").is(':checked')){
+    						nama = response.content[i].nm_program;
+    					}else{
+    						nama = response.content[i].nm_program_eng;
+    					}
+                    	detail += '<tr><td style="width:50%"><label style="display:inline-block;white-space:wrap">'+
+				                        '<span class="toogle-sdg-bapak" data-id="'+idProgram+'" style="vertical-align:middle">'+response.content[i].id_program+' '+nama+'</span>'+
+				                  '</label></td>'+
+				                  '<td style="width:50%">'+
+				                  '<input type="hidden" name="nsa[][id]" value="'+idProgram+'"/>'+
+				                  '<input type="hidden" name="nsa[][id_activity]" value=""/>'+
+				                  '<select class="select-bapak-sdg" data-id="'+idProgram+'" name="nsa[][id_role]">'+roleCor(response.content[i].id_role)+'</select></td>'+
+				                  '<tr/>';
+                    	$.ajax({
+                            url: urls + 'list-corporationActivityByIdProg/'+idProgram,
+                            type: 'get',
+                            dataType: 'json',
+                            cache: false,
+                            async : false,
+                            success: function (result) {
+                                for (var j = 0; j < result.content.length; j++) {
+                                	var nama;
+        							if($("#fs").is(':checked')){
+        								nama = result.content[j].nm_activity;
+        							}else{
+        								nama = result.content[j].nm_activity_eng;
+        							}
+      			                   detail += '<tr>'+
+                          				'<td style="width:50%;display:none" class="show-all toogle-sdg-anak sdg-anak'+idProgram+'" data-id="'+idProgram+'"><label style="display:inline-block;white-space:wrap;margin-left:20px">'+
+  			                            	'<span style="vertical-align:middle">'+result.content[j].id_activity+' '+nama+'</span>'+
+  			                      			'</label>'+
+  			                           '</td>'+
+  			                           '<td style="width:50%;display:none" class="show-all sdg-anak'+idProgram+'">'+
+  			                         		'<input type="hidden" name="nsa[][id]" value=""/>'+
+  					                  		'<input type="hidden" name="nsa[][id_activity]" value="'+result.content[j].id+'"/>'+
+  					                  		'<select class="select-anak-sdg select-anak-sdg'+idProgram+'" data-id="'+idProgram+'" name="nsa[][id_role]">'+roleCor(result.content[j].id_role)+'</select>'+
+  			                           '</td>'+
+  			                      	'<tr/>';
+                                	$.ajax({
+                                        url: urls + 'list-corporationIndicator/'+idProgram+'/'+result.content[j].id,
+                                        type: 'get',
+                                        dataType: 'json',
+                                        cache: false,
+                                        async : false,
+                                        success: function (result) {
+                                            for (var k = 0; k < result.content.length; k++) {
+	                      			            var nama;
+	                  							if($("#fs").is(':checked')){
+	                  								nama = result.content[k][2];
+	                  							}else{
+	                  								nama = result.content[k][5];
+	                  							}
+	                                          	detail += '<tr><td class="show-all sdg-anak'+idProgram+'" data-id="'+idProgram+'" style="width:50%;display:none"><label style="display:inline-block;white-space:wrap;margin-left:40px">'+
+			        			                            '<span style="vertical-align:middle">'+result.content[k][1]+' '+nama+'</span>'+
+			        			                      '</label></td>';
+	                  			               	detail += '<td class="show-all sdg-anak'+idProgram+'" style="width:50%;display:none">'+
+	      			               				'</td><tr/>';
+                                            }
+                                        }
+                                    });     
+                                }
+                            }
+                        });
+                    }
+                    $('#detail').append(detail);
+                }
+            });
+        });
+
+        $('.btncorporation').on('click', function(){
+        	var nsa =  $('#form-detail').serializeObject();
+        	var len = nsa.nsa.length;
+        	
+        	$cek = 0;
+        	for(i=0;i<len;i++){
+        		if(!nsa.nsa[i].id_role){
+        			$cek += 1;
+        		}
+        	}
+        	if($cek == 0){
+        		$.ajax({
+                    type    :"POST",
+                    url     :urls+'manajemen/save-assignmentCor',
                     headers :{'Accept':'application/json','Content-Type':'application/json'},
                     data    : JSON.stringify({nsa}),
                     beforeSend : function(xhr){

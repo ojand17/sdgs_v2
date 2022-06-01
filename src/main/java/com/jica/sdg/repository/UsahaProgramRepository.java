@@ -21,6 +21,6 @@ public interface UsahaProgramRepository extends CrudRepository<UsahaProgram, Int
 	
 	@Transactional
     @Modifying(clearAutomatically = true)
-    @Query(value = "update nsa_program set id_role = :id_role where id = :id",nativeQuery = true)
+    @Query(value = "update usaha_program set id_role = :id_role where id = :id",nativeQuery = true)
     void UpdateRole(@Param("id_role") Integer id_role, @Param("id") Integer id);
 }
