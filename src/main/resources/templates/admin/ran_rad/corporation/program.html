@@ -118,38 +118,52 @@
                                     
                                     <div class="control-group">
                                         <label class="lang_eng control-label" style="display:none;text-align:left">POJK</label>
-                                        <label class="lang_indo control-label" style="text-align:left">POJK</label>
+                                        <label class="lang_indo control-label" style="text-align:left">Kode POJK</label>
                                         <div class="controls">
-                                            <select name="idpojk" id="idpojk" style="width: 100%;">
+                                            <select name="idpojk1" id="idpojk1" style="width: 100%;">
 	        				<option value="0" >-- Pilih --</option>
-	        				<option value="1" >Kesetaraan Dalam Kesempatan Bekerja</option>
-	        				<option value="2" >Komunikasi dan Pelatihan anti korupsi</option>
+	        				<option value="1" >1</option>
+	        				<option value="2" >2</option>
                                             </select>
                                             <span class="help-block" id="error_nm_program"></span>
                                         </div>
                                     </div>
                                     <div class="control-group">
+				    <div class="controls">
+                        <input type="text" id="nm_program" name="nm_program" class=" input-block-level"/>
+                        <span class="help-block" id="error_nm_program"></span>
+				    </div>
+				  </div>
+                                    
+                                    <div class="control-group">
                                         <label class="lang_eng control-label" style="display:none;text-align:left">SDG Indicator</label>
-                                        <label class="lang_indo control-label" style="text-align:left">Indikator SDG</label>
+                                        <label class="lang_indo control-label" style="text-align:left">Kode Indikator SDG</label>
                                         <div class="controls">
                                             <select name="idsdgind" id="idsdgind" style="width: 100%;">
 	        				<option value="0" >-- Pilih --</option>
+	        				<option value="1" >1</option>
                                             </select>
                                             <span class="help-block" id="error_nm_program"></span>
                                         </div>
                                     </div>
+                                    <div class="control-group">
+				    <div class="controls">
+                        <input type="text" id="nm_program" name="nm_program" class=" input-block-level"/>
+                        <span class="help-block" id="error_nm_program"></span>
+				    </div>
+				  </div>
                                     
 				  <div class="control-group">
-				    <label class="lang_eng control-label" style="display:none;text-align:left">Activity/Project/Program (Indonesian)</label>
-				    <label class="lang_indo control-label" style="text-align:left">Kegiatan/Proyek/Program (Indonesian)</label>
+				    <label class="lang_eng control-label" style="display:none;text-align:left">Kegiatan Perusahaan (Indonesian)</label>
+				    <label class="lang_indo control-label" style="text-align:left">Kegiatan Perusahaan (Indonesian)</label>
 				    <div class="controls">
                         <input type="text" id="nm_program" name="nm_program" class=" input-block-level"/>
                         <span class="help-block" id="error_nm_program"></span>
 				    </div>
 				  </div>
 				  <div class="control-group">
-				    <label class="lang_eng control-label" style="display:none;text-align:left">Activity/Project/Program (English)</label>
-				    <label class="lang_indo control-label" style="text-align:left">Kegiatan/Proyek/Program (English)</label>
+				    <label class="lang_eng control-label" style="display:none;text-align:left">Kegiatan Perusahaan (English)</label>
+				    <label class="lang_indo control-label" style="text-align:left">Kegiatan Perusahaan (English)</label>
 				    <div class="controls">
                         <input type="text" id="nm_program_eng" name="nm_program_eng" class=" input-block-level"/>
 				    	<span class="help-block" id="error_nm_program"></span>
@@ -167,7 +181,7 @@
                                     
 				  <div class="control-group">
 				    <label class="lang_eng control-label" style="display:none;text-align:left">Satuan </label>
-				    <label class="lang_indo control-label" style="text-align:left">Satuan </label>
+				    <label class="lang_indo control-label" style="text-align:left">Satuan Ukur</label>
 				    <div class="controls">
                         <input type="text" id="nm_program_eng" name="nm_program_eng" class=" input-block-level"/>
 				    	<span class="help-block" id="error_nm_program"></span>
@@ -175,22 +189,14 @@
 				  </div>
                                     
 				  <div class="control-group">
-				    <label class="lang_eng control-label" style="display:none;text-align:left">Jangka Waktu Penerapan(Dalam Tahun)</label>
-				    <label class="lang_indo control-label" style="text-align:left">Jangka Waktu Penerapan(Dalam Tahun)</label>
+				    <label class="lang_eng control-label" style="display:none;text-align:left">Budget Alocation</label>
+				    <label class="lang_indo control-label" style="text-align:left">Alokasi Dana</label>
 				    <div class="controls">
                         <input type="text" id="nm_program_eng" name="nm_program_eng" class=" input-block-level"/>
 				    	<span class="help-block" id="error_nm_program"></span>
 				    </div>
 				  </div>
                                     
-				  <div class="control-group">
-				    <label class="lang_eng control-label" style="display:none;text-align:left">Target Jangka Panjang</label>
-				    <label class="lang_indo control-label" style="text-align:left">Target Jangka Panjang</label>
-				    <div class="controls">
-                        <input type="text" id="nm_program_eng" name="nm_program_eng" class=" input-block-level"/>
-				    	<span class="help-block" id="error_nm_program"></span>
-				    </div>
-				  </div>
                                     
 				  <div class="control-group">
 				    <label class="lang_eng control-label" style="display:none;text-align:left">Target 1</label>
@@ -238,13 +244,30 @@
 				  </div>
                                     
 				  <div class="control-group">
-				    <label class="lang_eng control-label" style="display:none;text-align:left">Budget Alocation</label>
-				    <label class="lang_indo control-label" style="text-align:left">Alokasi Dana</label>
-				    <div class="controls">
-                        <input type="text" id="nm_program_eng" name="nm_program_eng" class=" input-block-level"/>
-				    	<span class="help-block" id="error_nm_program"></span>
-				    </div>
-				  </div>
+                                        <label class="lang_eng control-label" style="display:none;text-align:left">POJK</label>
+                                        <label class="lang_indo control-label" style="text-align:left">Provinsi</label>
+                                        <div class="controls">
+                                            <select name="idpojk1" id="idpojk1" style="width: 100%;">
+	        				<option value="0" >-- Pilih --</option>
+	        				<option value="1" >1</option>
+	        				<option value="2" >2</option>
+                                            </select>
+                                            <span class="help-block" id="error_nm_program"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="control-group">
+                                        <label class="lang_eng control-label" style="display:none;text-align:left">POJK</label>
+                                        <label class="lang_indo control-label" style="text-align:left">Kabupaten</label>
+                                        <div class="controls">
+                                            <select name="idpojk1" id="idpojk1" style="width: 100%;">
+	        				<option value="0" >-- Pilih --</option>
+	        				<option value="1" >1</option>
+	        				<option value="2" >2</option>
+                                            </select>
+                                            <span class="help-block" id="error_nm_program"></span>
+                                        </div>
+                                    </div>
                                     
 				  <div class="card" style="display: none">
   					<div class="card-body">
