@@ -120,7 +120,43 @@
             		<div class="widget-box">
 	            		<div class="widget-title">
 	                        <span class="icon"><i class="icon-tasks"></i></span>
-	                        <h5>Analisis Kuadran Form 2a</h5>
+	                        <h5>Analisis Kuadran Form 2a Berdasarkan SDGs Goal</h5>
+	                    </div>
+	                    <div class="widget-content">
+	                    	<div class="row-fluid">
+	                    		<select class="span3 select2" id="periodeNas3">
+		                    		<option></option>
+		                    		<option th:each="per: ${periodeNas}" th:value="${per.id_monper}" th:text="${per.start_year+' - '+per.end_year}"></option>
+	                            </select>
+	                            <select class="span6 select2" id="goalsKuadran">
+		                    		<option></option>
+		                    		<option th:each="data: ${goals}" th:value="${data.id}" th:text="${lang!=0?data.id_goals+'. '+data.nm_goals:data.id_goals+'. '+data.nm_goals_eng}"></option>
+	                            </select>
+	                            <select class="span3 select2" id="semesterGoal">
+		                    		<option></option>
+		                    		<option value="1">Semester 1</option>
+		                    		<option value="2">Semester 2</option>
+	                            </select>
+	                    	</div>
+	                    	<br/>
+	                    	<div class="row-fluid">
+	                    		<div class="span6">
+	                    			<div id="kuadranGoals"></div>
+	                    		</div>
+	                    		<div class="span6">
+	                    			<div id="kuadran1Goals"></div>
+	                    		</div>
+	                    	</div>
+	                    </div>
+	            	</div>
+            	</div>
+            </div>
+            <div class="row-fluid">
+            	<div class="span12">
+            		<div class="widget-box">
+	            		<div class="widget-title">
+	                        <span class="icon"><i class="icon-tasks"></i></span>
+	                        <h5>Analisis Kuadran Form 2a Berdasarkan SDGs Target</h5>
 	                    </div>
 	                    <div class="widget-content">
 	                    	<div class="row-fluid">
@@ -128,9 +164,14 @@
 		                    		<option></option>
 		                    		<option th:each="per: ${periodeNas}" th:value="${per.id_monper}" th:text="${per.start_year+' - '+per.end_year}"></option>
 	                            </select>
-	                            <select class="span9 select2" id="target">
+	                            <select class="span6 select2" id="target">
 		                    		<option></option>
 		                    		<option th:each="data: ${target}" th:value="${data[0]}" th:text="${data[1]+' '+data[2]}"></option>
+	                            </select>
+	                            <select class="span3 select2" id="semester">
+		                    		<option></option>
+		                    		<option value="1">Semester 1</option>
+		                    		<option value="2">Semester 2</option>
 	                            </select>
 	                    	</div>
 	                    	<br/>
@@ -140,12 +181,6 @@
 	                    		</div>
 	                    		<div class="span6">
 	                    			<div id="kuadran1"></div>
-	                    		</div>
-	                    	</div>
-	                    	<br/>
-	                    	<div class="row-fluid">
-	                    		<div class="span6">
-	                    			<div id="kuadran1Ro"></div>
 	                    		</div>
 	                    	</div>
 	                    </div>
@@ -321,10 +356,10 @@
             var $result = $('<span style="padding-left:' + (20 * node.level) + 'px;">' + node.text + '</span>');
             return $result;
           };
-		$('#periodeNas,#periodeNas1,#periodeNas2').select2({
+		$('#periodeNas,#periodeNas1,#periodeNas2,#periodeNas3').select2({
 			placeholder: 'Pilih Periode',
 		});
-		$('#goals').select2({
+		$('#goals,#goalsKuadran').select2({
 			placeholder: 'Pilih Goals',
 		});
 		$('#target').select2({
@@ -333,6 +368,10 @@
 		$('#indicator').select2({
 			placeholder: 'Pilih Indikator',
 		});
+		$('#semesterGoal,#semester').select2({
+			placeholder: 'Pilih',
+		});
+		
         $("#filter_sdg").select2({
           placeholder: 'Select an option',
           width: "70%",
@@ -1058,8 +1097,12 @@
         	capaianChart();
         });
 
-        $("#periodeNas2,#target").on('change', function(){
+        $("#periodeNas2,#target,#semester").on('change', function(){
         	kuadranChart();
+        });
+
+        $("#periodeNas3,#goalsKuadran,#semesterGoal").on('change', function(){
+        	kuadranGoalsChart();
         });
 
         function capaianChart(){
@@ -1241,11 +1284,12 @@
         function kuadranChart(){
         	var id_monper = $("#periodeNas2").val();
             var target = $("#target").val();
+            var semester = $("#semester").val();
 
-            if(id_monper && target){
+            if(id_monper && target && semester){
             	$.ajax({
                     type: "GET",
-                    url: urls+'dashboard/get-kuadran/'+id_monper+'/'+target,
+                    url: urls+'dashboard/get-kuadran/'+id_monper+'/'+target+'/'+semester,
                     success: function (result) {
                         var hasilQuadran = result.quadran;
                         var dataQuadran = [];
@@ -1259,7 +1303,7 @@
                         		'ket':hasilQuadran[i][9].replace(/\#/g, ':'),
                             });
                         }
-
+                        var titikPotong = semester==1?47.5:95;
                         Highcharts.chart('kuadran', {
 
                             chart: {
@@ -1297,7 +1341,7 @@
                                     color: 'black',
                                     dashStyle: 'dot',
                                     width: 2,
-                                    value: 95,
+                                    value: titikPotong,
                                     label: {
                                         rotation: 0,
                                         y: 15,
@@ -1329,7 +1373,7 @@
                                     color: 'black',
                                     dashStyle: 'dot',
                                     width: 2,
-                                    value: 95,
+                                    value: titikPotong,
                                     label: {
                                         align: 'right',
                                         style: {
@@ -1419,7 +1463,7 @@
                                     color: 'black',
                                     dashStyle: 'dot',
                                     width: 2,
-                                    value: 95,
+                                    value: titikPotong,
                                     label: {
                                         rotation: 0,
                                         y: 15,
@@ -1451,7 +1495,269 @@
                                     color: 'black',
                                     dashStyle: 'dot',
                                     width: 2,
-                                    value: 95,
+                                    value: titikPotong,
+                                    label: {
+                                        align: 'right',
+                                        style: {
+                                            fontStyle: 'italic'
+                                        },
+                                        x: -10
+                                    },
+                                    zIndex: 3
+                                }],
+                                accessibility: {
+                                    rangeDescription: 'Range: 0 to 160 grams.'
+                                }
+                            },
+
+                            tooltip: {
+                                useHTML: true,
+                                headerFormat: '<table>',
+                                pointFormat: '<tr><th colspan="2">{point.ket}</th></tr>' +
+                                	'<tr><th th colspan="2">{point.role}</th></tr>' +
+                                	'<tr><th>Kode RO:</th><td>{point.kode_ro}</td></tr>' +
+                                	'<tr><th>Kode SDGs Indikator:</th><td>{point.kode_sdg}</td></tr>' +
+                                    '<tr><th>Realisasi Fisik:</th><td>{point.x}%</td></tr>' +
+                                    '<tr><th>Realisasi Anggaran:</th><td>{point.y}%</td></tr>',
+                                footerFormat: '</table>',
+                                followPointer: true
+                            },
+
+                            plotOptions: {
+                            	bubble: {
+                                    minSize: 10,
+                                    maxSize: 10
+                                },
+                            },
+
+                            series: [{
+                                data: dataQuadran1
+                            }]
+
+                        });
+                        
+                    }
+            	});
+            }
+        }
+
+        function kuadranGoalsChart(){
+        	var id_monper = $("#periodeNas3").val();
+            var goals = $("#goalsKuadran").val();
+            var semesterGoal = $("#semesterGoal").val();
+
+            if(id_monper && goals && semesterGoal){
+            	$.ajax({
+                    type: "GET",
+                    url: urls+'dashboard/get-kuadran-goals/'+id_monper+'/'+goals+'/'+semesterGoal,
+                    success: function (result) {
+                        var hasilQuadran = result.quadran;
+                        var dataQuadran = [];
+                        for(var i = 0, len = hasilQuadran.length; i < len; i++){
+                        	dataQuadran.push({
+                        		'kode_ro':hasilQuadran[i][0],
+                            	'kode_sdg':hasilQuadran[i][1],
+                            	'role':hasilQuadran[i][2],
+                        		'y':(hasilQuadran[i][8]>100?100:hasilQuadran[i][8]),
+                        		'x':(hasilQuadran[i][5]>100?100:hasilQuadran[i][5]),
+                        		'ket':hasilQuadran[i][9].replace(/\#/g, ':'),
+                            });
+                        }
+
+                        var titikPotong = semesterGoal==1?47.5:95;
+
+                        Highcharts.chart('kuadranGoals', {
+
+                            chart: {
+                                type: 'bubble',
+                                plotBorderWidth: 1,
+                                zoomType: 'xy'
+                            },
+
+                            legend: {
+                                enabled: false
+                            },
+
+                            title: {
+                                text: 'Analisis Kuadran'
+                            },
+
+                            accessibility: {
+                                point: {
+                                    valueDescriptionFormat: '{index}. {point.name}, fat: {point.x}, sugar: {point.y}'
+                                }
+                            },
+
+                            xAxis: {
+                                gridLineWidth: 1,
+                                max:120,
+                            	min:0,
+                            	tickInterval:5,
+                                title: {
+                                	text: 'Capaian Rincian Output'
+                                },
+                                labels: {
+                                    format: '{value}'
+                                },
+                                plotLines: [{
+                                    color: 'black',
+                                    dashStyle: 'dot',
+                                    width: 2,
+                                    value: titikPotong,
+                                    label: {
+                                        rotation: 0,
+                                        y: 15,
+                                        style: {
+                                            fontStyle: 'italic'
+                                        },
+                                    },
+                                    zIndex: 3
+                                }],
+                                accessibility: {
+                                    rangeDescription: 'Range: 60 to 100 grams.'
+                                }
+                            },
+
+                            yAxis: {
+                                startOnTick: false,
+                                endOnTick: false,
+                                max:120,
+                            	min:0,
+                            	tickInterval:5,
+                                title: {
+                                    text: 'Indikator SDGs'
+                                },
+                                labels: {
+                                    format: '{value}'
+                                },
+                                maxPadding: 0.2,
+                                plotLines: [{
+                                    color: 'black',
+                                    dashStyle: 'dot',
+                                    width: 2,
+                                    value: titikPotong,
+                                    label: {
+                                        align: 'right',
+                                        style: {
+                                            fontStyle: 'italic'
+                                        },
+                                        x: -10
+                                    },
+                                    zIndex: 3
+                                }],
+                                accessibility: {
+                                    rangeDescription: 'Range: 0 to 160 grams.'
+                                }
+                            },
+
+                            tooltip: {
+                                useHTML: true,
+                                headerFormat: '<table>',
+                                pointFormat: '<tr><th colspan="2">{point.ket}</th></tr>' +
+                                	'<tr><th th colspan="2">{point.role}</th></tr>' +
+                                	'<tr><th>Kode RO:</th><td>{point.kode_ro}</td></tr>' +
+                                	'<tr><th>Kode SDGs Indikator:</th><td>{point.kode_sdg}</td></tr>' +
+                                    '<tr><th>Realisasi Fisik:</th><td>{point.x}%</td></tr>' +
+                                    '<tr><th>Realisasi Indikator SDGs:</th><td>{point.y}%</td></tr>',
+                                footerFormat: '</table>',
+                                followPointer: true
+                            },
+
+                            plotOptions: {
+                            	bubble: {
+                                    minSize: 10,
+                                    maxSize: 10
+                                },
+                            },
+
+                            series: [{
+                                data: dataQuadran
+                            }]
+
+                        });
+                        var hasilQuadran1 = result.quadran1;
+                        var dataQuadran1 = [];
+                        for(var i = 0, len = hasilQuadran1.length; i < len; i++){
+                        	dataQuadran1.push({
+                            	'kode_ro':hasilQuadran1[i][0],
+                            	'kode_sdg':hasilQuadran1[i][1],
+                            	'role':hasilQuadran1[i][2],
+                        		'y':(hasilQuadran1[i][8]>100?100:hasilQuadran1[i][8]),
+                        		'x':(hasilQuadran1[i][5]>100?100:hasilQuadran1[i][5]),
+                        		'ket':hasilQuadran1[i][9].replace(/\#/g, ':'),
+                            });                        	
+                        }
+                        
+                        Highcharts.chart('kuadran1Goals', {
+
+                            chart: {
+                                type: 'bubble',
+                                plotBorderWidth: 1,
+                                zoomType: 'xy'
+                            },
+
+                            legend: {
+                                enabled: false
+                            },
+
+                            title: {
+                                text: 'Analisis Kuadran'
+                            },
+
+                            accessibility: {
+                                point: {
+                                    valueDescriptionFormat: '{index}. {point.name}, fat: {point.x}, sugar: {point.y}'
+                                }
+                            },
+
+                            xAxis: {
+                                gridLineWidth: 1,
+                                max:120,
+                            	min:0,
+                            	tickInterval:5,
+                                title: {
+                                	text: 'Capaian Rincian Output'
+                                },
+                                labels: {
+                                    format: '{value}'
+                                },
+                                plotLines: [{
+                                    color: 'black',
+                                    dashStyle: 'dot',
+                                    width: 2,
+                                    value: titikPotong,
+                                    label: {
+                                        rotation: 0,
+                                        y: 15,
+                                        style: {
+                                            fontStyle: 'italic'
+                                        },
+                                    },
+                                    zIndex: 3
+                                }],
+                                accessibility: {
+                                    rangeDescription: 'Range: 60 to 100 grams.'
+                                }
+                            },
+
+                            yAxis: {
+                                startOnTick: false,
+                                endOnTick: false,
+                                max:120,
+                            	min:0,
+                            	tickInterval:5,
+                                title: {
+                                    text: 'Realisasi Anggaran'
+                                },
+                                labels: {
+                                    format: '{value}'
+                                },
+                                maxPadding: 0.2,
+                                plotLines: [{
+                                    color: 'black',
+                                    dashStyle: 'dot',
+                                    width: 2,
+                                    value: titikPotong,
                                     label: {
                                         align: 'right',
                                         style: {
