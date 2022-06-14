@@ -652,50 +652,50 @@ public class AdminController {
 	    return hasil;
 	}
     
-    @GetMapping("admin/dashboard/get-kuadran/{id_monper}/{id_target}/{semester}")
-    public @ResponseBody Map<String, Object> getKuadran(@PathVariable("id_monper") Integer id_monper,@PathVariable("id_target") Integer id_target,@PathVariable("semester") Integer semester) {
+    @GetMapping("admin/dashboard/get-kuadran/{id_monper}/{id_target}/{semester}/{tahun}")
+    public @ResponseBody Map<String, Object> getKuadran(@PathVariable("id_monper") Integer id_monper,@PathVariable("id_target") Integer id_target,@PathVariable("semester") Integer semester,@PathVariable("tahun") Integer tahun) {
     	String persen = semester==1?"47.5":"95";
     	String achievement2 = semester==1?"":"+COALESCE(sum(f.achievement2),0)";
     	String achievementJ2 = semester==1?"":"+COALESCE(sum(j.achievement2),0)";
-    	Query queryQuadran = em.createNativeQuery("Select *, \r\n" + 
-    			"CASE \r\n" + 
-    			"				WHEN persen_ro>="+persen+" and persen_realisasi>="+persen+" THEN \r\n" + 
-    			"								'<span style=\''color#green\''>Indikator tercapai<br/>RO tercapai</span>' \r\n" + 
-    			"				WHEN persen_ro>="+persen+" and persen_realisasi<"+persen+" THEN \r\n" + 
-    			"								'<span style=\''color#red\''>Indikator tidak tercapai</span><br/><span style=\''color#green\''>RO tercapai</span>' \r\n" + 
-    			"				WHEN persen_ro<"+persen+" and persen_realisasi>="+persen+" THEN \r\n" + 
-    			"								'<span style=\''color#green\''>Indikator tercapai</span><br/><span style=\''color#red\''>RO tidak tercapai</span>' \r\n" + 
-    			"				WHEN persen_ro<"+persen+" and persen_realisasi<"+persen+" THEN \r\n" + 
-    			"								'<span style=\''color#red\''>Indikator tidak tercapai<br/>RO tidak tercapai</span>' \r\n" + 
-    			"END ket \r\n" + 
-    			"from \r\n" + 
-    			"(select DISTINCT\r\n" + 
-    			"CONCAT(j.id_activity,'.',h.id_gov_indicator) kode_ro,\r\n" + 
-    			"CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) kode_sdg, k.nm_role,\r\n" + 
-    			"COALESCE(SUM(g.value),0) target_ro, \r\n" + 
-    			"COALESCE(sum(f.achievement1),0)"+achievement2+" capaian_ro, \r\n" + 
-    			"COALESCE(ROUND(((COALESCE(sum(f.achievement1),0)"+achievement2+")/COALESCE(SUM(g.value),0))*100,0),0) as persen_ro,\r\n" + 
-    			"COALESCE(sum(i.target_bawah),0) target_bawah, \r\n" + 
-    			"COALESCE(sum(i.jumlah),0) jumlah,\r\n" + 
-    			"COALESCE(ROUND((COALESCE(sum(i.jumlah),0)/COALESCE(sum(i.target_bawah),0))*100,0),0) persen_realisasi\r\n" + 
-    			"from gov_map a \r\n" + 
-    			"JOIN sdg_goals b on a.id_goals = b.id \r\n" + 
-    			"JOIN sdg_target c on a.id_target = c.id \r\n" + 
-    			"JOIN sdg_indicator d on a.id_indicator = d.id \r\n" + 
-    			"left join assign_gov_indicator e on a.id_gov_indicator = e.id_gov_indicator and e.id_monper = a.id_monper \r\n" + 
-    			"left join entry_gov_indicator f on e.id = f.id_assign \r\n" + 
-    			"left join gov_target g on a.id_gov_indicator = g.id_gov_indicator \r\n" + 
-    			"left join gov_indicator h on a.id_gov_indicator = h.id \r\n" + 
-    			"left join gov_activity j on h.id_activity = j.id\r\n" + 
-    			"left join ran_rad z on a.id_monper = z.id_monper \r\n" + 
-    			"left join api i on i.kode = CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) and i.tahun BETWEEN z.start_year and z.end_year \r\n" + 
-    			"LEFT JOIN ref_role k on j.id_role = k.id_role\r\n" + 
-    			"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_target = '"+id_target+"'\r\n" + 
-    			"GROUP BY h.id,CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator), g.id_role \r\n" + 
-    			"order by h.id,CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator), g.id_role ) a");
-	    List listQuadran =  queryQuadran.getResultList();
-    	
-	    Query queryQuadran1 = em.createNativeQuery("Select *,\r\n" + 
+//    	Query queryQuadran = em.createNativeQuery("Select *, \r\n" + 
+//    			"CASE \r\n" + 
+//    			"				WHEN persen_ro>="+persen+" and persen_realisasi>="+persen+" THEN \r\n" + 
+//    			"								'<span style=\''color#green\''>Indikator tercapai<br/>RO tercapai</span>' \r\n" + 
+//    			"				WHEN persen_ro>="+persen+" and persen_realisasi<"+persen+" THEN \r\n" + 
+//    			"								'<span style=\''color#red\''>Indikator tidak tercapai</span><br/><span style=\''color#green\''>RO tercapai</span>' \r\n" + 
+//    			"				WHEN persen_ro<"+persen+" and persen_realisasi>="+persen+" THEN \r\n" + 
+//    			"								'<span style=\''color#green\''>Indikator tercapai</span><br/><span style=\''color#red\''>RO tidak tercapai</span>' \r\n" + 
+//    			"				WHEN persen_ro<"+persen+" and persen_realisasi<"+persen+" THEN \r\n" + 
+//    			"								'<span style=\''color#red\''>Indikator tidak tercapai<br/>RO tidak tercapai</span>' \r\n" + 
+//    			"END ket \r\n" + 
+//    			"from \r\n" + 
+//    			"(select DISTINCT\r\n" + 
+//    			"CONCAT(j.id_activity,'.',h.id_gov_indicator) kode_ro,\r\n" + 
+//    			"CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) kode_sdg, k.nm_role,\r\n" + 
+//    			"COALESCE(SUM(g.value),0) target_ro, \r\n" + 
+//    			"COALESCE(sum(f.achievement1),0)"+achievement2+" capaian_ro, \r\n" + 
+//    			"COALESCE(ROUND(((COALESCE(sum(f.achievement1),0)"+achievement2+")/COALESCE(SUM(g.value),0))*100,0),0) as persen_ro,\r\n" + 
+//    			"COALESCE(sum(i.target_bawah),0) target_bawah, \r\n" + 
+//    			"COALESCE(sum(i.jumlah),0) jumlah,\r\n" + 
+//    			"COALESCE(ROUND((COALESCE(sum(i.jumlah),0)/COALESCE(sum(i.target_bawah),0))*100,0),0) persen_realisasi\r\n" + 
+//    			"from gov_map a \r\n" + 
+//    			"JOIN sdg_goals b on a.id_goals = b.id \r\n" + 
+//    			"JOIN sdg_target c on a.id_target = c.id \r\n" + 
+//    			"JOIN sdg_indicator d on a.id_indicator = d.id \r\n" + 
+//    			"left join assign_gov_indicator e on a.id_gov_indicator = e.id_gov_indicator and e.id_monper = a.id_monper \r\n" + 
+//    			"left join entry_gov_indicator f on e.id = f.id_assign \r\n" + 
+//    			"left join gov_target g on a.id_gov_indicator = g.id_gov_indicator \r\n" + 
+//    			"left join gov_indicator h on a.id_gov_indicator = h.id \r\n" + 
+//    			"left join gov_activity j on h.id_activity = j.id\r\n" + 
+//    			"left join ran_rad z on a.id_monper = z.id_monper \r\n" + 
+//    			"left join api i on i.kode = CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) and i.tahun BETWEEN z.start_year and z.end_year \r\n" + 
+//    			"LEFT JOIN ref_role k on j.id_role = k.id_role\r\n" + 
+//    			"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_target = '"+id_target+"'\r\n" + 
+//    			"GROUP BY h.id,CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator), g.id_role \r\n" + 
+//    			"order by h.id,CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator), g.id_role ) a");
+//	    List listQuadran =  queryQuadran.getResultList();
+//    	
+	    Query queryQuadran1 = em.createNativeQuery("Select kode_ro,kode_sdg,nm_role,target_ro,capaian_ro,persen_ro,budget_allocation,realisasi,persen_realisasi,\r\n" + 
 	    		"CASE\r\n" + 
 	    		"        WHEN persen_ro>="+persen+" and persen_realisasi>="+persen+" THEN\r\n" + 
 	    		"                '<span style=\''color#green\''>Realisasi anggaran tinggi<br/>RO tercapai</span>'\r\n" + 
@@ -705,7 +705,7 @@ public class AdminController {
 	    		"                '<span style=\''color#green\''>Realisasi anggaran tinggi</span><br/><span style=\''color#red\''>RO tidak tercapai</span>'\r\n" + 
 	    		"        WHEN persen_ro<"+persen+" and persen_realisasi<"+persen+" THEN\r\n" + 
 	    		"                '<span style=\''color#red\''>Realisasi anggaran rendah<br/>RO tidak tercapai</span>' " + 
-	    		"END ket\r\n" + 
+	    		"END ket,cekindi\r\n" + 
 	    		"from\r\n" + 
 	    		"(\r\n" + 
 	    		"select DISTINCT \r\n" + 
@@ -717,18 +717,20 @@ public class AdminController {
 	    		"COALESCE(ROUND(((COALESCE(sum(f.achievement1),0)"+achievement2+")/COALESCE(SUM(g.value),0))*100,0),0) as persen_ro,\r\n" + 
 	    		"COALESCE(sum(i.budget_allocation),0) budget_allocation,\r\n" + 
 	    		"COALESCE(sum(j.achievement1),0)"+achievementJ2+" realisasi,\r\n" + 
-	    		"COALESCE(ROUND(((COALESCE(sum(j.achievement1),0)"+achievementJ2+")/COALESCE(sum(i.budget_allocation),0)*100),0),0)persen_realisasi\r\n" + 
+	    		"COALESCE(ROUND(((COALESCE(sum(j.achievement1),0)"+achievementJ2+")/COALESCE(sum(i.budget_allocation),0)*100),0),0)persen_realisasi,\r\n" + 
+	    		"CASE WHEN l.arah_improvement = 'Negatif' THEN IF(l.jumlah <= l.target_atas, 'YES', 'NO') ELSE IF(l.jumlah >= l.target_bawah, 'YES', 'NO') end as cekindi "+
 	    		"from gov_map a\r\n" + 
 	    		"LEFT JOIN sdg_goals b on a.id_goals = b.id\r\n" + 
 	    		"LEFT JOIN sdg_target c on a.id_target = c.id\r\n" + 
 	    		"LEFT JOIN sdg_indicator d on a.id_indicator = d.id\r\n" + 
 	    		"left join assign_gov_indicator e on a.id_gov_indicator = e.id_gov_indicator and e.id_monper = a.id_monper\r\n" + 
-	    		"left join entry_gov_indicator f on e.id = f.id_assign\r\n" + 
-	    		"left join gov_target g on a.id_gov_indicator = g.id_gov_indicator\r\n" + 
+	    		"left join entry_gov_indicator f on e.id = f.id_assign and f.year_entry = '"+tahun+"'\r\n" + 
+	    		"left join gov_target g on a.id_gov_indicator = g.id_gov_indicator and g.year = '"+tahun+"'\r\n" + 
 	    		"left join gov_indicator h on a.id_gov_indicator = h.id\r\n" + 
 	    		"left join gov_activity i on h.id_activity = i.id\r\n" + 
-	    		"left join entry_gov_budget j on h.id = j.id_gov_activity\r\n" + 
+	    		"left join entry_gov_budget j on h.id = j.id_gov_activity and j.year_entry = '"+tahun+"'\r\n" + 
 	    		"LEFT JOIN ref_role k on i.id_role = k.id_role\r\n" + 
+	    		"left join api l on l.kode = CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) and l.tahun = '"+tahun+"' "+ 
 	    		"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_target = '"+id_target+"'\r\n" + 
 	    		"GROUP BY h.id,CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator), i.id_role\r\n" + 
 	    		"order by h.id,CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator), i.id_role\r\n" + 
@@ -736,55 +738,55 @@ public class AdminController {
 	    List listQuadran1 =  queryQuadran1.getResultList();
 	    
 	    Map<String, Object> hasil = new HashMap<>();
-	    hasil.put("quadran",listQuadran);
+	    //hasil.put("quadran",listQuadran);
 	    hasil.put("quadran1",listQuadran1);
 	    return hasil;
 	}
     
-    @GetMapping("admin/dashboard/get-kuadran-goals/{id_monper}/{id_goals}/{semester}")
-    public @ResponseBody Map<String, Object> getKuadranGoals(@PathVariable("id_monper") Integer id_monper,@PathVariable("id_goals") Integer id_goals,@PathVariable("semester") Integer semester) {
+    @GetMapping("admin/dashboard/get-kuadran-goals/{id_monper}/{id_goals}/{semester}/{tahun}")
+    public @ResponseBody Map<String, Object> getKuadranGoals(@PathVariable("id_monper") Integer id_monper,@PathVariable("id_goals") Integer id_goals,@PathVariable("semester") Integer semester,@PathVariable("tahun") Integer tahun) {
     	String persen = semester==1?"47.5":"95";
     	String achievement2 = semester==1?"":"+COALESCE(sum(f.achievement2),0)";
     	String achievementJ2 = semester==1?"":"+COALESCE(sum(j.achievement2),0)";
-    	Query queryQuadran = em.createNativeQuery("Select *, \r\n" + 
-    			"CASE \r\n" + 
-    			"				WHEN persen_ro>="+persen+" and persen_realisasi>="+persen+" THEN \r\n" + 
-    			"								'<span style=\''color#green\''>Indikator tercapai<br/>RO tercapai</span>' \r\n" + 
-    			"				WHEN persen_ro>="+persen+" and persen_realisasi<"+persen+" THEN \r\n" + 
-    			"								'<span style=\''color#red\''>Indikator tidak tercapai</span><br/><span style=\''color#green\''>RO tercapai</span>' \r\n" + 
-    			"				WHEN persen_ro<"+persen+" and persen_realisasi>="+persen+" THEN \r\n" + 
-    			"								'<span style=\''color#green\''>Indikator tercapai</span><br/><span style=\''color#red\''>RO tidak tercapai</span>' \r\n" + 
-    			"				WHEN persen_ro<"+persen+" and persen_realisasi<"+persen+" THEN \r\n" + 
-    			"								'<span style=\''color#red\''>Indikator tidak tercapai<br/>RO tidak tercapai</span>' \r\n" + 
-    			"END ket \r\n" + 
-    			"from \r\n" + 
-    			"(select DISTINCT\r\n" + 
-    			"CONCAT(j.id_activity,'.',h.id_gov_indicator) kode_ro,\r\n" + 
-    			"CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) kode_sdg, k.nm_role,\r\n" + 
-    			"COALESCE(SUM(g.value),0) target_ro, \r\n" + 
-    			"COALESCE(sum(f.achievement1),0)"+achievement2+" capaian_ro, \r\n" + 
-    			"COALESCE(ROUND(((COALESCE(sum(f.achievement1),0)"+achievement2+")/COALESCE(SUM(g.value),0))*100,0),0) as persen_ro,\r\n" + 
-    			"COALESCE(sum(i.target_bawah),0) target_bawah, \r\n" + 
-    			"COALESCE(sum(i.jumlah),0) jumlah,\r\n" + 
-    			"COALESCE(ROUND((COALESCE(sum(i.jumlah),0)/COALESCE(sum(i.target_bawah),0))*100,0),0) persen_realisasi\r\n" + 
-    			"from gov_map a \r\n" + 
-    			"JOIN sdg_goals b on a.id_goals = b.id \r\n" + 
-    			"JOIN sdg_target c on a.id_target = c.id \r\n" + 
-    			"JOIN sdg_indicator d on a.id_indicator = d.id \r\n" + 
-    			"left join assign_gov_indicator e on a.id_gov_indicator = e.id_gov_indicator and e.id_monper = a.id_monper \r\n" + 
-    			"left join entry_gov_indicator f on e.id = f.id_assign \r\n" + 
-    			"left join gov_target g on a.id_gov_indicator = g.id_gov_indicator \r\n" + 
-    			"left join gov_indicator h on a.id_gov_indicator = h.id \r\n" + 
-    			"left join gov_activity j on h.id_activity = j.id\r\n" + 
-    			"left join ran_rad z on a.id_monper = z.id_monper \r\n" + 
-    			"left join api i on i.kode = CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) and i.tahun BETWEEN z.start_year and z.end_year \r\n" + 
-    			"LEFT JOIN ref_role k on j.id_role = k.id_role\r\n" + 
-    			"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_goals = '"+id_goals+"'\r\n" + 
-    			"GROUP BY h.id,CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator), g.id_role \r\n" + 
-    			"order by h.id,CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator), g.id_role ) a");
-	    List listQuadran =  queryQuadran.getResultList();
+//    	Query queryQuadran = em.createNativeQuery("Select *, \r\n" + 
+//    			"CASE \r\n" + 
+//    			"				WHEN persen_ro>="+persen+" and persen_realisasi>="+persen+" THEN \r\n" + 
+//    			"								'<span style=\''color#green\''>Indikator tercapai<br/>RO tercapai</span>' \r\n" + 
+//    			"				WHEN persen_ro>="+persen+" and persen_realisasi<"+persen+" THEN \r\n" + 
+//    			"								'<span style=\''color#red\''>Indikator tidak tercapai</span><br/><span style=\''color#green\''>RO tercapai</span>' \r\n" + 
+//    			"				WHEN persen_ro<"+persen+" and persen_realisasi>="+persen+" THEN \r\n" + 
+//    			"								'<span style=\''color#green\''>Indikator tercapai</span><br/><span style=\''color#red\''>RO tidak tercapai</span>' \r\n" + 
+//    			"				WHEN persen_ro<"+persen+" and persen_realisasi<"+persen+" THEN \r\n" + 
+//    			"								'<span style=\''color#red\''>Indikator tidak tercapai<br/>RO tidak tercapai</span>' \r\n" + 
+//    			"END ket \r\n" + 
+//    			"from \r\n" + 
+//    			"(select DISTINCT\r\n" + 
+//    			"CONCAT(j.id_activity,'.',h.id_gov_indicator) kode_ro,\r\n" + 
+//    			"CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) kode_sdg, k.nm_role,\r\n" + 
+//    			"COALESCE(SUM(g.value),0) target_ro, \r\n" + 
+//    			"COALESCE(sum(f.achievement1),0)"+achievement2+" capaian_ro, \r\n" + 
+//    			"COALESCE(ROUND(((COALESCE(sum(f.achievement1),0)"+achievement2+")/COALESCE(SUM(g.value),0))*100,0),0) as persen_ro,\r\n" + 
+//    			"COALESCE(sum(i.target_bawah),0) target_bawah, \r\n" + 
+//    			"COALESCE(sum(i.jumlah),0) jumlah,\r\n" + 
+//    			"COALESCE(ROUND((COALESCE(sum(i.jumlah),0)/COALESCE(sum(i.target_bawah),0))*100,0),0) persen_realisasi\r\n" + 
+//    			"from gov_map a \r\n" + 
+//    			"JOIN sdg_goals b on a.id_goals = b.id \r\n" + 
+//    			"JOIN sdg_target c on a.id_target = c.id \r\n" + 
+//    			"JOIN sdg_indicator d on a.id_indicator = d.id \r\n" + 
+//    			"left join assign_gov_indicator e on a.id_gov_indicator = e.id_gov_indicator and e.id_monper = a.id_monper \r\n" + 
+//    			"left join entry_gov_indicator f on e.id = f.id_assign \r\n" + 
+//    			"left join gov_target g on a.id_gov_indicator = g.id_gov_indicator \r\n" + 
+//    			"left join gov_indicator h on a.id_gov_indicator = h.id \r\n" + 
+//    			"left join gov_activity j on h.id_activity = j.id\r\n" + 
+//    			"left join ran_rad z on a.id_monper = z.id_monper \r\n" + 
+//    			"left join api i on i.kode = CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) and i.tahun BETWEEN z.start_year and z.end_year \r\n" + 
+//    			"LEFT JOIN ref_role k on j.id_role = k.id_role\r\n" + 
+//    			"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_goals = '"+id_goals+"'\r\n" + 
+//    			"GROUP BY h.id,CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator), g.id_role \r\n" + 
+//    			"order by h.id,CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator), g.id_role ) a");
+//	    List listQuadran =  queryQuadran.getResultList();
     	
-	    Query queryQuadran1 = em.createNativeQuery("Select *,\r\n" + 
+	    Query queryQuadran1 = em.createNativeQuery("Select kode_ro,kode_sdg,nm_role,target_ro,capaian_ro,persen_ro,budget_allocation,realisasi,persen_realisasi,\r\n" + 
 	    		"CASE\r\n" + 
 	    		"        WHEN persen_ro>="+persen+" and persen_realisasi>="+persen+" THEN\r\n" + 
 	    		"                '<span style=\''color#green\''>Realisasi anggaran tinggi<br/>RO tercapai</span>'\r\n" + 
@@ -794,39 +796,116 @@ public class AdminController {
 	    		"                '<span style=\''color#green\''>Realisasi anggaran tinggi</span><br/><span style=\''color#red\''>RO tidak tercapai</span>'\r\n" + 
 	    		"        WHEN persen_ro<"+persen+" and persen_realisasi<"+persen+" THEN\r\n" + 
 	    		"                '<span style=\''color#red\''>Realisasi anggaran rendah<br/>RO tidak tercapai</span>' " + 
-	    		"END ket\r\n" + 
+	    		"END ket,\r\n" + 
+	    		"cekindi "+
 	    		"from\r\n" + 
 	    		"(\r\n" + 
 	    		"select DISTINCT \r\n" + 
 	    		"CONCAT(i.id_activity,'.',h.id_gov_indicator) kode_ro,\r\n" + 
 	    		"CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) kode_sdg, \r\n" + 
 	    		"k.nm_role,\r\n" + 
-	    		"COALESCE(SUM(g.value),0) target_ro,       \r\n" + 
+	    		"COALESCE(SUM(g.value),0) target_ro,\r\n" + 
 	    		"COALESCE(sum(f.achievement1),0)"+achievement2+" capaian_ro,\r\n" + 
 	    		"COALESCE(ROUND(((COALESCE(sum(f.achievement1),0)"+achievement2+")/COALESCE(SUM(g.value),0))*100,0),0) as persen_ro,\r\n" + 
 	    		"COALESCE(sum(i.budget_allocation),0) budget_allocation,\r\n" + 
 	    		"COALESCE(sum(j.achievement1),0)"+achievementJ2+" realisasi,\r\n" + 
-	    		"COALESCE(ROUND(((COALESCE(sum(j.achievement1),0)"+achievementJ2+")/COALESCE(sum(i.budget_allocation),0)*100),0),0)persen_realisasi\r\n" + 
+	    		"COALESCE(ROUND(((COALESCE(sum(j.achievement1),0)"+achievementJ2+")/COALESCE(sum(i.budget_allocation),0)*100),0),0)persen_realisasi,\r\n" + 
+	    		"CASE WHEN l.arah_improvement = 'Negatif' THEN IF(l.jumlah <= l.target_atas, 'YES', 'NO') ELSE IF(l.jumlah >= l.target_bawah, 'YES', 'NO') end as cekindi "+
 	    		"from gov_map a\r\n" + 
 	    		"LEFT JOIN sdg_goals b on a.id_goals = b.id\r\n" + 
 	    		"LEFT JOIN sdg_target c on a.id_target = c.id\r\n" + 
 	    		"LEFT JOIN sdg_indicator d on a.id_indicator = d.id\r\n" + 
 	    		"left join assign_gov_indicator e on a.id_gov_indicator = e.id_gov_indicator and e.id_monper = a.id_monper\r\n" + 
-	    		"left join entry_gov_indicator f on e.id = f.id_assign\r\n" + 
-	    		"left join gov_target g on a.id_gov_indicator = g.id_gov_indicator\r\n" + 
+	    		"left join entry_gov_indicator f on e.id = f.id_assign and f.year_entry = '"+tahun+"' \r\n" + 
+	    		"left join gov_target g on a.id_gov_indicator = g.id_gov_indicator and g.year = '"+tahun+"'\r\n" + 
 	    		"left join gov_indicator h on a.id_gov_indicator = h.id\r\n" + 
 	    		"left join gov_activity i on h.id_activity = i.id\r\n" + 
-	    		"left join entry_gov_budget j on h.id = j.id_gov_activity\r\n" + 
-	    		"LEFT JOIN ref_role k on i.id_role = k.id_role\r\n" + 
-	    		"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_goals = '"+id_goals+"'\r\n" + 
+	    		"left join entry_gov_budget j on h.id = j.id_gov_activity and j.year_entry = '"+tahun+"' \r\n" + 
+	    		"LEFT JOIN ref_role k on i.id_role = k.id_role\r\n "+ 
+	    		"left join api l on l.kode = CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) and l.tahun = '"+tahun+"' "+ 
+	    		"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_goals = '"+id_goals+"' \r\n" + 
 	    		"GROUP BY h.id,CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator), i.id_role\r\n" + 
 	    		"order by h.id,CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator), i.id_role\r\n" + 
 	    		") a");
 	    List listQuadran1 =  queryQuadran1.getResultList();
 	    
 	    Map<String, Object> hasil = new HashMap<>();
-	    hasil.put("quadran",listQuadran);
+	    //hasil.put("quadran",listQuadran);
 	    hasil.put("quadran1",listQuadran1);
+	    return hasil;
+	}
+    
+    @GetMapping("admin/dashboard/get-kuadran-indikator/{id_monper}/{id_indikator}/{tahun}")
+    public @ResponseBody Map<String, Object> getKuadranIndikator(@PathVariable("id_monper") Integer id_monper,@PathVariable("id_indikator") Integer id_indikator,@PathVariable("tahun") Integer tahun) {
+    	
+	    Query query = em.createNativeQuery("Select \r\n" + 
+	    		"kode_ro,\r\n" + 
+	    		"kode_sdg,\r\n" + 
+	    		"nm_role,\r\n" + 
+	    		"persen_ro_sms1,\r\n" + 
+	    		"persen_realisasi_sms1,\r\n" + 
+	    		"CASE\r\n" + 
+	    		"        WHEN persen_ro_sms1>=95 and persen_realisasi_sms1>=95 THEN\r\n" + 
+	    		"                '<span style=\''color#green\''>Realisasi anggaran tinggi<br/>RO tercapai</span>'\r\n" + 
+	    		"        WHEN persen_ro_sms1>=95 and persen_realisasi_sms1<95 THEN\r\n" + 
+	    		"                '<span style=\''color#red\''>Realisasi anggaran rendah</span><br/><span style=\''color#green\''>RO tercapai</span>'\r\n" + 
+	    		"        WHEN persen_ro_sms1<95 and persen_realisasi_sms1>=95 THEN\r\n" + 
+	    		"                '<span style=\''color#green\''>Realisasi anggaran tinggi</span><br/><span style=\''color#red\''>RO tidak tercapai</span>'\r\n" + 
+	    		"        WHEN persen_ro_sms1<95 and persen_realisasi_sms1<95 THEN\r\n" + 
+	    		"                '<span style=\''color#green\''>Realisasi anggaran rendah<br/>RO tidak tercapai</span>'\r\n" + 
+	    		"END ket_sms1,\r\n" + 
+	    		"persen_ro_sms2,\r\n" + 
+	    		"persen_realisasi_sms2,\r\n" + 
+	    		"CASE\r\n" + 
+	    		"        WHEN persen_ro_sms2>=95 and persen_realisasi_sms2>=95 THEN\r\n" + 
+	    		"                '<span style=\''color#green\''>Realisasi anggaran tinggi<br/>RO tercapai</span>'\r\n" + 
+	    		"        WHEN persen_ro_sms2>=95 and persen_realisasi_sms2<95 THEN\r\n" + 
+	    		"                '<span style=\''color#red\''>Realisasi anggaran rendah</span><br/><span style=\''color#green\''>RO tercapai</span>'\r\n" + 
+	    		"        WHEN persen_ro_sms2<95 and persen_realisasi_sms2>=95 THEN\r\n" + 
+	    		"                '<span style=\''color#green\''>Realisasi anggaran tinggi</span><br/><span style=\''color#red\''>RO tidak tercapai</span>'\r\n" + 
+	    		"        WHEN persen_ro_sms2<95 and persen_realisasi_sms2<95 THEN\r\n" + 
+	    		"                '<span style=\''color#green\''>Realisasi anggaran rendah<br/>RO tidak tercapai</span>'\r\n" + 
+	    		"END ket_sms2,cekindi \r\n" + 
+	    		"from\r\n" + 
+	    		"(\r\n" + 
+	    		"select \r\n" + 
+	    		"CONCAT(i.id_activity,'.',h.id_gov_indicator) kode_ro,\r\n" + 
+	    		"CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) kode_sdg, \r\n" + 
+	    		"k.nm_role,\r\n" + 
+	    		"CASE WHEN\r\n" + 
+	    		"COALESCE(ROUND(((COALESCE(sum(f.achievement1),0))/COALESCE(SUM(g.value),0))*100,0),0) > 100 THEN 100\r\n" + 
+	    		"ELSE COALESCE(ROUND(((COALESCE(sum(f.achievement1),0))/COALESCE(SUM(g.value),0))*100,0),0) END as persen_ro_sms1,\r\n" + 
+	    		"CASE WHEN \r\n" + 
+	    		"COALESCE(ROUND(((COALESCE(sum(j.achievement1),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) > 100 THEN 100 ELSE \r\n" + 
+	    		"COALESCE(ROUND(((COALESCE(sum(j.achievement1),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) END\r\n" + 
+	    		"persen_realisasi_sms1,\r\n" + 
+	    		"CASE WHEN\r\n" + 
+	    		"COALESCE(ROUND(((COALESCE(sum(f.achievement1),0)+COALESCE(sum(f.achievement2),0))/COALESCE(SUM(g.value),0))*100,0),0) > 100 THEN 100\r\n" + 
+	    		"ELSE COALESCE(ROUND(((COALESCE(sum(f.achievement1),0)+COALESCE(sum(f.achievement2),0))/COALESCE(SUM(g.value),0))*100,0),0) END as persen_ro_sms2,\r\n" + 
+	    		"CASE WHEN \r\n" + 
+	    		"COALESCE(ROUND(((COALESCE(sum(j.achievement1),0)+COALESCE(sum(j.achievement2),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) > 100 THEN 100 ELSE \r\n" + 
+	    		"COALESCE(ROUND(((COALESCE(sum(j.achievement1),0)+COALESCE(sum(j.achievement2),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) END\r\n" + 
+	    		"persen_realisasi_sms2,\r\n" + 
+	    		"CASE WHEN l.arah_improvement = 'Negatif' THEN IF(l.jumlah <= l.target_atas, 'YES', 'NO') ELSE IF(l.jumlah >= l.target_bawah, 'YES', 'NO') end as cekindi "+
+	    		"from gov_map a\r\n" + 
+	    		"LEFT JOIN sdg_goals b on a.id_goals = b.id\r\n" + 
+	    		"LEFT JOIN sdg_target c on a.id_target = c.id\r\n" + 
+	    		"LEFT JOIN sdg_indicator d on a.id_indicator = d.id\r\n" + 
+	    		"left join assign_gov_indicator e on a.id_gov_indicator = e.id_gov_indicator and e.id_monper = a.id_monper\r\n" + 
+	    		"left join entry_gov_indicator f on e.id = f.id_assign and f.year_entry = '"+tahun+"' \r\n" + 
+	    		"left join gov_target g on a.id_gov_indicator = g.id_gov_indicator and g.year = '"+tahun+"'\r\n" + 
+	    		"left join gov_indicator h on a.id_gov_indicator = h.id\r\n" + 
+	    		"left join gov_activity i on h.id_activity = i.id\r\n" + 
+	    		"left join entry_gov_budget j on h.id = j.id_gov_activity and j.year_entry = '"+tahun+"'\r\n" + 
+	    		"LEFT JOIN ref_role k on i.id_role = k.id_role\r\n" + 
+	    		"left join api l on l.kode = CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) and l.tahun = '"+tahun+"' "+ 
+	    		"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_indicator = '"+id_indikator+"' \r\n" + 
+	    		"GROUP BY h.id,CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator), i.id_role\r\n" + 
+	    		"order by h.id,CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator), i.id_role\r\n" + 
+	    		") a");
+	    List list =  query.getResultList();
+	    Map<String, Object> hasil = new HashMap<>();
+	    hasil.put("hasil",list);
 	    return hasil;
 	}
 
