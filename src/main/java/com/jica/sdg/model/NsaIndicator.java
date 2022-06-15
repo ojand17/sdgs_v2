@@ -41,6 +41,18 @@ public class NsaIndicator implements Serializable {
     
     @Column(nullable = true, length = 150)
     private Integer internal_code;
+    
+    @Column(nullable = true)
+    private Integer idpemda;
+    
+    @Column(nullable = true)
+    private Integer budget_allocation;
+    
+    @Column(nullable = true)
+    private String funding_source;
+    
+    @Column(nullable = true)
+    private String impl_agen;
 
 	public NsaIndicator() {
 	}
@@ -58,6 +70,26 @@ public class NsaIndicator implements Serializable {
 		this.created_by = created_by;
 		this.date_created = date_created;
 		this.internal_code = internal_code;
+	}
+
+	public NsaIndicator(Integer id, String id_nsa_indicator, String id_program, String id_activity, String nm_indicator,
+			String nm_indicator_eng, String unit, Integer created_by, Date date_created, Integer internal_code,
+			Integer idpemda, Integer budget_allocation, String funding_source, String impl_agen) {
+		super();
+		this.id = id;
+		this.id_nsa_indicator = id_nsa_indicator;
+		this.id_program = id_program;
+		this.id_activity = id_activity;
+		this.nm_indicator = nm_indicator;
+		this.nm_indicator_eng = nm_indicator_eng;
+		this.unit = unit;
+		this.created_by = created_by;
+		this.date_created = date_created;
+		this.internal_code = internal_code;
+		this.idpemda = idpemda;
+		this.budget_allocation = budget_allocation;
+		this.funding_source = funding_source;
+		this.impl_agen = impl_agen;
 	}
 
 	public Integer getId() {
@@ -142,5 +174,37 @@ public class NsaIndicator implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public Integer getIdpemda() {
+		return idpemda;
+	}
+
+	public void setIdpemda(Integer idpemda) {
+		this.idpemda = idpemda;
+	}
+
+	public Integer getBudget_allocation() {
+		return budget_allocation;
+	}
+
+	public void setBudget_allocation(Integer budget_allocation) {
+		this.budget_allocation = budget_allocation;
+	}
+
+	public String getFunding_source() {
+		return funding_source;
+	}
+
+	public void setFunding_source(String funding_source) {
+		this.funding_source = funding_source;
+	}
+
+	public String getImpl_agen() {
+		return impl_agen;
+	}
+
+	public void setImpl_agen(String impl_agen) {
+		this.impl_agen = impl_agen;
 	}
 }
