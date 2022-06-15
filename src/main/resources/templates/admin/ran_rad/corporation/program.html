@@ -143,6 +143,10 @@
                                 </div>
                                 <div class="control-group" style="">
                                     <div class="controls">
+                                        <input type="text" id="kode" name="kode" placeholder="Uraian" class=" input-block-level" readonly/>
+                                        <span class="help-block" id="error_uraian"></span>
+                                    </div>
+                                    <div class="controls">
                                         <input type="text" id="uraian" name="uraian" placeholder="Uraian" class=" input-block-level" readonly/>
                                         <span class="help-block" id="error_uraian"></span>
                                     </div>
@@ -177,6 +181,8 @@
 				    </div>
                                 </div>
                                 <div class="control-group" style="">
+                                    <label class="lang_eng control-label" style="display:none;text-align:left">Indicator Capaian </label>
+                                    <label class="lang_indo control-label" style="text-align:left">Indikator Capaian</label>
                                     <div class="controls">
                                         <input type="text" id="indicator_capaian" name="indicator_capaian" placeholder="Indicator Capaian" class=" input-block-level" readonly/>
                                         <span class="help-block" id="error_indicator_capaian"></span>
@@ -248,24 +254,13 @@
                             </div>
                                     
                             <div class="control-group">
-                                <label class="lang_eng control-label" style="display:none;text-align:left">Provinsi</label>
-                                <label class="lang_indo control-label" style="text-align:left">Provinsi</label>
+                                <label class="lang_eng control-label" style="display:none;text-align:left">Provinsi/Kabupaten</label>
+                                <label class="lang_indo control-label" style="text-align:left">Provinsi/Kabupaten</label>
                                 <div class="controls">
-                                    <select name="kd_bps1" id="kd_bps1" style="width: 100%;">
+                                    <select name="kd_bps" id="kd_bps" style="width: 100%;">
                                         <option value="0" >-- Pilih --</option>
                                     </select>
                                     <span class="help-block" id="error_kdprov"></span>
-                                </div>
-                            </div>
-                                    
-                            <div class="control-group">
-                                <label class="lang_eng control-label" style="display:none;text-align:left">Kabupaten</label>
-                                <label class="lang_indo control-label" style="text-align:left">Kabupaten</label>
-                                <div class="controls">
-                                    <select name="kd_bps2" id="kd_bps2" style="width: 100%;">
-                                        <option value="0" >-- Pilih --</option>
-                                    </select>
-                                    <span class="help-block" id="error_kdkab"></span>
                                 </div>
                             </div>
                                     
@@ -349,6 +344,95 @@
                         v_html = '';
                     }
                     $("#idsdgind").html(v_html);
+	        });
+                
+                $.ajax({
+                    type: "GET",
+                    url: urls+'ran_rad/getpojkKategori',
+                    async:false,
+                    success: function (result) {
+                        $('#idkategori').html("");
+                        var array = result.content;
+//                        console.log(array);
+                        $('#idkategori').append('<option value="0">-- Pilih --</option>');
+                        for(a=0; a<array.length;a++){
+                            $('#idkategori').append('<option value="'+array[a].id+'">' +array[a].nm_kategori+'</option>');
+                        }
+                        
+                    },
+                });
+                
+                $.ajax({
+                    type: "GET",
+                    url: urls+'ran_rad/getpojkKategoriSdgIndicator',
+                    async:false,
+                    success: function (result) {
+                        $('#id_indicator').html("");
+                        var array = result.content;
+//                        console.log(array);
+                        $('#id_indicator').append('<option value="0">-- Pilih --</option>');
+                        for(a=0; a<array.length;a++){
+                            $('#id_indicator').append('<option value="'+array[a].id+'">' +array[a].nm_indicator+'</option>');
+                        }
+                    },
+                });
+                
+                $.ajax({
+                    type: "GET",
+                    url: urls+'ran_rad/getpojkKdBps',
+                    async:false,
+                    success: function (result) {
+                        $('#kd_bps').html("");
+                        var array = result.content;
+//                        console.log(array);
+                        $('#kd_bps').append('<option value="0">-- Pilih --</option>');
+                        for(a=0; a<array.length;a++){
+                            $('#kd_bps').append('<option value="'+array[a].kd_bps+'">' +array[a].nm_pemda+'</option>');
+                        }
+                    },
+                });
+                
+                $('#idkategori').on('change', function(e){
+                    var idkategori = $("#idkategori").val();
+                        $.ajax({
+                        type: "GET",
+                        url: urls+'ran_rad/getpojkKode/'+idkategori,
+                        async:false,
+                        success: function (result) {
+                            $('#idpojk').html("");
+                            var array = result.content;
+                            console.log(array);
+                            $('#idpojk').append('<option value="0">-- Pilih --</option>');
+                            for(a=0; a<array.length;a++){
+                                $('#idpojk').append('<option value="'+array[a].id+'">' +array[a].kode+'</option>');
+                            }
+                            $('#idpojk').append('<option value="00000">Lainnya</option>');
+                        },
+                    });
+	        });
+                
+                $('#idpojk').on('change', function(e){
+                    var idpojk = $("#idpojk").val();
+                    $.ajax({
+                        type: "GET",
+                        url: urls+'ran_rad/getpojkKodebyId/'+idpojk,
+                        async:false,
+                        success: function (result) {
+                            var array = result.content;
+//                            console.log(array['uraian']);
+                            $("#uraian").val(array['uraian']);
+                            $("#indicator_capaian").val(array['indicator_capaian']);
+                            $("#unit").val(array['unit']);
+                            $("#kode").val(array['kode']);
+                            if(idpojk == '00000'){
+                                $("#id_indicator").val('0').trigger('change').attr("readonly",false);;
+                            }else{
+                                $("#id_indicator").val(array['id_indicator']).trigger('change').attr("readonly",true);
+                            }
+                            
+                            
+                        },
+                    });
 	        });
                 
 	        var table = $('#tabel-goals').DataTable({
@@ -616,13 +700,29 @@
 				var id_role = $('#id_role').val();
 				var id_monper = $('#id_monper').val();
 				var rel_prog_id = $('#rel_prog_id').val();
-				var internal_code = $('#internal_code').val();
+                                
 				if(nm_program==""){
 					nm_program=nm_program_eng;
 				}
 				if(nm_program_eng==""){
 					nm_program_eng=nm_program;
 				}
+				var internal_code = $('#internal_code').val();
+				var idkategori = $('#idkategori').val();
+				var idpojk = $('#idpojk').val();
+				var id_indicator = $('#id_indicator').val();
+				var kode = $('#kode').val();
+				var uraian = $('#uraian').val();
+				var indicator_capaian = $('#indicator_capaian').val();
+				var unit = $('#unit').val();
+				var kd_bps = $('#kd_bps').val();
+				var budget_allocation = $('#budget_allocation').val();
+				var target1 = $('#target1').val();
+				var target2 = $('#target2').val();
+				var target3 = $('#target3').val();
+				var target4 = $('#target4').val();
+				var target5 = $('#target5').val();
+                                
 				/* if(internal_code==""){
 					internal_code = id_program;
 				} */
@@ -649,7 +749,21 @@
 						'id_role':id_role,
 						'id_monper':id_monper,
 						'rel_prog_id':rel_prog_id,
-						'internal_code':internal_code
+						'internal_code':internal_code,
+						'idkategori': idkategori,
+						'idpojk':idpojk,
+						'id_indicator': id_indicator,
+						'kode': kode,
+						'uraian': uraian,
+						'indicator_capaian': indicator_capaian,
+						'unit': unit,
+						'kd_bps': kd_bps,
+						'budget_allocation':budget_allocation,
+						'target1': target1,
+						'target2': target2,
+						'target3': target3,
+						'target4': target4,
+						'target5': target5
 						});
 					$.ajax({
 						type: "POST",
@@ -677,12 +791,28 @@
                     	var val = result.content;
                     	$('#id').val(val.id);
                     	$('#id_program').val(val.id_program).attr("readonly",true);
-        				$('#nm_program').val(val.nm_program);
-        				$('#nm_program_eng').val(val.nm_program_eng);
-        				$('#id_role').val(val.id_role);
-        				$('#id_monper').val(val.id_monper);
-        				$('#rel_prog_id').val(val.rel_prog_id);
-        				$('#internal_code').val(val.internal_code?val.internal_code:'');
+                        $('#nm_program').val(val.nm_program);
+                        $('#nm_program_eng').val(val.nm_program_eng);
+                        $('#id_role').val(val.id_role);
+                        $('#id_monper').val(val.id_monper);
+                        $('#rel_prog_id').val(val.rel_prog_id);
+                        $('#internal_code').val(val.internal_code?val.internal_code:'');
+                        
+                        $('#idkategori').val(val.idkategori).trigger('change');
+                        $('#idpojk').val(val.idpojk).trigger('change');
+                        $('#id_indicator').val(val.id_indicator).trigger('change');
+                        $('#kode').val(val.kode);
+                        $('#uraian').val(val.uraian);
+                        $('#indicator_capaian').val(val.indicator_capaian);
+                        $('#unit').val(val.unit);
+                        $('#kd_bps').val(val.kd_bps).trigger('change');
+                        $('#budget_allocation').val(val.budget_allocation);
+                        $('#target1').val(val.target1);
+                        $('#target2').val(val.target2);
+                        $('#target3').val(val.target3);
+                        $('#target4').val(val.target4);
+                        $('#target5').val(val.target5);
+                                        
         				var privilege = [[${privilege}]];
         				if(privilege=='ADMIN' || privilege=='SUPER'){
         	                 $('#hide_kode_internal').show();
@@ -705,6 +835,21 @@
         				$('#id_monper').val(val.id_monper).attr("readonly",true);
         				$('#rel_prog_id').val(val.rel_prog_id).attr("readonly",true);
         				$('#internal_code').val(val.internal_code?val.internal_code:"").attr("readonly",true);
+                                        
+                                        $('#idkategori').val(val.idkategori).trigger('change');
+                        $('#idpojk').val(val.idpojk).trigger('change');
+                        $('#id_indicator').val(val.id_indicator).trigger('change');
+                        $('#kode').val(val.kode);
+                        $('#uraian').val(val.uraian);
+                        $('#indicator_capaian').val(val.indicator_capaian);
+                        $('#unit').val(val.unit);
+                        $('#kd_bps').val(val.kd_bps).trigger('change');
+                        $('#budget_allocation').val(val.budget_allocation);
+                        $('#target1').val(val.target1);
+                        $('#target2').val(val.target2);
+                        $('#target3').val(val.target3);
+                        $('#target4').val(val.target4);
+                        $('#target5').val(val.target5);
         				var privilege = [[${privilege}]];
         				if(privilege=='ADMIN' || privilege=='SUPER'){
         	                 $('#hide_kode_internal').show();

@@ -10,6 +10,7 @@ import com.jica.sdg.service.IMenuService;
 import com.jica.sdg.service.IProvinsiService;
 import com.jica.sdg.service.ISubmenuService;
 import com.jica.sdg.service.ProvinsiService;
+import com.jica.sdg.service.UsahaProgramService;
 import com.jica.sdg.model.User;
 import com.jica.sdg.service.*;
 import java.util.ArrayList;
@@ -46,6 +47,9 @@ public class AdminController {
 	
 	@Autowired
 	MonPeriodService monPeriodService;
+	
+	@Autowired
+	UsahaProgramService usahaProgramService;
 	
 	@Autowired
 	RoleService roleService;
@@ -519,6 +523,7 @@ public class AdminController {
     		Optional<Role> list1 = roleService.findOne(id_role);
     		list1.ifPresent(foundUpdateObject1 -> model.addAttribute("role", foundUpdateObject1));
     	}
+//        model.addAttribute("pjokKategori", usahaProgramService.findAllPjokKategori());
         model.addAttribute("monPer", monPeriodService.findAll(id_prov));
         model.addAttribute("name", session.getAttribute("name"));
         model.addAttribute("privilege", privilege);

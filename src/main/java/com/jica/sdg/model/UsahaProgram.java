@@ -46,7 +46,7 @@ public class UsahaProgram implements Serializable {
     private Integer idkategori;
     
     @Column(nullable = false, length = 11)
-    private Integer idpjok;
+    private Integer idpojk;
     
     @Column(nullable = false, length = 11)
     private Integer id_indicator;
@@ -90,8 +90,23 @@ public class UsahaProgram implements Serializable {
 	}
 
 	public UsahaProgram(Integer id, String id_program, String nm_program, String nm_program_eng, Integer id_role,
+			Integer id_monper, String rel_prog_id, Integer created_by, Date date_created, Integer internal_code) {
+		super();
+		this.id = id;
+		this.id_program = id_program;
+		this.nm_program = nm_program;
+		this.nm_program_eng = nm_program_eng;
+		this.id_role = id_role;
+		this.id_monper = id_monper;
+		this.rel_prog_id = rel_prog_id;
+		this.created_by = created_by;
+		this.date_created = date_created;
+		this.internal_code = internal_code;
+	}
+
+	public UsahaProgram(Integer id, String id_program, String nm_program, String nm_program_eng, Integer id_role,
 			Integer id_monper, String rel_prog_id, Integer created_by, Date date_created, Integer internal_code,
-                        Integer idkategori, Integer idpjok, Integer id_indicator, String kode, String uraian,
+                        Integer idkategori, Integer idpojk, Integer id_indicator, String kode, String uraian,
                         String indicator_capaian, String unit, String kd_bps, Integer budget_allocation,
                         Integer target1, Integer target2, Integer target3, Integer target4, Integer target5) {
 		super();
@@ -106,7 +121,7 @@ public class UsahaProgram implements Serializable {
 		this.date_created = date_created;
 		this.internal_code = internal_code;
 		this.idkategori = idkategori;
-		this.idpjok = idpjok;
+		this.idpojk = idpojk;
 		this.id_indicator = id_indicator;
 		this.kode = kode;
 		this.uraian = uraian;
@@ -129,13 +144,14 @@ public class UsahaProgram implements Serializable {
         this.idkategori = idkategori;
     }
 
-    public Integer getIdpjok() {
-        return idpjok;
+    public Integer getIdpojk() {
+        return idpojk;
     }
 
-    public void setIdpjok(Integer idpjok) {
-        this.idpjok = idpjok;
+    public void setIdpojk(Integer idpojk) {
+        this.idpojk = idpojk;
     }
+
 
     public Integer getId_indicator() {
         return id_indicator;

@@ -77,6 +77,8 @@ import com.jica.sdg.model.Provinsi;
 import com.jica.sdg.model.RanRad;
 import com.jica.sdg.model.RefPemda;
 import com.jica.sdg.model.Role;
+import com.jica.sdg.model.Pojkkategori;
+import com.jica.sdg.model.Pojkkode;
 import com.jica.sdg.model.SdgDisaggre;
 import com.jica.sdg.model.SdgDisaggreDetail;
 import com.jica.sdg.model.SdgGoals;
@@ -118,12 +120,16 @@ import com.jica.sdg.service.IUsahaIndicatorService;
 import com.jica.sdg.service.IUsahaMapService;
 import com.jica.sdg.service.IUsahaProgramService;
 import com.jica.sdg.service.IUsahaTargetService;
+import com.jica.sdg.service.UsahaProgramService;
 
 @Controller
 public class RanRadSdgController {
 
 	@Autowired
 	private ISdgGoalsService sdgGoalsService;
+	
+	@Autowired
+	UsahaProgramService usahaProgramService;
 	
 	@Autowired
 	private ISdgTargetService sdgTargetService;
@@ -1371,10 +1377,12 @@ public class RanRadSdgController {
     	gov.setCreated_by(1);
     	gov.setDate_created(new Date());
     	usahaProgService.saveProgram(gov);
-    	if(gov.getInternal_code()==null || gov.getInternal_code()==0) {
-    		em.createNativeQuery("UPDATE usaha_program set internal_code = "
-    				+ "(select IFNULL(max(internal_code)+1,1) as no from usaha_program where id_monper = '"+gov.getId_monper()+"') where id ='"+gov.getId()+"'").executeUpdate();
-    	}
+        System.out.println("kesini");
+        
+//    	if(gov.getInternal_code()==null || gov.getInternal_code()==0) {
+//    		em.createNativeQuery("UPDATE usaha_program set internal_code = "
+//    				+ "(select IFNULL(max(internal_code)+1,1) as no from usaha_program where id_monper = '"+gov.getId_monper()+"') where id ='"+gov.getId()+"'").executeUpdate();
+//    	}
     	Map<String, Object> hasil = new HashMap<>();
         hasil.put("id_program",gov.getId());
         return hasil;
@@ -2126,6 +2134,50 @@ public class RanRadSdgController {
         Integer list = monPeriodService.cekPeriode(id_prov, start, end);
 		Map<String, Object> hasil = new HashMap<>();
         hasil.put("content",list);
+        return hasil;
+    }
+    
+    @GetMapping("admin/ran_rad/getpojkKategori")
+    public @ResponseBody Map<String, Object> rolesCor(HttpSession session) {
+    	List<Pojkkategori> listPojkkategori;
+        listPojkkategori = usahaProgramService.findAllPojkKategori();
+        Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content", listPojkkategori);
+        return hasil;
+    }
+    
+    @GetMapping("admin/ran_rad/getpojkKategoriSdgIndicator")
+    public @ResponseBody Map<String, Object> getpojkKategoriSdgIndicator(HttpSession session) {
+    	List<SdgIndicator> listSdgIndicator;
+        listSdgIndicator = sdgIndicatorService.findAll();
+        Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content", listSdgIndicator);
+        return hasil;
+    }
+    
+    @GetMapping("admin/ran_rad/getpojkKdBps")
+    public @ResponseBody Map<String, Object> getpojkKdBps(HttpSession session) {
+        Iterable<RefPemda> listPemda = pemdaRepo.findAll();
+        Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content", listPemda);
+        return hasil;
+    }
+    
+    @GetMapping("admin/ran_rad/getpojkKode/{idkategori}")
+    public @ResponseBody Map<String, Object> getpojkKode(HttpSession session, @PathVariable("idkategori") Integer idkategori) {
+    	List<Pojkkode> listPojkkode;
+        System.out.println("id = "+idkategori);
+        listPojkkode = usahaProgramService.findAllPojkKode(idkategori);
+        Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content", listPojkkode);
+        return hasil;
+    }
+    
+    @GetMapping("admin/ran_rad/getpojkKodebyId/{id}")
+    public @ResponseBody Map<String, Object> getpojkKodebyId(HttpSession session, @PathVariable("id") Integer id) {
+        Optional<Pojkkode> listPojkkode = usahaProgramService.findAllPojkKodeById(id);
+        Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content", listPojkkode);
         return hasil;
     }
     

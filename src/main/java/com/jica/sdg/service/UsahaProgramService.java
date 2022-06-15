@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jica.sdg.model.UsahaProgram;
+import com.jica.sdg.model.Pojkkategori;
+import com.jica.sdg.model.Pojkkode;
+import com.jica.sdg.repository.PojkKategoriRepository;
+import com.jica.sdg.repository.PojkKodeRepository;
 import com.jica.sdg.repository.UsahaProgramRepository;
 
 @Service
@@ -15,9 +19,30 @@ public class UsahaProgramService implements IUsahaProgramService{
 	@Autowired
 	private UsahaProgramRepository nsaProgRepo;
 	
+	@Autowired
+	private PojkKategoriRepository pojkKategoriRepo;
+	
+	@Autowired
+	private PojkKodeRepository pojkKodeRepo;
+	
 	@Override
 	public List<UsahaProgram> findAll() {
 		return (List<UsahaProgram>) nsaProgRepo.findAll();
+	}
+	
+	@Override
+	public List<Pojkkategori> findAllPojkKategori() {
+            return (List<Pojkkategori>) pojkKategoriRepo.findAllpojkkategori();
+	}
+	
+	@Override
+	public List<Pojkkode> findAllPojkKode(Integer idkategori) {
+            return (List<Pojkkode>) pojkKodeRepo.findAllpojkkodebyIdkategori(idkategori);
+	}
+	
+	@Override
+	public Optional<Pojkkode> findAllPojkKodeById(Integer id) {
+            return (Optional<Pojkkode>) pojkKodeRepo.findById(id);
 	}
 	
 	@Override
