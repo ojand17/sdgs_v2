@@ -1,4 +1,4 @@
-	<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en"
       xmlns:="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
@@ -1479,6 +1479,18 @@
                         var hasilQuadran1 = result.quadran1;
                         var dataQuadran1 = [];
                         for(var i = 0, len = hasilQuadran1.length; i < len; i++){
+                        	var color = "";
+                        	if(semester==2){
+								if(hasilQuadran1[i][10]=='NO'){
+									color = 'red';
+								}else if(hasilQuadran1[i][10]=='YES'){
+									color = 'green';
+								}else{
+									color = '';
+								}
+                            }else{
+                            	color = '';
+                            }
                         	dataQuadran1.push({
                             	'kode_ro':hasilQuadran1[i][0],
                             	'kode_sdg':hasilQuadran1[i][1],
@@ -1486,7 +1498,8 @@
                         		'x':(hasilQuadran1[i][8]>100?100:hasilQuadran1[i][8]),
                         		'y':(hasilQuadran1[i][5]>100?100:hasilQuadran1[i][5]),
                         		'ket':hasilQuadran1[i][9].replace(/\#/g, ':'),
-                        		'cekindi':hasilQuadran1[i][10]
+                        		'cekindi':hasilQuadran1[i][10],
+                        		'color':color
                             });                        	
                         }
                         
@@ -1798,7 +1811,19 @@
                         }); */
                         var hasilQuadran1 = result.quadran1;
                         var dataQuadran1 = [];
+                        var color = "";
                         for(var i = 0, len = hasilQuadran1.length; i < len; i++){
+                        	if(semesterGoal==2){
+								if(hasilQuadran1[i][10]=='NO'){
+									color = 'red';
+								}else if(hasilQuadran1[i][10]=='YES'){
+									color = 'green';
+								}else{
+									color = '';
+								}
+                            }else{
+                            	color = '';
+                            }
                         	dataQuadran1.push({
                             	'kode_ro':hasilQuadran1[i][0],
                             	'kode_sdg':hasilQuadran1[i][1],
@@ -1806,10 +1831,10 @@
                         		'x':(hasilQuadran1[i][8]>100?100:hasilQuadran1[i][8]),
                         		'y':(hasilQuadran1[i][5]>100?100:hasilQuadran1[i][5]),
                         		'ket':hasilQuadran1[i][9].replace(/\#/g, ':'),
-                        		'cekindi':hasilQuadran1[i][10]
+                        		'cekindi':hasilQuadran1[i][10],
+                        		'color':color
                             });            	
                         }
-                        console.log(dataQuadran1);
                         Highcharts.chart('kuadran1Goals', {
 
                             chart: {
@@ -1907,11 +1932,9 @@
                                     '<tr style="border: solid;border-width: 1px 0;"><th colspan="2"></tr>';
 										
                                     	series = this.series.chart.series;
-                                    	console.log(series)
                                         $.each(series, function (i, s) {
                                             $.each(s.points, function (j, p) {
                                                 if (p.x == x && p.y == y) {
-                                                    console.log(p)
                                                     tooltip += '<tr><th th colspan="2">'+p.role+'</th></tr>' +
                                                 	'<tr><th>Kode RO:</th><td>'+p.kode_ro+'</th></tr>' +
                                                 	'<tr style="'+(semesterGoal==2?(p.cekindi=='NO'?'color:red':'color:green'):'')+'"><th>Kode SDGs Indikator:</th><td>'+p.kode_sdg+'</th></tr>'+
@@ -2078,11 +2101,9 @@
                                     '<tr style="border: solid;border-width: 1px 0;"><th colspan="2"></tr>';
 										
                                     	series = this.series.chart.series;
-                                    	console.log(series)
                                         $.each(series, function (i, s) {
                                             $.each(s.points, function (j, p) {
                                                 if (p.x == x && p.y == y) {
-                                                    console.log(p)
                                                     tooltip += '<tr><th th colspan="2">'+p.role+'</th></tr>' +
                                                 	'<tr><th>Kode RO:</th><td>'+p.kode_ro+'</td></tr>' +
                                                 	'<tr style="'+(p.semester==2?(p.cekindi=='NO'?'color:red':'color:green'):'')+'"><th>Kode SDGs Indikator:</th><td>'+p.kode_sdg+'</td></tr>'+
