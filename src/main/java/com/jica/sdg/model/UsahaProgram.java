@@ -41,12 +41,59 @@ public class UsahaProgram implements Serializable {
     
     @Column(nullable = true, length = 11)
     private Integer internal_code;
+    
+    @Column(nullable = false, length = 11)
+    private Integer idkategori;
+    
+    @Column(nullable = false, length = 11)
+    private Integer idpjok;
+    
+    @Column(nullable = false, length = 11)
+    private Integer id_indicator;
+    
+    @Column(nullable = true, length = 255)
+    private String kode;
+    
+    @Column(nullable = true, length = 255)
+    private String uraian;
+    
+    @Column(nullable = true, length = 255)
+    private String indicator_capaian;
+    
+    @Column(nullable = true, length = 255)
+    private String unit;
+    
+    @Column(nullable = true, length = 255)
+    private String kd_bps;
+    
+    @Column(nullable = false, length = 11)
+    private Integer budget_allocation;
+    
+    @Column(nullable = false, length = 11)
+    private Integer target1;
+    
+    @Column(nullable = false, length = 11)
+    private Integer target2;
+    
+    @Column(nullable = false, length = 11)
+    private Integer target3;
+    
+    @Column(nullable = false, length = 11)
+    private Integer target4;
+    
+    @Column(nullable = false, length = 11)
+    private Integer target5;
+    
+    
 
 	public UsahaProgram() {
 	}
 
 	public UsahaProgram(Integer id, String id_program, String nm_program, String nm_program_eng, Integer id_role,
-			Integer id_monper, String rel_prog_id, Integer created_by, Date date_created, Integer internal_code) {
+			Integer id_monper, String rel_prog_id, Integer created_by, Date date_created, Integer internal_code,
+                        Integer idkategori, Integer idpjok, Integer id_indicator, String kode, String uraian,
+                        String indicator_capaian, String unit, String kd_bps, Integer budget_allocation,
+                        Integer target1, Integer target2, Integer target3, Integer target4, Integer target5) {
 		super();
 		this.id = id;
 		this.id_program = id_program;
@@ -58,8 +105,135 @@ public class UsahaProgram implements Serializable {
 		this.created_by = created_by;
 		this.date_created = date_created;
 		this.internal_code = internal_code;
+		this.idkategori = idkategori;
+		this.idpjok = idpjok;
+		this.id_indicator = id_indicator;
+		this.kode = kode;
+		this.uraian = uraian;
+		this.indicator_capaian = indicator_capaian;
+		this.unit = unit;
+		this.kd_bps = kd_bps;
+		this.budget_allocation = budget_allocation;
+		this.target1 = target1;
+		this.target2 = target2;
+		this.target3 = target3;
+		this.target4 = target4;
+		this.target5 = target5;
 	}
 
+    public Integer getIdkategori() {
+        return idkategori;
+    }
+
+    public void setIdkategori(Integer idkategori) {
+        this.idkategori = idkategori;
+    }
+
+    public Integer getIdpjok() {
+        return idpjok;
+    }
+
+    public void setIdpjok(Integer idpjok) {
+        this.idpjok = idpjok;
+    }
+
+    public Integer getId_indicator() {
+        return id_indicator;
+    }
+
+    public void setId_indicator(Integer id_indicator) {
+        this.id_indicator = id_indicator;
+    }
+
+    public String getKode() {
+        return kode;
+    }
+
+    public void setKode(String kode) {
+        this.kode = kode;
+    }
+
+    public String getUraian() {
+        return uraian;
+    }
+
+    public void setUraian(String uraian) {
+        this.uraian = uraian;
+    }
+
+    public String getIndicator_capaian() {
+        return indicator_capaian;
+    }
+
+    public void setIndicator_capaian(String indicator_capaian) {
+        this.indicator_capaian = indicator_capaian;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getKd_bps() {
+        return kd_bps;
+    }
+
+    public void setKd_bps(String kd_bps) {
+        this.kd_bps = kd_bps;
+    }
+
+    public Integer getBudget_allocation() {
+        return budget_allocation;
+    }
+
+    public void setBudget_allocation(Integer budget_allocation) {
+        this.budget_allocation = budget_allocation;
+    }
+
+    public Integer getTarget1() {
+        return target1;
+    }
+
+    public void setTarget1(Integer target1) {
+        this.target1 = target1;
+    }
+
+    public Integer getTarget2() {
+        return target2;
+    }
+
+    public void setTarget2(Integer target2) {
+        this.target2 = target2;
+    }
+
+    public Integer getTarget3() {
+        return target3;
+    }
+
+    public void setTarget3(Integer target3) {
+        this.target3 = target3;
+    }
+
+    public Integer getTarget4() {
+        return target4;
+    }
+
+    public void setTarget4(Integer target4) {
+        this.target4 = target4;
+    }
+
+    public Integer getTarget5() {
+        return target5;
+    }
+
+    public void setTarget5(Integer target5) {
+        this.target5 = target5;
+    }
+
+        
 	public Integer getId() {
 		return id;
 	}
