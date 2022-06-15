@@ -177,7 +177,7 @@ public class NsaController {
     	if(!id.equals("00")) {role=" and a.id_role = '"+id+"' ";}
     	if(!id_prov.equals("all")) {prov=" and b.id_prov = '"+id_prov+"' ";}
     	String sql = "select a.id_nsa,a.nm_nsa,a.achieve_nsa,a.loc_nsa,a.beneficiaries,a.year_impl,a.major_part, "
-    			+ "c.nsa_type,c.web_url,c.head_office,c.name_pic,c.pos_pic,c.email_pic,c.hp_pic,a.id_role, e.nm_prov "
+    			+ "c.nsa_type,c.web_url,c.head_office,c.name_pic,c.pos_pic,c.email_pic,c.hp_pic,a.id_role, e.nm_prov, c.nsa_type_ket, c.tel_num, c.email_office "
     			+ "from nsa_profile a "
     			+ "left join nsa_detail c on a.id_nsa=c.id_nsa "
     			+ "left join ref_role d on a.id_role = d.id_role "

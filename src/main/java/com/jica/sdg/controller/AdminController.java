@@ -718,7 +718,7 @@ public class AdminController {
 	    		"COALESCE(sum(i.budget_allocation),0) budget_allocation,\r\n" + 
 	    		"COALESCE(sum(j.achievement1),0)"+achievementJ2+" realisasi,\r\n" + 
 	    		"COALESCE(ROUND(((COALESCE(sum(j.achievement1),0)"+achievementJ2+")/COALESCE(sum(i.budget_allocation),0)*100),0),0)persen_realisasi,\r\n" + 
-	    		"CASE WHEN l.arah_improvement = 'Negatif' THEN IF(l.jumlah <= l.target_atas, 'YES', 'NO') ELSE IF(l.jumlah >= l.target_bawah, 'YES', 'NO') end as cekindi "+
+	    		"CASE WHEN l.arah_improvement = 'Negatif' THEN IF(SUM(l.jumlah) <= SUM(l.target_atas), 'YES', 'NO') ELSE IF(SUM(l.jumlah) >= SUM(l.target_bawah), 'YES', 'NO') end as cekindi "+
 	    		"from gov_map a\r\n" + 
 	    		"LEFT JOIN sdg_goals b on a.id_goals = b.id\r\n" + 
 	    		"LEFT JOIN sdg_target c on a.id_target = c.id\r\n" + 
@@ -810,7 +810,7 @@ public class AdminController {
 	    		"COALESCE(sum(i.budget_allocation),0) budget_allocation,\r\n" + 
 	    		"COALESCE(sum(j.achievement1),0)"+achievementJ2+" realisasi,\r\n" + 
 	    		"COALESCE(ROUND(((COALESCE(sum(j.achievement1),0)"+achievementJ2+")/COALESCE(sum(i.budget_allocation),0)*100),0),0)persen_realisasi,\r\n" + 
-	    		"CASE WHEN l.arah_improvement = 'Negatif' THEN IF(l.jumlah <= l.target_atas, 'YES', 'NO') ELSE IF(l.jumlah >= l.target_bawah, 'YES', 'NO') end as cekindi "+
+	    		"CASE WHEN l.arah_improvement = 'Negatif' THEN IF(SUM(l.jumlah) <= SUM(l.target_atas), 'YES', 'NO') ELSE IF(SUM(l.jumlah) >= SUM(l.target_bawah), 'YES', 'NO') end as cekindi "+
 	    		"from gov_map a\r\n" + 
 	    		"LEFT JOIN sdg_goals b on a.id_goals = b.id\r\n" + 
 	    		"LEFT JOIN sdg_target c on a.id_target = c.id\r\n" + 
@@ -886,7 +886,7 @@ public class AdminController {
 	    		"COALESCE(ROUND(((COALESCE(sum(j.achievement1),0)+COALESCE(sum(j.achievement2),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) > 100 THEN 100 ELSE \r\n" + 
 	    		"COALESCE(ROUND(((COALESCE(sum(j.achievement1),0)+COALESCE(sum(j.achievement2),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) END\r\n" + 
 	    		"persen_realisasi_sms2,\r\n" + 
-	    		"CASE WHEN l.arah_improvement = 'Negatif' THEN IF(l.jumlah <= l.target_atas, 'YES', 'NO') ELSE IF(l.jumlah >= l.target_bawah, 'YES', 'NO') end as cekindi "+
+	    		"CASE WHEN l.arah_improvement = 'Negatif' THEN IF(SUM(l.jumlah) <= SUM(l.target_atas), 'YES', 'NO') ELSE IF(SUM(l.jumlah) >= SUM(l.target_bawah), 'YES', 'NO') end as cekindi "+
 	    		"from gov_map a\r\n" + 
 	    		"LEFT JOIN sdg_goals b on a.id_goals = b.id\r\n" + 
 	    		"LEFT JOIN sdg_target c on a.id_target = c.id\r\n" + 

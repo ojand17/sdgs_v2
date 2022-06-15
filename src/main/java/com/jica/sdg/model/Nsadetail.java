@@ -38,6 +38,12 @@ public class Nsadetail implements Serializable {
     private String email_pic;
     @Column(name = "hp_pic")
     private String hp_pic;
+    @Column(name = "nsa_type_ket")
+    private String nsa_type_ket;
+    @Column(name = "tel_num")
+    private String tel_num;
+    @Column(name = "email_office")
+    private String email_office;
 
     public Nsadetail() {
     }
@@ -57,7 +63,52 @@ public class Nsadetail implements Serializable {
         this.hp_pic         = hp_pic;
     }
 
-    public Integer getId_role() {
+    public Nsadetail(Integer id, Integer id_role, String id_nsa, String nm_org, String nsa_type, String file_logo,
+			String web_url, String head_office, String name_pic, String pos_pic, String email_pic, String hp_pic,
+			String nsa_type_ket, String tel_num, String email_office) {
+		super();
+		this.id = id;
+		this.id_role = id_role;
+		this.id_nsa = id_nsa;
+		this.nm_org = nm_org;
+		this.nsa_type = nsa_type;
+		this.file_logo = file_logo;
+		this.web_url = web_url;
+		this.head_office = head_office;
+		this.name_pic = name_pic;
+		this.pos_pic = pos_pic;
+		this.email_pic = email_pic;
+		this.hp_pic = hp_pic;
+		this.nsa_type_ket = nsa_type_ket;
+		this.tel_num = tel_num;
+		this.email_office = email_office;
+	}
+
+	public String getNsa_type_ket() {
+		return nsa_type_ket;
+	}
+
+	public void setNsa_type_ket(String nsa_type_ket) {
+		this.nsa_type_ket = nsa_type_ket;
+	}
+
+	public String getTel_num() {
+		return tel_num;
+	}
+
+	public void setTel_num(String tel_num) {
+		this.tel_num = tel_num;
+	}
+
+	public String getEmail_office() {
+		return email_office;
+	}
+
+	public void setEmail_office(String email_office) {
+		this.email_office = email_office;
+	}
+
+	public Integer getId_role() {
         return id_role;
     }
 
