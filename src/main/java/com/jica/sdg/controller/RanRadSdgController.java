@@ -75,6 +75,7 @@ import com.jica.sdg.model.NsaProgram;
 import com.jica.sdg.model.NsaTarget;
 import com.jica.sdg.model.Provinsi;
 import com.jica.sdg.model.RanRad;
+import com.jica.sdg.model.RefPemda;
 import com.jica.sdg.model.Role;
 import com.jica.sdg.model.SdgDisaggre;
 import com.jica.sdg.model.SdgDisaggreDetail;
@@ -88,6 +89,7 @@ import com.jica.sdg.model.UsahaIndicator;
 import com.jica.sdg.model.UsahaMap;
 import com.jica.sdg.model.UsahaProgram;
 import com.jica.sdg.model.UsahaTarget;
+import com.jica.sdg.repository.RefPemdaRepository;
 import com.jica.sdg.service.IBestMapService;
 import com.jica.sdg.service.IGovActivityService;
 import com.jica.sdg.service.IGovFundingService;
@@ -209,6 +211,9 @@ public class RanRadSdgController {
 	
 	@Autowired
 	private IBestMapService bestMapService;
+	
+	@Autowired
+	private RefPemdaRepository pemdaRepo;
 	
 	//*********************** SDG ***********************
 	@GetMapping("admin/ran_rad/sdg/increment_decrement")
@@ -1185,6 +1190,7 @@ public class RanRadSdgController {
     	Optional<RanRad> monper = monPeriodService.findOne(list.get().getId_monper());
     	Integer id_role = (Integer) session.getAttribute("id_role");
     	Optional<Role> listRole = roleService.findOne(id_role);
+    	Iterable<RefPemda> listPemda = pemdaRepo.findAll();
     	String privilege = listRole.get().getPrivilege();
     	String id_prov = listRole.get().getId_prov();
     	String sql;
@@ -1213,6 +1219,7 @@ public class RanRadSdgController {
         model.addAttribute("unit", result);
         model.addAttribute("sdgIndicator", sdgIndicatorService.findAll());
         model.addAttribute("privilege", role.get().getPrivilege());
+        model.addAttribute("listPemda", listPemda);
         return "admin/ran_rad/non-gov/indicator";
     }
     
