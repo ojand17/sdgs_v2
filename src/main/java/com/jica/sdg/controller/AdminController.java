@@ -578,37 +578,51 @@ public class AdminController {
     			"left join ref_role d on c.id_role = d.id_role\r\n" + 
     			"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_goals = '"+id_goals+"'\r\n" + 
     			"GROUP BY d.nm_role");
-    	Query querySpider = em.createNativeQuery("SELECT a.id_indicator, CONCAT(g.id_goals,'.',f.id_target,'.',e.id_indicator) as kode,\r\n" + 
-    			"	    		SUM(d.achievement1+d.achievement2) realisasi\r\n" + 
-    			"	    		from gov_map a   \r\n" + 
-    			"	    		left join gov_target b on a.id_gov_indicator = b.id_gov_indicator \r\n" + 
-    			"	    		left join assign_gov_indicator c on a.id_gov_indicator = c.id_gov_indicator and c.id_monper = a.id_monper \r\n" + 
-    			"	    		left join entry_gov_indicator d on c.id = d.id_assign \r\n" + 
-    			"					left join sdg_indicator e on a.id_indicator = e.id \r\n" + 
-    			"    			left join sdg_target f on f.id = e.id_target \r\n" + 
-    			"    			left join sdg_goals g on f.id_goals = g.id \r\n" + 
-    			"	    		where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_goals = '"+id_goals+"' and d.year_entry = '2021'\r\n" + 
-    			"	    		GROUP BY a.id_indicator");
-    	Query querySpider1 = em.createNativeQuery("SELECT a.id_indicator, CONCAT(g.id_goals,'.',f.id_target,'.',e.id_indicator) as kode,\r\n" + 
-    			"	    		SUM(d.achievement1+d.achievement2) realisasi\r\n" + 
-    			"	    		from gov_map a   \r\n" + 
-    			"	    		left join entry_gov_budget d on d.id_gov_activity = a.id_gov_indicator \r\n" + 
-    			"					left join sdg_indicator e on a.id_indicator = e.id \r\n" + 
-    			"    			left join sdg_target f on f.id = e.id_target \r\n" + 
-    			"    			left join sdg_goals g on f.id_goals = g.id \r\n" + 
-    			"	    		where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_goals = '"+id_goals+"' and d.year_entry = '2021'\r\n" + 
-    			"	    		GROUP BY a.id_indicator");
+    	Query querySpider1 = em.createNativeQuery("SELECT \r\n" + 
+    			"a.id_indicator, \r\n" + 
+    			"CONCAT(g.id_goals,'.',f.id_target,'.',e.id_indicator) as kode, \r\n" + 
+    			"CASE WHEN\r\n" + 
+    			"COALESCE(ROUND(((COALESCE(sum(d.achievement1),0)+COALESCE(sum(d.achievement2),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) > 100 THEN 100 ELSE \r\n" + 
+    			"COALESCE(ROUND(((COALESCE(sum(d.achievement1),0)+COALESCE(sum(d.achievement2),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) END persen,\r\n" + 
+    			"d.year_entry \r\n" + 
+    			"from gov_map a    \r\n" + 
+    			"left join entry_gov_budget d on d.id_gov_activity = a.id_gov_indicator  \r\n" + 
+    			"left join sdg_indicator e on a.id_indicator = e.id  \r\n" + 
+    			"left join sdg_target f on f.id = e.id_target  \r\n" + 
+    			"left join sdg_goals g on f.id_goals = g.id  \r\n" + 
+    			"left join gov_indicator h on a.id_gov_indicator = h.id\r\n" + 
+    			"left join gov_activity i on h.id_activity = i.id\r\n" + 
+    			"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_goals = '"+id_goals+"'\r\n" + 
+    			"GROUP BY a.id_indicator, d.year_entry "+
+    			"ORDER BY a.id_indicator, d.year_entry");
+    	Query querySpiderRole = em.createNativeQuery("SELECT \r\n" + 
+    			"k.nm_role, \r\n" + 
+    			"CASE WHEN\r\n" + 
+    			"COALESCE(ROUND(((COALESCE(sum(d.achievement1),0)+COALESCE(sum(d.achievement2),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) > 100 THEN 100 ELSE \r\n" + 
+    			"COALESCE(ROUND(((COALESCE(sum(d.achievement1),0)+COALESCE(sum(d.achievement2),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) END persen,\r\n" + 
+    			"d.year_entry \r\n" + 
+    			"from gov_map a    \r\n" + 
+    			"left join entry_gov_budget d on d.id_gov_activity = a.id_gov_indicator  \r\n" + 
+    			"left join sdg_indicator e on a.id_indicator = e.id  \r\n" + 
+    			"left join sdg_target f on f.id = e.id_target  \r\n" + 
+    			"left join sdg_goals g on f.id_goals = g.id  \r\n" + 
+    			"left join gov_indicator h on a.id_gov_indicator = h.id\r\n" + 
+    			"left join gov_activity i on h.id_activity = i.id\r\n" + 
+    			"LEFT JOIN ref_role k on i.id_role = k.id_role\r\n" + 
+    			"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_goals = '"+id_goals+"'\r\n" + 
+    			"GROUP BY k.id_role, d.year_entry\r\n" + 
+    			"order by k.id_role, d.year_entry");
 	    List list =  query.getResultList();
 	    List listKegiatan =  queryKegiatan.getResultList();
 	    List listRo =  queryRo.getResultList();
-	    List listSpider =  querySpider.getResultList();
 	    List listSpider1 =  querySpider1.getResultList();
+	    List listSpiderRole =  querySpiderRole.getResultList();
 	    Map<String, Object> hasil = new HashMap<>();
 	    hasil.put("program",list);
 	    hasil.put("kegiatan",listKegiatan);
 	    hasil.put("ro",listRo);
-	    hasil.put("spider",listSpider);
 	    hasil.put("spider1",listSpider1);
+	    hasil.put("spiderRole",listSpiderRole);
 	    return hasil;
 	}
     
