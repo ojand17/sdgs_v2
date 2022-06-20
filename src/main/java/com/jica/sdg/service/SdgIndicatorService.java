@@ -50,4 +50,10 @@ public class SdgIndicatorService implements ISdgIndicatorService{
 	public Integer countIndicator(Integer id_goals, Integer id_target) {
 		return sdgIndicatorRepo.countIndicator(id_goals, id_target);
 	}
+
+	@Override
+	public List<SdgIndicator> findByGoals(Integer id_goals) {
+		List<SdgIndicator> list = sdgIndicatorRepo.findByGoals(id_goals);
+		return list;
+	}
 }

@@ -20,4 +20,6 @@ public interface ISdgIndicatorService {
     void deleteSdgIndicator(Integer id);
     
     Integer countIndicator(Integer id_goals, Integer id_target);
+    
+    List<SdgIndicator> findByGoals(Integer id_goals);
 }

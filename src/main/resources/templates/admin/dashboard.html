@@ -104,10 +104,10 @@
 	                    	<br/>
 	                    	<div class="row-fluid">
 	                    		<div class="span6">
-	                    			<div id="spider"></div>
+	                    			<div id="spider1"></div>
 	                    		</div>
 	                    		<div class="span6">
-	                    			<div id="spider1"></div>
+	                    			<div id="spiderRole"></div>
 	                    		</div>
 	                    	</div>
 	                    </div>
@@ -134,17 +134,16 @@
 		                    		<option value="1">Semester 1</option>
 		                    		<option value="2">Semester 2</option>
 	                            </select>
-	                            <select class="span6 select2" id="goalsKuadran">
+	                            <select class="span3 select2" id="goalsKuadran">
 		                    		<option></option>
 		                    		<option th:each="data: ${goals}" th:value="${data.id}" th:text="${lang!=0?data.id_goals+'. '+data.nm_goals:data.id_goals+'. '+data.nm_goals_eng}"></option>
 	                            </select>
-	                            
+	                            <select class="span3 select2" id="indikatorKuadran">
+		                    		<option></option>
+		                    	</select>
 	                    	</div>
 	                    	<br/>
 	                    	<div class="row-fluid">
-	                    		<!-- <div class="span6">
-	                    			<div id="kuadranGoals"></div>
-	                    		</div> -->
 	                    		<div class="span12">
 	                    			<div id="kuadran1Goals"></div>
 	                    		</div>
@@ -153,45 +152,7 @@
 	            	</div>
             	</div>
             </div>
-            <div class="row-fluid">
-            	<div class="span12">
-            		<div class="widget-box">
-	            		<div class="widget-title">
-	                        <span class="icon"><i class="icon-tasks"></i></span>
-	                        <h5>Analisis Kuadran Form 2a Berdasarkan SDGs Target</h5>
-	                    </div>
-	                    <div class="widget-content">
-	                    	<div class="row-fluid">
-	                    		<select class="span2 select2" id="periodeNas2">
-		                    		<option></option>
-		                    		<option th:each="per: ${periodeNas}" th:value="${per.id_monper}" th:text="${per.start_year+' - '+per.end_year}"></option>
-	                            </select>
-	                            <select class="span2 select2" id="tahunTarget">
-	                            </select>
-	                            <select class="span2 select2" id="semester">
-		                    		<option></option>
-		                    		<option value="1">Semester 1</option>
-		                    		<option value="2">Semester 2</option>
-	                            </select>
-	                            <select class="span6 select2" id="target">
-		                    		<option></option>
-		                    		<option th:each="data: ${target}" th:value="${data[0]}" th:text="${data[1]+' '+data[2]}"></option>
-	                            </select>
-	                            
-	                    	</div>
-	                    	<br/>
-	                    	<div class="row-fluid">
-	                    		<!-- <div class="span6">
-	                    			<div id="kuadran"></div>
-	                    		</div> -->
-	                    		<div class="span12">
-	                    			<div id="kuadran1"></div>
-	                    		</div>
-	                    	</div>
-	                    </div>
-	            	</div>
-            	</div>
-            </div>
+            
             <div class="row-fluid">
             	<div class="span12">
             		<div class="widget-box">
@@ -413,21 +374,23 @@
           };
 		$('#periodeNas,#periodeNas1,#periodeNas2,#periodeNas3,#periodeNas4').select2({
 			placeholder: 'Pilih Periode',
+			allowClear: true,
 		});
 		$('#goals,#goalsKuadran').select2({
 			placeholder: 'Pilih Goals',
+			allowClear: true,
 		});
-		$('#target').select2({
-			placeholder: 'Pilih Target',
-		});
-		$('#indicator,#indicatorInd').select2({
+		$('#indicator,#indicatorInd,#indikatorKuadran').select2({
 			placeholder: 'Pilih Indikator',
+			allowClear: true,
 		});
 		$('#semesterGoal,#semester').select2({
 			placeholder: 'Pilih',
+			allowClear: true,
 		});
 		$('#tahun,#tahunTarget,#tahunInd').select2({
 			placeholder: 'Pilih Tahun',
+			allowClear: true,
 		});
 		
         $("#filter_sdg").select2({
@@ -987,92 +950,34 @@
                             }]
                         });
 
-                        var hasilSpider = result.spider;
-                        var kategoriSpider = [];
-                        var valueSpider = [];
-                        for(var i = 0, len = hasilSpider.length; i < len; i++){
-                        	kategoriSpider.push(hasilSpider[i][1]);
-                        	valueSpider.push(hasilSpider[i][2]);
-                        }
-
-                        Highcharts.chart('spider', {
-
-                    	    chart: {
-                    	        polar: true,
-                    	        type: 'line'
-                    	    },
-
-                    	    accessibility: {
-                    	        description: 'A spiderweb chart compares the allocated budget against actual spending within an organization. The spider chart has six spokes. Each spoke represents one of the 6 departments within the organization: sales, marketing, development, customer support, information technology and administration. The chart is interactive, and each data point is displayed upon hovering. The chart clearly shows that 4 of the 6 departments have overspent their budget with Marketing responsible for the greatest overspend of $20,000. The allocated budget and actual spending data points for each department are as follows: Sales. Budget equals $43,000; spending equals $50,000. Marketing. Budget equals $19,000; spending equals $39,000. Development. Budget equals $60,000; spending equals $42,000. Customer support. Budget equals $35,000; spending equals $31,000. Information technology. Budget equals $17,000; spending equals $26,000. Administration. Budget equals $10,000; spending equals $14,000.'
-                    	    },
-
-                    	    title: {
-                    	        text: 'Capaian Indikator SDGs',
-                    	        x: -80
-                    	    },
-
-                    	    pane: {
-                    	        size: '80%'
-                    	    },
-
-                    	    xAxis: {
-                    	        categories: kategoriSpider,
-                    	        tickmarkPlacement: 'on',
-                    	        lineWidth: 0
-                    	    },
-
-                    	    yAxis: {
-                    	        gridLineInterpolation: 'polygon',
-                    	        lineWidth: 0,
-                    	        min: 0
-                    	    },
-
-                    	    tooltip: {
-                    	        shared: true,
-                    	        pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y}</b><br/>'
-                    	    },
-
-                    	    legend: {
-                    	        align: 'right',
-                    	        verticalAlign: 'middle',
-                    	        layout: 'vertical'
-                    	    },
-
-                    	    series: [{
-                    	        name: '2021',
-                    	        data: valueSpider,
-                    	        pointPlacement: 'on'
-                    	    },],
-
-                    	    responsive: {
-                    	        rules: [{
-                    	            condition: {
-                    	                maxWidth: 500
-                    	            },
-                    	            chartOptions: {
-                    	                legend: {
-                    	                    align: 'center',
-                    	                    verticalAlign: 'bottom',
-                    	                    layout: 'horizontal'
-                    	                },
-                    	                pane: {
-                    	                    size: '70%'
-                    	                }
-                    	            }
-                    	        }]
-                    	    }
-
-                    	});
-
-
                         var hasilSpider1 = result.spider1;
                         var kategoriSpider1 = [];
-                        var valueSpider1 = [];
-                        for(var i = 0, len = hasilSpider1.length; i < len; i++){
-                        	kategoriSpider1.push(hasilSpider1[i][1]);
-                        	valueSpider1.push(hasilSpider1[i][2]);
-                        }
+                        var seriesSpider = [];
+                        
+                        var tahunper = $( "#periodeNas option:selected" ).text()?$( "#periodeNas option:selected" ).text().split("-"):"";
+            			var tahunAwal = parseInt($.trim(tahunper[0]));
+            			var tahunAkhir = parseInt($.trim(tahunper[1]));
+                        for(var j=tahunAwal;j<=(tahunAkhir+1);j++){
 
+                            var valueSpider1 = [];
+                        	for(var i = 0, len = hasilSpider1.length; i < len; i++){
+                            	if(hasilSpider1[i][3]==j){
+                            		valueSpider1.push(hasilSpider1[i][2]);
+                               	}
+                            }
+                        	if(kategoriSpider1.length === 0){
+                            	for(var i = 0, len = hasilSpider1.length; i < len; i++){
+                            		kategoriSpider1.push(hasilSpider1[i][1]);
+                                }
+                            }
+                            
+                        	seriesSpider.push({
+                        		'name':j,
+                        		'data':valueSpider1,
+                        		 pointPlacement: 'on'
+                            });
+                        }
+						
                         Highcharts.chart('spider1', {
 
                     	    chart: {
@@ -1085,8 +990,7 @@
                     	    },
 
                     	    title: {
-                    	        text: 'Realisasi Anggaran SDGs',
-                    	        x: -80
+                    	        text: 'Realisasi Anggaran per SDGs Indikator',
                     	    },
 
                     	    pane: {
@@ -1116,11 +1020,96 @@
                     	        layout: 'vertical'
                     	    },
 
-                    	    series: [{
-                    	        name: '2021',
-                    	        data: valueSpider1,
-                    	        pointPlacement: 'on'
-                    	    },],
+                    	    series: seriesSpider,
+
+                    	    responsive: {
+                    	        rules: [{
+                    	            condition: {
+                    	                maxWidth: 500
+                    	            },
+                    	            chartOptions: {
+                    	                legend: {
+                    	                    align: 'center',
+                    	                    verticalAlign: 'bottom',
+                    	                    layout: 'horizontal'
+                    	                },
+                    	                pane: {
+                    	                    size: '70%'
+                    	                }
+                    	            }
+                    	        }]
+                    	    }
+
+                    	});
+
+                        var hasilSpiderRole = result.spiderRole;
+                        var kategoriSpiderRole = [];
+                        var seriesSpiderRole = [];
+                        
+                        for(var j=tahunAwal;j<=(tahunAkhir+1);j++){
+
+                            var valueSpiderRole = [];
+                        	for(var i = 0, len = hasilSpiderRole.length; i < len; i++){
+                            	if(hasilSpiderRole[i][2]==j){
+                            		valueSpiderRole.push(hasilSpiderRole[i][1]);
+                               	}
+                            }
+                        	if(kategoriSpiderRole.length === 0){
+                            	for(var i = 0, len = hasilSpiderRole.length; i < len; i++){
+                            		kategoriSpiderRole.push(hasilSpiderRole[i][0]);
+                                }
+                            }
+                            
+                        	seriesSpiderRole.push({
+                        		'name':j,
+                        		'data':valueSpiderRole,
+                        		 pointPlacement: 'on'
+                            });
+                        }
+						
+                        Highcharts.chart('spiderRole', {
+
+                    	    chart: {
+                    	        polar: true,
+                    	        type: 'line'
+                    	    },
+
+                    	    accessibility: {
+                    	        description: 'A spiderweb chart compares the allocated budget against actual spending within an organization. The spider chart has six spokes. Each spoke represents one of the 6 departments within the organization: sales, marketing, development, customer support, information technology and administration. The chart is interactive, and each data point is displayed upon hovering. The chart clearly shows that 4 of the 6 departments have overspent their budget with Marketing responsible for the greatest overspend of $20,000. The allocated budget and actual spending data points for each department are as follows: Sales. Budget equals $43,000; spending equals $50,000. Marketing. Budget equals $19,000; spending equals $39,000. Development. Budget equals $60,000; spending equals $42,000. Customer support. Budget equals $35,000; spending equals $31,000. Information technology. Budget equals $17,000; spending equals $26,000. Administration. Budget equals $10,000; spending equals $14,000.'
+                    	    },
+
+                    	    title: {
+                    	        text: 'Realisasi Anggaran SDGs per K/L',
+                    	    },
+
+                    	    pane: {
+                    	        size: '80%'
+                    	    },
+
+                    	    xAxis: {
+                    	        categories: kategoriSpiderRole,
+                    	        tickmarkPlacement: 'on',
+                    	        lineWidth: 0
+                    	    },
+
+                    	    yAxis: {
+                    	        gridLineInterpolation: 'polygon',
+                    	        lineWidth: 0,
+                    	        min: 0
+                    	    },
+
+                    	    tooltip: {
+                    	        shared: true,
+                    	        pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y}</b><br/>'
+                    	    },
+
+                    	    legend: {
+                    	        align: 'right',
+                    	        verticalAlign: 'middle',
+                    	        layout: 'vertical'
+                    	    },
+
+                    	    series: seriesSpiderRole,
 
                     	    responsive: {
                     	        rules: [{
@@ -1155,11 +1144,7 @@
         	capaianChart();
         });
 
-        $("#periodeNas2,#target,#semester,#tahunTarget").on('change', function(){
-        	kuadranChart();
-        });
-
-        $("#periodeNas3,#goalsKuadran,#semesterGoal,#tahun").on('change', function(){
+        $("#periodeNas3,#goalsKuadran,#semesterGoal,#tahun,#indikatorKuadran").on('change', function(){
         	kuadranGoalsChart();
         });
 
@@ -1343,299 +1328,6 @@
             }
         }
 
-        function kuadranChart(){
-        	var id_monper = $("#periodeNas2").val();
-            var target = $("#target").val();
-            var semester = $("#semester").val();
-            var tahunTarget = $("#tahunTarget").val();
-
-            if(id_monper && target && semester && tahunTarget){
-            	$.ajax({
-                    type: "GET",
-                    url: urls+'dashboard/get-kuadran/'+id_monper+'/'+target+'/'+semester+'/'+tahunTarget,
-                    success: function (result) {
-                        /* var hasilQuadran = result.quadran;
-                        var dataQuadran = [];
-                        for(var i = 0, len = hasilQuadran.length; i < len; i++){
-                        	dataQuadran.push({
-                        		'kode_ro':hasilQuadran[i][0],
-                            	'kode_sdg':hasilQuadran[i][1],
-                            	'role':hasilQuadran[i][2],
-                        		'y':(hasilQuadran[i][8]>100?100:hasilQuadran[i][8]),
-                        		'x':(hasilQuadran[i][5]>100?100:hasilQuadran[i][5]),
-                        		'ket':hasilQuadran[i][9].replace(/\#/g, ':'),
-                            });
-                        } */
-                        var titikPotong = semester==1?47.5:95;
-                        /* Highcharts.chart('kuadran', {
-
-                            chart: {
-                                type: 'bubble',
-                                plotBorderWidth: 1,
-                                zoomType: 'xy'
-                            },
-
-                            legend: {
-                                enabled: false
-                            },
-
-                            title: {
-                                text: 'Analisis Kuadran Realisasi Fisik'
-                            },
-
-                            accessibility: {
-                                point: {
-                                    valueDescriptionFormat: '{index}. {point.name}, fat: {point.x}, sugar: {point.y}'
-                                }
-                            },
-
-                            xAxis: {
-                                gridLineWidth: 1,
-                                max:120,
-                            	min:0,
-                            	tickInterval:5,
-                                title: {
-                                	text: 'Capaian Rincian Output'
-                                },
-                                labels: {
-                                    format: '{value}'
-                                },
-                                plotLines: [{
-                                    color: 'black',
-                                    dashStyle: 'dot',
-                                    width: 2,
-                                    value: titikPotong,
-                                    label: {
-                                        rotation: 0,
-                                        y: 15,
-                                        style: {
-                                            fontStyle: 'italic'
-                                        },
-                                    },
-                                    zIndex: 3
-                                }],
-                                accessibility: {
-                                    rangeDescription: 'Range: 60 to 100 grams.'
-                                }
-                            },
-
-                            yAxis: {
-                                startOnTick: false,
-                                endOnTick: false,
-                                max:120,
-                            	min:0,
-                            	tickInterval:5,
-                                title: {
-                                    text: 'Indikator SDGs'
-                                },
-                                labels: {
-                                    format: '{value}'
-                                },
-                                maxPadding: 0.2,
-                                plotLines: [{
-                                    color: 'black',
-                                    dashStyle: 'dot',
-                                    width: 2,
-                                    value: titikPotong,
-                                    label: {
-                                        align: 'right',
-                                        style: {
-                                            fontStyle: 'italic'
-                                        },
-                                        x: -10
-                                    },
-                                    zIndex: 3
-                                }],
-                                accessibility: {
-                                    rangeDescription: 'Range: 0 to 160 grams.'
-                                }
-                            },
-
-                            tooltip: {
-                                useHTML: true,
-                                headerFormat: '<table>',
-                                pointFormat: '<tr><th colspan="2">{point.ket}</th></tr>' +
-                                	'<tr><th th colspan="2">{point.role}</th></tr>' +
-                                	'<tr><th>Kode RO:</th><td>{point.kode_ro}</td></tr>' +
-                                	'<tr><th>Kode SDGs Indikator:</th><td>{point.kode_sdg}</td></tr>' +
-                                    '<tr><th>Realisasi Fisik:</th><td>{point.x}%</td></tr>' +
-                                    '<tr><th>Realisasi Indikator SDGs:</th><td>{point.y}%</td></tr>',
-                                footerFormat: '</table>',
-                                followPointer: true
-                            },
-
-                            plotOptions: {
-                            	bubble: {
-                                    minSize: 10,
-                                    maxSize: 10
-                                },
-                            },
-
-                            series: [{
-                                data: dataQuadran
-                            }]
-
-                        }); */
-                        var hasilQuadran1 = result.quadran1;
-                        var dataQuadran1 = [];
-                        for(var i = 0, len = hasilQuadran1.length; i < len; i++){
-                        	var color = "";
-                        	if(semester==2){
-								if(hasilQuadran1[i][10]=='NO'){
-									color = 'red';
-								}else if(hasilQuadran1[i][10]=='YES'){
-									color = 'green';
-								}else{
-									color = '';
-								}
-                            }else{
-                            	color = '';
-                            }
-                        	dataQuadran1.push({
-                            	'kode_ro':hasilQuadran1[i][0],
-                            	'kode_sdg':hasilQuadran1[i][1],
-                            	'role':hasilQuadran1[i][2],
-                        		'x':(hasilQuadran1[i][8]>100?100:hasilQuadran1[i][8]),
-                        		'y':(hasilQuadran1[i][5]>100?100:hasilQuadran1[i][5]),
-                        		'ket':hasilQuadran1[i][9].replace(/\#/g, ':'),
-                        		'cekindi':hasilQuadran1[i][10],
-                        		'color':color
-                            });                        	
-                        }
-                        
-                        Highcharts.chart('kuadran1', {
-
-                            chart: {
-                                type: 'bubble',
-                                plotBorderWidth: 1,
-                                zoomType: 'xy'
-                            },
-
-                            legend: {
-                                enabled: false
-                            },
-
-                            title: {
-                                text: 'Analisis Kuadran Realisasi Anggaran'
-                            },
-
-                            accessibility: {
-                                point: {
-                                    valueDescriptionFormat: '{index}. {point.name}, fat: {point.x}, sugar: {point.y}'
-                                }
-                            },
-
-                            xAxis: {
-                                gridLineWidth: 1,
-                                max:120,
-                            	min:0,
-                            	tickInterval:5,
-                                title: {
-                                	text: 'Persentase Realisasi Anggaran'
-                                },
-                                labels: {
-                                    format: '{value}'
-                                },
-                                plotLines: [{
-                                    color: 'black',
-                                    dashStyle: 'dot',
-                                    width: 2,
-                                    value: titikPotong,
-                                    label: {
-                                        rotation: 0,
-                                        y: 15,
-                                        style: {
-                                            fontStyle: 'italic'
-                                        },
-                                    },
-                                    zIndex: 3
-                                }],
-                                accessibility: {
-                                    rangeDescription: 'Range: 60 to 100 grams.'
-                                }
-                            },
-
-                            yAxis: {
-                                startOnTick: false,
-                                endOnTick: false,
-                                max:120,
-                            	min:0,
-                            	tickInterval:5,
-                                title: {
-                                    text: 'Persentase Capaian Rincian Output'
-                                },
-                                labels: {
-                                    format: '{value}'
-                                },
-                                maxPadding: 0.2,
-                                plotLines: [{
-                                    color: 'black',
-                                    dashStyle: 'dot',
-                                    width: 2,
-                                    value: titikPotong,
-                                    label: {
-                                        align: 'right',
-                                        style: {
-                                            fontStyle: 'italic'
-                                        },
-                                        x: -10
-                                    },
-                                    zIndex: 3
-                                }],
-                                accessibility: {
-                                    rangeDescription: 'Range: 0 to 160 grams.'
-                                }
-                            },
-
-                            tooltip: {
-                                useHTML: true,
-                                headerFormat: '<div class="MyChartTooltip"><table>',
-                                pointFormatter: function(){
-                                	var x = this.x,
-                                    	y = this.y;
-                                		ket = this.ket;
-                                	var tooltip = '<tr><th colspan="2">'+ket+'</th></tr>' +
-                                    '<tr><th>Realisasi Fisik:</th><td>'+y+'%</td></tr>' +
-                                    '<tr><th>Realisasi Anggaran:</th><td>'+x+'%</td></tr>'+
-                                    '<tr style="border: solid;border-width: 1px 0;"><th colspan="2"></tr>';
-										
-                                    	series = this.series.chart.series;
-                                    	console.log(series)
-                                        $.each(series, function (i, s) {
-                                            $.each(s.points, function (j, p) {
-                                                if (p.x == x && p.y == y) {
-                                                    tooltip += '<tr><th th colspan="2">'+p.role+'</th></tr>' +
-                                                	'<tr><th>Kode RO:</th><td>'+p.kode_ro+'</td></tr>' +
-                                                	'<tr style="'+(semester==2?(p.cekindi=='NO'?'color:red':'color:green'):'')+'"><th>Kode SDGs Indikator:</th><td>'+p.kode_sdg+'</td></tr>'+
-                                                	'<tr style="border: solid;border-width: 1px 0;"><th colspan="2"></th></tr>';
-                                                }
-                                            });
-                                        });
-									
-                                    return tooltip;
-								
-                               },
-                                footerFormat: '</table>',
-                                followPointer: true
-                            },
-
-                            plotOptions: {
-                            	bubble: {
-                                    minSize: 10,
-                                    maxSize: 10
-                                },
-                            },
-
-                            series: [{
-                                data: dataQuadran1
-                            }]
-
-                        });
-                        
-                    }
-            	});
-            }
-        }
         $("#periodeNas3").on('change', function(){
         	var tahunper = $( "#periodeNas3 option:selected" ).text()?$( "#periodeNas3 option:selected" ).text().split("-"):"";
 			var tahunAwal = parseInt($.trim(tahunper[0]));
@@ -1647,18 +1339,6 @@
                 $('#tahun').append(newOption);
             }
             $('#tahun option:selected').remove();
-        });
-        $("#periodeNas2").on('change', function(){
-        	var tahunper = $( "#periodeNas2 option:selected" ).text()?$( "#periodeNas2 option:selected" ).text().split("-"):"";
-			var tahunAwal = parseInt($.trim(tahunper[0]));
-			var tahunAkhir = parseInt($.trim(tahunper[1]));
-            $("#tahunTarget").html("<option></option>");
-            for(var i=tahunAwal;i<=(tahunAkhir+1);i++){
-            	var newOption = new Option(i, i, true, true);
-                // Append it to the select
-                $('#tahunTarget').append(newOption);
-            }
-            $('#tahunTarget option:selected').remove();
         });
         $("#periodeNas4").on('change', function(){
         	var tahunper = $( "#periodeNas4 option:selected" ).text()?$( "#periodeNas4 option:selected" ).text().split("-"):"";
@@ -1673,16 +1353,35 @@
             $('#tahunInd option:selected').remove();
         });
 
+        $("#goalsKuadran").on('change', function(){
+        	$.ajax({
+                type: "GET",
+                url: urls+'list-sdgIndicatorByGoals/'+$(this).val(),
+                success: function (result) {
+                    var hasil = result.content;
+                    $('#indikatorKuadran').val("").trigger("change");
+                    $("#indikatorKuadran").html("<option></option>");
+                    if(hasil.length>0){
+                    	for(var i=0;i<hasil.length;i++){
+                        	var newOption = new Option(hasil[i].id_indicator+' '+hasil[i].nm_indicator, hasil[i].id, true, true);
+                            $('#indikatorKuadran').append(newOption);
+                        }
+                    }
+                }
+        	})
+        });
+
         function kuadranGoalsChart(){
         	var id_monper = $("#periodeNas3").val();
             var goals = $("#goalsKuadran").val();
             var semesterGoal = $("#semesterGoal").val();
             var tahun = $("#tahun").val();
+            var indikator = $("#indikatorKuadran").val()?$("#indikatorKuadran").val():0;
 
             if(id_monper && goals && semesterGoal && tahun){
             	$.ajax({
                     type: "GET",
-                    url: urls+'dashboard/get-kuadran-goals/'+id_monper+'/'+goals+'/'+semesterGoal+'/'+tahun,
+                    url: urls+'dashboard/get-kuadran-goals/'+id_monper+'/'+goals+'/'+semesterGoal+'/'+tahun+'/'+indikator,
                     success: function (result) {
                     	var titikPotong = semesterGoal==1?47.5:95;
                         /* var hasilQuadran = result.quadran;
@@ -1927,8 +1626,6 @@
                                     	y = this.y;
                                 		ket = this.ket;
                                 	var tooltip = '<tr><th colspan="2">'+ket+'</th></tr>' +
-                                    '<tr><th>Realisasi Fisik:</th><td>'+y+'%</td></tr>' +
-                                    '<tr><th>Realisasi Anggaran:</th><td>'+x+'%</td></tr>'+
                                     '<tr style="border: solid;border-width: 1px 0;"><th colspan="2"></tr>';
 										
                                     	series = this.series.chart.series;
@@ -1938,6 +1635,8 @@
                                                     tooltip += '<tr><th th colspan="2">'+p.role+'</th></tr>' +
                                                 	'<tr><th>Kode RO:</th><td>'+p.kode_ro+'</th></tr>' +
                                                 	'<tr style="'+(semesterGoal==2?(p.cekindi=='NO'?'color:red':'color:green'):'')+'"><th>Kode SDGs Indikator:</th><td>'+p.kode_sdg+'</th></tr>'+
+                                                	'<tr><th>Realisasi Fisik:</th><td>'+y+'%</td></tr>' +
+                                                    '<tr><th>Realisasi Anggaran:</th><td>'+x+'%</td></tr>'+
                                                 	'<tr style="border: solid;border-width: 1px 0;"><th colspan="2"></th></tr>';
                                                 }
                                             });
@@ -2000,10 +1699,9 @@
 	                            		'ket':hasil[i][8].replace(/\#/g, ':'),
 	                            		'semester':2,
 	                            		'cekindi':hasil[i][9]
-                                	}]
+                                	}],
                             });                        	
                         }
-                        
                         Highcharts.chart('kuadranSemester1', {
 
                             chart: {
@@ -2096,8 +1794,6 @@
                                     	y = this.y;
                                 		ket = this.ket;
                                 	var tooltip = '<tr><th colspan="2">'+ket+'</th></tr>' +
-                                    '<tr><th>Realisasi Fisik:</th><td>'+y+'%</td></tr>' +
-                                    '<tr><th>Realisasi Anggaran:</th><td>'+x+'%</td></tr>'+
                                     '<tr style="border: solid;border-width: 1px 0;"><th colspan="2"></tr>';
 										
                                     	series = this.series.chart.series;
@@ -2107,6 +1803,8 @@
                                                     tooltip += '<tr><th th colspan="2">'+p.role+'</th></tr>' +
                                                 	'<tr><th>Kode RO:</th><td>'+p.kode_ro+'</td></tr>' +
                                                 	'<tr style="'+(p.semester==2?(p.cekindi=='NO'?'color:red':'color:green'):'')+'"><th>Kode SDGs Indikator:</th><td>'+p.kode_sdg+'</td></tr>'+
+                                                	'<tr><th>Realisasi Fisik:</th><td>'+y+'%</td></tr>' +
+                                                    '<tr><th>Realisasi Anggaran:</th><td>'+x+'%</td></tr>'+
                                                 	'<tr style="border: solid;border-width: 1px 0;"><th colspan="2"></th></tr>';
                                                 }
                                             });
@@ -2120,138 +1818,32 @@
                             },
 
                             plotOptions: {
+                            	/* series: {
+                            		bubble : {
+                            			marker: {
+                                            states: {
+                                                hover: {
+                                                    enabled: true,
+                                                    fillColor: 'white',
+                                                    lineColor: 'black',
+                                                    lineWidth: 3
+                                                }
+                                            }
+                                        }
+                                	}
+                                    
+                                }, */
                             	bubble: {
                                     minSize: 15,
-                                    maxSize: 15
+                                    maxSize: 15,
                                 },
+                                series :{
+                                	lineWidth:1
+                                }
                             },
                             series: dataQuadran1
                         });
 
-                       /*  var titikPotong = 95;
-                        var hasilQuadran2 = result.semester2;
-                        var dataQuadran2 = [];
-                        for(var i = 0, len = hasilQuadran2.length; i < len; i++){
-                        	dataQuadran2.push({
-                            	'kode_ro':hasilQuadran2[i][0],
-                            	'kode_sdg':hasilQuadran2[i][1],
-                            	'role':hasilQuadran2[i][2],
-                        		'x':(hasilQuadran2[i][8]>100?100:hasilQuadran2[i][8]),
-                        		'y':(hasilQuadran2[i][5]>100?100:hasilQuadran2[i][5]),
-                        		'ket':hasilQuadran2[i][9].replace(/\#/g, ':'),
-                            });                        	
-                        } */
-                        
-                        /* Highcharts.chart('kuadranSemester2', {
-
-                            chart: {
-                                type: 'bubble',
-                                plotBorderWidth: 1,
-                                zoomType: 'xy'
-                            },
-
-                            legend: {
-                                enabled: false
-                            },
-
-                            title: {
-                                text: 'Analisis Kuadran Realisasi Anggaran Semester 2'
-                            },
-
-                            accessibility: {
-                                point: {
-                                    valueDescriptionFormat: '{index}. {point.name}, fat: {point.x}, sugar: {point.y}'
-                                }
-                            },
-
-                            xAxis: {
-                                gridLineWidth: 1,
-                                max:120,
-                            	min:0,
-                            	tickInterval:5,
-                                title: {
-                                	text: 'Persentase Realisasi Anggaran'
-                                },
-                                labels: {
-                                    format: '{value}'
-                                },
-                                plotLines: [{
-                                    color: 'black',
-                                    dashStyle: 'dot',
-                                    width: 2,
-                                    value: titikPotong,
-                                    label: {
-                                        rotation: 0,
-                                        y: 15,
-                                        style: {
-                                            fontStyle: 'italic'
-                                        },
-                                    },
-                                    zIndex: 3
-                                }],
-                                accessibility: {
-                                    rangeDescription: 'Range: 60 to 100 grams.'
-                                }
-                            },
-
-                            yAxis: {
-                                startOnTick: false,
-                                endOnTick: false,
-                                max:120,
-                            	min:0,
-                            	tickInterval:5,
-                                title: {
-                                    text: 'Persentase Capaian Rincian Output'
-                                },
-                                labels: {
-                                    format: '{value}'
-                                },
-                                maxPadding: 0.2,
-                                plotLines: [{
-                                    color: 'black',
-                                    dashStyle: 'dot',
-                                    width: 2,
-                                    value: titikPotong,
-                                    label: {
-                                        align: 'right',
-                                        style: {
-                                            fontStyle: 'italic'
-                                        },
-                                        x: -10
-                                    },
-                                    zIndex: 3
-                                }],
-                                accessibility: {
-                                    rangeDescription: 'Range: 0 to 160 grams.'
-                                }
-                            },
-
-                            tooltip: {
-                                useHTML: true,
-                                headerFormat: '<table>',
-                                pointFormat: '<tr><th colspan="2">{point.ket}</th></tr>' +
-                                	'<tr><th th colspan="2">{point.role}</th></tr>' +
-                                	'<tr><th>Kode RO:</th><td>{point.kode_ro}</td></tr>' +
-                                	'<tr><th>Kode SDGs Indikator:</th><td>{point.kode_sdg}</td></tr>' +
-                                    '<tr><th>Realisasi Fisik:</th><td>{point.y}%</td></tr>' +
-                                    '<tr><th>Realisasi Anggaran:</th><td>{point.x}%</td></tr>',
-                                footerFormat: '</table>',
-                                followPointer: true
-                            },
-
-                            plotOptions: {
-                            	bubble: {
-                                    minSize: 10,
-                                    maxSize: 10
-                                },
-                            },
-
-                            series: [{
-                                data: dataQuadran2
-                            }]
-
-                        }); */
-                        
                     }
             	});
             }
