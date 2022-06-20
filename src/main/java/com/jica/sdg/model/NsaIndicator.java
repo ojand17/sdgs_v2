@@ -43,7 +43,7 @@ public class NsaIndicator implements Serializable {
     private Integer internal_code;
     
     @Column(nullable = true)
-    private Integer idpemda;
+    private String idpemda;
     
     @Column(nullable = true)
     private Integer budget_allocation;
@@ -74,7 +74,7 @@ public class NsaIndicator implements Serializable {
 
 	public NsaIndicator(Integer id, String id_nsa_indicator, String id_program, String id_activity, String nm_indicator,
 			String nm_indicator_eng, String unit, Integer created_by, Date date_created, Integer internal_code,
-			Integer idpemda, Integer budget_allocation, String funding_source, String impl_agen) {
+			String idpemda, Integer budget_allocation, String funding_source, String impl_agen) {
 		super();
 		this.id = id;
 		this.id_nsa_indicator = id_nsa_indicator;
@@ -176,11 +176,11 @@ public class NsaIndicator implements Serializable {
 		return serialVersionUID;
 	}
 
-	public Integer getIdpemda() {
+	public String getIdpemda() {
 		return idpemda;
 	}
 
-	public void setIdpemda(Integer idpemda) {
+	public void setIdpemda(String idpemda) {
 		this.idpemda = idpemda;
 	}
 
