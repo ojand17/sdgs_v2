@@ -134,11 +134,13 @@
 		                    		<option value="1">Semester 1</option>
 		                    		<option value="2">Semester 2</option>
 	                            </select>
-	                            <select class="span6 select2" id="goalsKuadran">
+	                            <select class="span3 select2" id="goalsKuadran">
 		                    		<option></option>
 		                    		<option th:each="data: ${goals}" th:value="${data.id}" th:text="${lang!=0?data.id_goals+'. '+data.nm_goals:data.id_goals+'. '+data.nm_goals_eng}"></option>
 	                            </select>
-	                            
+	                            <select class="span3 select2" id="indikatorKuadran">
+		                    		<option></option>
+		                    	</select>
 	                    	</div>
 	                    	<br/>
 	                    	<div class="row-fluid">
@@ -372,18 +374,23 @@
           };
 		$('#periodeNas,#periodeNas1,#periodeNas2,#periodeNas3,#periodeNas4').select2({
 			placeholder: 'Pilih Periode',
+			allowClear: true,
 		});
 		$('#goals,#goalsKuadran').select2({
 			placeholder: 'Pilih Goals',
+			allowClear: true,
 		});
-		$('#indicator,#indicatorInd').select2({
+		$('#indicator,#indicatorInd,#indikatorKuadran').select2({
 			placeholder: 'Pilih Indikator',
+			allowClear: true,
 		});
 		$('#semesterGoal,#semester').select2({
 			placeholder: 'Pilih',
+			allowClear: true,
 		});
 		$('#tahun,#tahunTarget,#tahunInd').select2({
 			placeholder: 'Pilih Tahun',
+			allowClear: true,
 		});
 		
         $("#filter_sdg").select2({
@@ -1137,7 +1144,7 @@
         	capaianChart();
         });
 
-        $("#periodeNas3,#goalsKuadran,#semesterGoal,#tahun").on('change', function(){
+        $("#periodeNas3,#goalsKuadran,#semesterGoal,#tahun,#indikatorKuadran").on('change', function(){
         	kuadranGoalsChart();
         });
 
@@ -1346,16 +1353,35 @@
             $('#tahunInd option:selected').remove();
         });
 
+        $("#goalsKuadran").on('change', function(){
+        	$.ajax({
+                type: "GET",
+                url: urls+'list-sdgIndicatorByGoals/'+$(this).val(),
+                success: function (result) {
+                    var hasil = result.content;
+                    $('#indikatorKuadran').val("").trigger("change");
+                    $("#indikatorKuadran").html("<option></option>");
+                    if(hasil.length>0){
+                    	for(var i=0;i<hasil.length;i++){
+                        	var newOption = new Option(hasil[i].id_indicator+' '+hasil[i].nm_indicator, hasil[i].id, true, true);
+                            $('#indikatorKuadran').append(newOption);
+                        }
+                    }
+                }
+        	})
+        });
+
         function kuadranGoalsChart(){
         	var id_monper = $("#periodeNas3").val();
             var goals = $("#goalsKuadran").val();
             var semesterGoal = $("#semesterGoal").val();
             var tahun = $("#tahun").val();
+            var indikator = $("#indikatorKuadran").val()?$("#indikatorKuadran").val():0;
 
             if(id_monper && goals && semesterGoal && tahun){
             	$.ajax({
                     type: "GET",
-                    url: urls+'dashboard/get-kuadran-goals/'+id_monper+'/'+goals+'/'+semesterGoal+'/'+tahun,
+                    url: urls+'dashboard/get-kuadran-goals/'+id_monper+'/'+goals+'/'+semesterGoal+'/'+tahun+'/'+indikator,
                     success: function (result) {
                     	var titikPotong = semesterGoal==1?47.5:95;
                         /* var hasilQuadran = result.quadran;
@@ -1600,8 +1626,6 @@
                                     	y = this.y;
                                 		ket = this.ket;
                                 	var tooltip = '<tr><th colspan="2">'+ket+'</th></tr>' +
-                                    '<tr><th>Realisasi Fisik:</th><td>'+y+'%</td></tr>' +
-                                    '<tr><th>Realisasi Anggaran:</th><td>'+x+'%</td></tr>'+
                                     '<tr style="border: solid;border-width: 1px 0;"><th colspan="2"></tr>';
 										
                                     	series = this.series.chart.series;
@@ -1611,6 +1635,8 @@
                                                     tooltip += '<tr><th th colspan="2">'+p.role+'</th></tr>' +
                                                 	'<tr><th>Kode RO:</th><td>'+p.kode_ro+'</th></tr>' +
                                                 	'<tr style="'+(semesterGoal==2?(p.cekindi=='NO'?'color:red':'color:green'):'')+'"><th>Kode SDGs Indikator:</th><td>'+p.kode_sdg+'</th></tr>'+
+                                                	'<tr><th>Realisasi Fisik:</th><td>'+y+'%</td></tr>' +
+                                                    '<tr><th>Realisasi Anggaran:</th><td>'+x+'%</td></tr>'+
                                                 	'<tr style="border: solid;border-width: 1px 0;"><th colspan="2"></th></tr>';
                                                 }
                                             });
@@ -1768,8 +1794,6 @@
                                     	y = this.y;
                                 		ket = this.ket;
                                 	var tooltip = '<tr><th colspan="2">'+ket+'</th></tr>' +
-                                    '<tr><th>Realisasi Fisik:</th><td>'+y+'%</td></tr>' +
-                                    '<tr><th>Realisasi Anggaran:</th><td>'+x+'%</td></tr>'+
                                     '<tr style="border: solid;border-width: 1px 0;"><th colspan="2"></tr>';
 										
                                     	series = this.series.chart.series;
@@ -1779,6 +1803,8 @@
                                                     tooltip += '<tr><th th colspan="2">'+p.role+'</th></tr>' +
                                                 	'<tr><th>Kode RO:</th><td>'+p.kode_ro+'</td></tr>' +
                                                 	'<tr style="'+(p.semester==2?(p.cekindi=='NO'?'color:red':'color:green'):'')+'"><th>Kode SDGs Indikator:</th><td>'+p.kode_sdg+'</td></tr>'+
+                                                	'<tr><th>Realisasi Fisik:</th><td>'+y+'%</td></tr>' +
+                                                    '<tr><th>Realisasi Anggaran:</th><td>'+x+'%</td></tr>'+
                                                 	'<tr style="border: solid;border-width: 1px 0;"><th colspan="2"></th></tr>';
                                                 }
                                             });

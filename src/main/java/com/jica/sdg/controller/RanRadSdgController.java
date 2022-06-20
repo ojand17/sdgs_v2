@@ -386,6 +386,14 @@ public class RanRadSdgController {
         return hasil;
     }
     
+    @GetMapping("admin/list-sdgIndicatorByGoals/{id_goals}")
+    public @ResponseBody Map<String, Object> sdgIndicatorListByGoals(@PathVariable("id_goals") Integer id_goals) {
+    	List<SdgIndicator> list = sdgIndicatorService.findByGoals(id_goals);
+        Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
+    }
+    
     @GetMapping("admin/cek-id_indicator/{id_indicator}/{id_target}")
     public @ResponseBody Map<String, Object> cekindicator(@PathVariable("id_indicator") String id_indicator,@PathVariable("id_target") String id_target) {
         String sql = "select count(id_indicator) from sdg_indicator where id_indicator=:id_indicator and id_target = :id_target";

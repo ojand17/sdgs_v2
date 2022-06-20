@@ -762,11 +762,12 @@ public class AdminController {
 	    return hasil;
 	}
     
-    @GetMapping("admin/dashboard/get-kuadran-goals/{id_monper}/{id_goals}/{semester}/{tahun}")
-    public @ResponseBody Map<String, Object> getKuadranGoals(@PathVariable("id_monper") Integer id_monper,@PathVariable("id_goals") Integer id_goals,@PathVariable("semester") Integer semester,@PathVariable("tahun") Integer tahun) {
+    @GetMapping("admin/dashboard/get-kuadran-goals/{id_monper}/{id_goals}/{semester}/{tahun}/{id_indicator}")
+    public @ResponseBody Map<String, Object> getKuadranGoals(@PathVariable("id_monper") Integer id_monper,@PathVariable("id_goals") Integer id_goals,@PathVariable("semester") Integer semester,@PathVariable("tahun") Integer tahun,@PathVariable("id_indicator") Integer id_indicator) {
     	String persen = semester==1?"47.5":"95";
     	String achievement2 = semester==1?"":"+COALESCE(sum(f.achievement2),0)";
     	String achievementJ2 = semester==1?"":"+COALESCE(sum(j.achievement2),0)";
+    	String indikator = id_indicator==null || id_indicator == 0?"":" and a.id_indicator = '"+id_indicator+"' ";
 //    	Query queryQuadran = em.createNativeQuery("Select *, \r\n" + 
 //    			"CASE \r\n" + 
 //    			"				WHEN persen_ro>="+persen+" and persen_realisasi>="+persen+" THEN \r\n" + 
@@ -842,7 +843,7 @@ public class AdminController {
 	    		"left join entry_gov_budget j on h.id = j.id_gov_activity and j.year_entry = '"+tahun+"' \r\n" + 
 	    		"LEFT JOIN ref_role k on i.id_role = k.id_role\r\n "+ 
 	    		"left join api l on l.kode = CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) and l.tahun = '"+tahun+"' "+ 
-	    		"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_goals = '"+id_goals+"' \r\n" + 
+	    		"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_goals = '"+id_goals+"' "+indikator+
 	    		"GROUP BY h.id,CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator), i.id_role\r\n" + 
 	    		"order by h.id,CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator), i.id_role\r\n" + 
 	    		") a");
