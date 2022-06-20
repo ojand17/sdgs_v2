@@ -79,24 +79,30 @@
                                             </th>
                                             <th style="text-align:center;font-size:80%;">
                                                 <!-- <span class="lang_eng" style="display:none">Achievement</span> -->
-                                                <span class="head-tabel" data-lang_eng="Achievement" data-lang_indo="Pencapaian"></span>
+                                                <span class="head-tabel" data-lang_eng="Corporation Scale" data-lang_indo="Skala Usaha"></span>
+                                            </th>
+                                            <th style="text-align:center;font-size:80%;">
+                                                <!-- <span class="lang_eng" style="display:none">Achievement</span> -->
+                                                <span class="head-tabel" data-lang_eng="Corporation Fields" data-lang_indo="Bidang Usaha"></span>
+                                            </th>
+                                            <th style="text-align:center;font-size:80%;">
+                                                <!-- <span class="lang_eng" style="display:none">Achievement</span> -->
+                                                <span class="head-tabel" data-lang_eng="Corporation Categories" data-lang_indo="Kategori Usaha"></span>
+                                            </th>
+                                            <th style="text-align:center;font-size:80%;">
+                                                <!-- <span class="lang_eng" style="display:none">Achievement</span> -->
+                                                <span class="head-tabel" data-lang_eng="Office Contact" data-lang_indo="No. Telp Kantor"></span>
+                                            </th>
+                                            <th style="text-align:center;font-size:80%;">
+                                                <!-- <span class="lang_eng" style="display:none">Achievement</span> -->
+                                                <span class="head-tabel" data-lang_eng="Office Email" data-lang_indo="Email Kantor"></span>
                                             </th>
                                             <th style="text-align:center;font-size:80%;">
                                                 <!-- <span class="lang_eng" style="display:none">Location</span> -->
                                                 <span class="head-tabel" data-lang_eng="Location" data-lang_indo="Lokasi"></span>
                                             </th>
-                                            <th style="text-align:center;font-size:80%;">
-                                                <!-- <span class="lang_eng" style="display:none">Beneficiaries</span> -->
-                                                <span class="head-tabel" data-lang_eng="Beneficiaries" data-lang_indo="Penerima Manfaat"></span>
-                                            </th>
-                                            <th style="text-align:center;font-size:80%;">
-                                                <!-- <span class="lang_eng" style="display:none">Year of Implementation</span> -->
-                                                <span class="head-tabel" data-lang_eng="Year of Implementation" data-lang_indo="Tahun Implementasi"></span>
-                                            </th>
-                                            <th style="text-align:center;font-size:80%;">
-                                                <!-- <span class="lang_eng" style="display:none">Major Partners</span> -->
-                                                <span>Partner</span>
-                                            </th>
+                                            
+                                            
                                             <th style="text-align:center;font-size:80%;">
                                                 <!-- <span class="lang_eng" style="display:none">Institution Type</span> -->
                                                 <span class="head-tabel" data-lang_eng="Institution Type" data-lang_indo="Tipe Institusi"></span>
@@ -164,26 +170,73 @@
                                 <input name="nm_nsa" id="nm_nsa" type="text" class="input-block-level" required>
                             </div>
                             <div class="control-group">
+                                <label for="nm_inst" class="lang_indo">Skala Usaha :</label>
+                                <label for="nm_inst" class="lang_eng" style="display: none">Corporation Scale :</label>
+                                <select name="id_skala_usaha" id="id_skala_usaha" style="width: 100%;">
+                                    <option value="0" >-- Pilih --</option>
+                                </select>
+                                <span class="help-block" id="error_id_skala_usaha"></span>
+                            </div>
+                            <div class="control-group">
+                                <label for="nm_inst" class="lang_indo">Bidang Usaha :</label>
+                                <label for="nm_inst" class="lang_eng" style="display: none">Business Fields :</label>
+                                <select name="id_bidang_usaha" id="id_bidang_usaha" style="width: 100%;">
+                                    <option value="0" >-- Pilih --</option>
+                                </select>
+                                <span class="help-block" id="error_id_bidang_usaha"></span>
+                            </div>
+                            <div class="control-group">
+                                <label for="nm_inst" class="lang_indo">Kategori Usaha :</label>
+                                <label for="nm_inst" class="lang_eng" style="display: none">Corporation Categories :</label>
+                                <select name="id_kat_usaha" id="id_kat_usaha" style="width: 100%;">
+                                    <option value="0" >-- Pilih --</option>
+                                </select>
+                                <span class="help-block" id="error_id_kat_usaha"></span>
+                            </div>
+                            <div class="control-group" id="kdusaha" style="display: none">
+                                <label for="nm_inst" class="lang_indo">Kode Usaha :</label>
+                                <label for="nm_inst" class="lang_eng" style="display: none">Corporation Code :</label>
+                                <select name="kode_usaha" id="kode_usaha" style="width: 100%;">
+                                    <option value="0" >-- Pilih --</option>
+                                </select>
+                                <span class="help-block" id="error_kode_usaha"></span>
+                            </div>
+                            <div class="control-group">
+                                <label for="achievement" class="lang_indo">Nama Perusahaan :</label>
+                                <label for="achievement" class="lang_eng" style="display: none">Corporation Name :</label>
+                                <input name="nama_perusahaan" id="nama_perusahaan" type="text" class="input-block-level" >
+                            </div>
+                            <div class="control-group" style="display: none">
                                 <label for="achievement" class="lang_indo">Pencapaian :</label>
                                 <label for="achievement" class="lang_eng" style="display: none">Achievement :</label>
                                 <input name="achieve_nsa" id="achieve_nsa" type="text" class="input-block-level" >
                             </div>
                             <div class="control-group">
-                                <label for="loc_inst" class="lang_indo">Lokasi :</label>
+                                <label for="loc_inst" class="lang_indo">Lokasi/Alamat :</label>
                                 <label for="loc_inst" class="lang_eng" style="display: none">Location:</label>
                                 <input name="loc_nsa" id="loc_nsa" type="text" class="input-block-level" >
                             </div>
                             <div class="control-group">
+                                <label for="loc_inst" class="lang_indo">No. Telp Kantor:</label>
+                                <label for="loc_inst" class="lang_eng" style="display: none">Office Contact :</label>
+                                <input name="no_telp" id="no_telp" type="text" class="input-block-level" >
+                            </div>
+                            <div class="control-group">
+                                <label for="loc_inst" class="lang_indo">Email Kantor:</label>
+                                <label for="loc_inst" class="lang_eng" style="display: none">Office Email :</label>
+                                <input name="website" id="website" type="text" class="input-block-level" >
+                            </div>
+                            <div class="control-group" style="display: none">
                                 <label for="beneficiaries" class="lang_indo">Penerima Manfaat :</label>
                                 <label for="beneficiaries" class="lang_eng" style="display: none">Beneficiaries :</label>
                                 <input name="beneficiaries" id="beneficiaries" type="text" class="input-block-level" >
                             </div>
-                            <div class="control-group">
+                            <div class="control-group" style="display: none">
                                 <label for="year_impl" class="lang_indo">Tahun Implementasi :</label>
                                 <label for="year_impl" class="lang_eng" style="display: none">Year of Implementation :</label>
                                 <input name="year_impl" id="year_impl" type="text" class="input-block-level" >
                             </div>
-                            <div class="control-group">
+                            <div class="control-group" style="display: none">
                                 <label for="major_part" class="lang_indo">Partner :</label>
                                 <label for="major_part" class="lang_eng" style="display: none">Major Partners :</label>
                                 <input name="major_part" id="major_part" type="text" class="input-block-level" >
@@ -367,6 +420,97 @@
 	        $('#fs').on('change', function(e){
 	        	 headtabel();
 	        });
+                
+                $.ajax({
+                    type: "GET",
+                    url: urls+'corporation/getrefSkalaUsaha',
+                    async:false,
+                    success: function (result) {
+                        $('#id_skala_usaha').html("");
+                        var array = result.content;
+//                        console.log(array);
+                        $('#id_skala_usaha').append('<option value="0">-- Pilih --</option>');
+                        for(a=0; a<array.length;a++){
+                            $('#id_skala_usaha').append('<option value="'+array[a].id+'">' +array[a].nm_skala_usaha+'</option>');
+                        }
+                        
+                    },
+                });
+                
+                $.ajax({
+                    type: "GET",
+                    url: urls+'corporation/getrefBidangUsaha',
+                    async:false,
+                    success: function (result) {
+                        $('#id_bidang_usaha').html("");
+                        var array = result.content;
+//                        console.log(array);
+                        $('#id_bidang_usaha').append('<option value="0">-- Pilih --</option>');
+                        for(a=0; a<array.length;a++){
+                            $('#id_bidang_usaha').append('<option value="'+array[a].id+'">' +array[a].nm_bidang_usaha+'</option>');
+                        }
+                        
+                    },
+                });
+                
+                $.ajax({
+                    type: "GET",
+                    url: urls+'corporation/getrefKatUsaha',
+                    async:false,
+                    success: function (result) {
+                        $('#id_kat_usaha').html("");
+                        var array = result.content;
+//                        console.log(array);
+                        $('#id_kat_usaha').append('<option value="0">-- Pilih --</option>');
+                        for(a=0; a<array.length;a++){
+                            $('#id_kat_usaha').append('<option value="'+array[a].id+'">' +array[a].nm_kategori+'</option>');
+                        }
+                        
+                    },
+                });
+                
+                $.ajax({
+                    type: "GET",
+                    url: urls+'corporation/getrefKodeUsaha',
+                    async:false,
+                    success: function (result) {
+                        $('#kode_usaha').html("");
+                        var array = result.content;
+//                        console.log(array);
+                        $('#kode_usaha').append('<option value="0">-- Pilih --</option>');
+                        for(a=0; a<array.length;a++){
+                            $('#kode_usaha').append('<option value="'+array[a].kode_usaha+'">'+array[a].kode_usaha+' - ' +array[a].nm_usaha+'</option>');
+                        }
+                        
+                    },
+                });
+                
+                $('#id_kat_usaha').on('change', function(e){
+                    var id_kat_usaha = $("#id_kat_usaha").val();
+                    if(id_kat_usaha == '1'){
+                        $('#kdusaha').show();
+                        $('#kode_usaha').val('0');
+                        $('#nama_perusahaan').val('');
+                    }else{
+                        $('#kdusaha').hide();
+                        $('#kode_usaha').val('0');
+                        $('#nama_perusahaan').val('');
+                    }
+	        });
+                
+                $('#kode_usaha').on('change', function(e){
+                    var kode_usaha = $("#kode_usaha").val();
+                    $.ajax({
+                        type: "GET",
+                        url: urls+'corporation/getrefNamaKodeUsaha/'+kode_usaha,
+                        async:false,
+                        success: function (result) {
+                            var array = result.content;
+                            $('#nama_perusahaan').val(array[0].nm_usaha);
+                        },
+                    });
+	        });
+                
             $(document).attr("title","Corporation Profile");
             
             var tabel = $('#tabel-nsa-profile').DataTable({
@@ -421,20 +565,31 @@
                         return "<div style='font-size:90%;'>"+(row[1]?row[1]:'')+"</div>";
                     }},
                     {"data": function (row, data, index, display) {
-                        return "<div style='font-size:90%;'>"+(row[2]?row[2]:'')+"</div>";
+                        return "<div style='font-size:90%;'>"+(row[23]?row[23]:'')+"</div>";
+                    }},
+                    {"data": function (row, data, index, display) {
+                        return "<div style='font-size:90%;'>"+(row[24]?row[24]:'')+"</div>";
+                    }},
+                    {"data": function (row, data, index, display) {
+                        var kat_usaha = '';
+                        if(row[21] == 0){
+                            kat_usaha = row[25]+'<br/><b>'+row[22]+'</b>';
+                        }else{
+                            kat_usaha = row[25]+'<br/><b>'+row[21]+' - '+row[22]+'</b>';
+                        }
+                        return "<div style='font-size:90%;'>"+kat_usaha+"</div>";
+                    }},
+                    {"data": function (row, data, index, display) {
+                        return "<div style='font-size:90%;'>"+(row[16]?row[16]:'')+"</div>";
+                    }},
+                    {"data": function (row, data, index, display) {
+                        return "<div style='font-size:90%;'>"+(row[17]?row[17]:'')+"</div>";
                     }},
                     {"data": function (row, data, index, display) {
                         return "<div style='font-size:90%;'>"+(row[3]?row[3]:'')+"</div>";
                     }},
-                    {"data": function (row, data, index, display) {
-                        return "<div style='font-size:90%;'>"+(row[4]?row[4]:'')+"</div>";
-                    }},
-                    {"data": function (row, data, index, display) {
-                        return "<div style='font-size:90%;'>"+(row[5]?row[5]:'')+"</div>";
-                    }},
-                    {"data": function (row, data, index, display) {
-                        return "<div style='font-size:90%;'>"+(row[6]?row[6]:'')+"</div>";
-                    }},
+                    
+                    
                     {"data": function (row, data, index, display) {
                     	var tipe;
                     	if(row[7] == '1'){
@@ -479,7 +634,7 @@
                         return "<div style='font-size:90%;'>"+(row[13]?row[13]:'')+"</div>";
                     }},
                     {"data": function (row, data, index, display) {
-                        var dataid = row[0]+'###'+row[1]+'###'+row[2]+'###'+row[3]+'###'+row[4]+'###'+row[5]+'###'+row[6]+'###'+row[14];
+                        var dataid = row[0]+'###'+row[1]+'###'+row[2]+'###'+row[3]+'###'+row[4]+'###'+row[5]+'###'+row[6]+'###'+row[14]+'###'+row[16]+'###'+row[17]+'###'+row[18]+'###'+row[19]+'###'+row[20]+'###'+row[21]+'###'+row[22];
                         return "<div style='text-align:center;'>"+'<button data-id="'+dataid+'" type="button" title="Update" class="btn btn-success btn-mini update"><i class="icon-save"></i></button>'+'<button data-id="'+dataid+'" type="button" title="Detail" class="btn btn-warning btn-mini detail_data"><i class="icon-pencil"></i></button>'+
                         '<button data-id="'+row[0]+'" type="button" title="Delete" class="btn btn-danger btn-mini delete"><i class="icon-trash"></i></button></div>';
                     }}
@@ -749,6 +904,14 @@
                 var year_impl       = $('#year_impl').val();
                 var major_part      = $('#major_part').val();
                 
+                var no_telp      = $('#no_telp').val();
+                var website      = $('#website').val();
+                var id_skala_usaha      = $('#id_skala_usaha').val();
+                var id_bidang_usaha      = $('#id_bidang_usaha').val();
+                var id_kat_usaha      = $('#id_kat_usaha').val();
+                var kode_usaha      = $('#kode_usaha').val();
+                var nama_perusahaan      = $('#nama_perusahaan').val();
+                
                 var data    = JSON.stringify({
                                 'id_usaha': id_nsa,
                                 'id_role': id_role,
@@ -757,7 +920,15 @@
                                 'loc_usaha': loc_nsa,
                                 'beneficiaries': beneficiaries,
                                 'year_impl': year_impl,
-                                'major_part': major_part
+                                'major_part': major_part,
+                                
+                                'no_telp': no_telp,
+                                'website': website,
+                                'id_skala_usaha': id_skala_usaha,
+                                'id_bidang_usaha': id_bidang_usaha,
+                                'id_kat_usaha': id_kat_usaha,
+                                'kode_usaha': kode_usaha,
+                                'nama_perusahaan': nama_perusahaan
                             });
                 $.ajax({
                     type: "POST",
@@ -786,6 +957,14 @@
                 var year_impl       = $('#year_impl').val();
                 var major_part      = $('#major_part').val();
                 
+                var no_telp      = $('#no_telp').val();
+                var website      = $('#website').val();
+                var id_skala_usaha      = $('#id_skala_usaha').val();
+                var id_bidang_usaha      = $('#id_bidang_usaha').val();
+                var id_kat_usaha      = $('#id_kat_usaha').val();
+                var kode_usaha      = $('#kode_usaha').val();
+                var nama_perusahaan      = $('#nama_perusahaan').val();
+                
                 var data    = JSON.stringify({
                                 'id_usaha': id,
                                 'id_role': id_role,
@@ -794,7 +973,15 @@
                                 'loc_usaha': loc_nsa,
                                 'beneficiaries': beneficiaries,
                                 'year_impl': year_impl,
-                                'major_part': major_part
+                                'major_part': major_part,
+                                
+                                'no_telp': no_telp,
+                                'website': website,
+                                'id_skala_usaha': id_skala_usaha,
+                                'id_bidang_usaha': id_bidang_usaha,
+                                'id_kat_usaha': id_kat_usaha,
+                                'kode_usaha': kode_usaha,
+                                'nama_perusahaan': nama_perusahaan
                             });
                 $.ajax({
                     type: "POST",
@@ -865,6 +1052,14 @@
                 var achieve_nsa     = $('#achieve_nsa').val();
                 var loc_nsa         = $('#loc_nsa').val();
                 var beneficiaries   = $('#beneficiaries').val();
+                
+                var no_telp   = $('#no_telp').val();
+                var website   = $('#website').val();
+                var id_skala_usaha   = $('#id_skala_usaha').val();
+                var id_bidang_usaha   = $('#id_bidang_usaha').val();
+                var id_kat_usaha   = $('#id_kat_usaha').val();
+                var kode_usaha   = $('#kode_usaha').val();
+                var nama_perusahaan   = $('#nama_perusahaan').val();
                 if($('#year_impl').val() == ""){
                     var year_impl       = "0";
                 }else{
@@ -881,7 +1076,15 @@
                                 'loc_usaha': loc_nsa,
                                 'beneficiaries': beneficiaries,
                                 'year_impl': year_impl,
-                                'major_part': major_part
+                                'major_part': major_part,
+                                
+                                'no_telp': no_telp,
+                                'website': website,
+                                'id_skala_usaha': id_skala_usaha,
+                                'id_bidang_usaha': id_bidang_usaha,
+                                'id_kat_usaha': id_kat_usaha,
+                                'kode_usaha': kode_usaha,
+                                'nama_perusahaan': nama_perusahaan
                             });
                 $.ajax({
                     type: "POST",
@@ -907,6 +1110,15 @@
                 var achieve_nsa     = $('#achieve_nsa').val();
                 var loc_nsa         = $('#loc_nsa').val();
                 var beneficiaries   = $('#beneficiaries').val();
+                
+                var no_telp   = $('#no_telp').val();
+                var website   = $('#website').val();
+                var id_skala_usaha   = $('#id_skala_usaha').val();
+                var id_bidang_usaha   = $('#id_bidang_usaha').val();
+                var id_kat_usaha   = $('#id_kat_usaha').val();
+                var kode_usaha   = $('#kode_usaha').val();
+                var nama_perusahaan   = $('#nama_perusahaan').val();
+                
                 if($('#year_impl').val() == ""){
                     var year_impl       = "0";
                 }else{
@@ -922,7 +1134,15 @@
                                 'loc_usaha': loc_nsa,
                                 'beneficiaries': beneficiaries,
                                 'year_impl': year_impl,
-                                'major_part': major_part
+                                'major_part': major_part,
+                                
+                                'no_telp': no_telp,
+                                'website': website,
+                                'id_skala_usaha': id_skala_usaha,
+                                'id_bidang_usaha': id_bidang_usaha,
+                                'id_kat_usaha': id_kat_usaha,
+                                'kode_usaha': kode_usaha,
+                                'nama_perusahaan': nama_perusahaan
                             });
                 $.ajax({
                     type: "POST",
@@ -1089,7 +1309,7 @@
             $('#tabel-nsa-profile').on('click', '.update', function(){
                 var dataid  = $(this).data('id');
                 var data    = dataid.split('###');
-                
+                console.log(dataid);
                 $('#id_nsa').val(data[0]);
                 $('#nm_nsa').val(data[1]);
                 $('#achieve_nsa').val(data[2]);
@@ -1098,6 +1318,14 @@
                 $('#year_impl').val(data[5]);
                 $('#major_part').val(data[6]);
                 $('#id_role').val(data[7]);
+                
+                $('#no_telp').val(data[8]);
+                $('#website').val(data[9]);
+                $('#id_skala_usaha').val(data[10]).trigger('change');
+                $('#id_bidang_usaha').val(data[11]).trigger('change');
+                $('#id_kat_usaha').val(data[12]).trigger('change');
+                $('#kode_usaha').val(data[13]).trigger('change');
+                $('#nama_perusahaan').val(data[14]);
                 
                 $('.addModal').modal("show");
                 $('#simpan_').hide();

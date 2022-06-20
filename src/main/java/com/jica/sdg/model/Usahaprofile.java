@@ -30,6 +30,24 @@ public class Usahaprofile implements Serializable {
     private Integer year_impl;
     @Column(name = "major_part")
     private String major_part;
+    
+    @Column(name = "no_telp")
+    private String no_telp;
+    @Column(name = "website")
+    private String website;
+    
+    @Column(name = "id_skala_usaha")
+    private Integer id_skala_usaha;
+    
+    @Column(name = "id_bidang_usaha")
+    private Integer id_bidang_usaha;
+    @Column(name = "id_kat_usaha")
+    private Integer id_kat_usaha;
+    
+    @Column(name = "kode_usaha")
+    private String kode_usaha;
+    @Column(name = "nama_perusahaan")
+    private String nama_perusahaan;
 
     public Usahaprofile() {
     }
@@ -44,6 +62,84 @@ public class Usahaprofile implements Serializable {
         this.year_impl      = year_impl;
         this.major_part     = major_part;
     }
+
+    public Usahaprofile(Integer id_usaha, Integer id_role, String nm_usaha, String achieve_usaha, String loc_usaha, String beneficiaries, Integer year_impl, String major_part,
+                        String no_telp, String website, Integer id_skala_usaha, Integer id_bidang_usaha, Integer id_kat_usaha, String kode_usaha, String nama_perusahaan) {
+        this.id_usaha         = id_usaha;
+        this.id_role        = id_role;
+        this.nm_usaha         = nm_usaha;
+        this.achieve_usaha    = achieve_usaha;
+        this.loc_usaha        = loc_usaha;
+        this.beneficiaries  = beneficiaries;
+        this.year_impl      = year_impl;
+        this.major_part     = major_part;
+        
+        this.no_telp     = no_telp;
+        this.website     = website;
+        this.id_skala_usaha     = id_skala_usaha;
+        this.id_bidang_usaha     = id_bidang_usaha;
+        this.id_kat_usaha     = id_kat_usaha;
+        this.kode_usaha     = kode_usaha;
+        this.nama_perusahaan     = nama_perusahaan;
+    }
+
+    public String getNo_telp() {
+        return no_telp;
+    }
+
+    public void setNo_telp(String no_telp) {
+        this.no_telp = no_telp;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public Integer getId_skala_usaha() {
+        return id_skala_usaha;
+    }
+
+    public void setId_skala_usaha(Integer id_skala_usaha) {
+        this.id_skala_usaha = id_skala_usaha;
+    }
+
+    public Integer getId_bidang_usaha() {
+        return id_bidang_usaha;
+    }
+
+    public void setId_bidang_usaha(Integer id_bidang_usaha) {
+        this.id_bidang_usaha = id_bidang_usaha;
+    }
+
+    public Integer getId_kat_usaha() {
+        return id_kat_usaha;
+    }
+
+    public void setId_kat_usaha(Integer id_kat_usaha) {
+        this.id_kat_usaha = id_kat_usaha;
+    }
+
+    public String getKode_usaha() {
+        return kode_usaha;
+    }
+
+    public void setKode_usaha(String kode_usaha) {
+        this.kode_usaha = kode_usaha;
+    }
+
+    public String getNama_perusahaan() {
+        return nama_perusahaan;
+    }
+
+    public void setNama_perusahaan(String nama_perusahaan) {
+        this.nama_perusahaan = nama_perusahaan;
+    }
+    
+    
 
     public Integer getId_usaha() {
         return id_usaha;

@@ -37,6 +37,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jica.sdg.model.Provinsi;
+import com.jica.sdg.model.RefBidangUsaha;
+import com.jica.sdg.model.RefSkalaUsaha;
+import com.jica.sdg.model.RefKatUsaha;
+import com.jica.sdg.model.RefKodeUsaha;
 import com.jica.sdg.model.Role;
 import com.jica.sdg.model.Usahadetail;
 import com.jica.sdg.model.Usahaprofile;
@@ -132,12 +136,18 @@ public class UsahaController {
     	if(!id.equals("00")) {role=" and a.id_role = '"+id+"' ";}
     	if(!id_prov.equals("all")) {prov=" and b.id_prov = '"+id_prov+"' ";}
     	String sql = "select a.id_usaha,a.nm_usaha,a.achieve_usaha,a.loc_usaha,a.beneficiaries,a.year_impl,a.major_part, "
-    			+ "c.usaha_type,c.web_url,c.head_office,c.name_pic,c.pos_pic,c.email_pic,c.hp_pic,a.id_role, e.nm_prov "
+    			+ "c.usaha_type,c.web_url,c.head_office,c.name_pic,c.pos_pic,c.email_pic,c.hp_pic,a.id_role, e.nm_prov,"
+                        + "a.no_telp, a.website, a.id_skala_usaha, a.id_bidang_usaha, a.id_kat_usaha, a.kode_usaha, a.nama_perusahaan,"
+                        + "f.nm_skala_usaha, g.nm_bidang_usaha, h.nm_kategori "
     			+ "from usaha_profile a "
     			+ "left join usaha_detail c on a.id_usaha=c.id_usaha "
     			+ "left join ref_role d on a.id_role = d.id_role "
     			+ "left join ref_province e on d.id_prov = e.id_prov "
+    			+ "left join ref_skala_usaha f on a.id_skala_usaha = f.id "
+    			+ "left join ref_bidang_usaha g on a.id_bidang_usaha = g.id "
+    			+ "left join ref_kat_usaha h on a.id_kat_usaha = h.id "
                 + "left join ref_role b on b.id_role = a.id_role where 1=1 "+prov+" "+role;
+        System.out.println(sql);
     	Query query = em.createNativeQuery(sql);
     	List list = query.getResultList();
         Map<String, Object> hasil = new HashMap<>();
@@ -207,6 +217,50 @@ public class UsahaController {
         List<Usahadetail> list = nsaDetailService.findAll();
         Map<String, Object> hasil = new HashMap<>();
         hasil.put("content1",list);
+        return hasil;
+    }
+    
+    @GetMapping("admin/corporation/getrefSkalaUsaha")
+    public @ResponseBody Map<String, Object> getSkalaUsaha(HttpSession session) {
+    	List<RefSkalaUsaha> listSkalaUsaha;
+        listSkalaUsaha = nsaProfilrService.findAllSkalaUsaha();
+        Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content", listSkalaUsaha);
+        return hasil;
+    }
+    
+    @GetMapping("admin/corporation/getrefBidangUsaha")
+    public @ResponseBody Map<String, Object> getBidangUsaha(HttpSession session) {
+    	List<RefBidangUsaha> listBidangUsaha;
+        listBidangUsaha = nsaProfilrService.findAllBidangUsaha();
+        Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content", listBidangUsaha);
+        return hasil;
+    }
+    
+    @GetMapping("admin/corporation/getrefKatUsaha")
+    public @ResponseBody Map<String, Object> getKatUsaha(HttpSession session) {
+    	List<RefKatUsaha> listKatUsaha;
+        listKatUsaha = nsaProfilrService.findAllKatUsaha();
+        Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content", listKatUsaha);
+        return hasil;
+    }
+    
+    @GetMapping("admin/corporation/getrefKodeUsaha")
+    public @ResponseBody Map<String, Object> getKodeUsaha(HttpSession session) {
+    	List<RefKodeUsaha> listKodeUsaha;
+        listKodeUsaha = nsaProfilrService.findAllKodeUsaha();
+        Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content", listKodeUsaha);
+        return hasil;
+    }
+    
+    @GetMapping("admin/corporation/getrefNamaKodeUsaha/{kode_usaha}")
+    public @ResponseBody Map<String, Object> getrefNamaKodeUsaha(HttpSession session, @PathVariable("kode_usaha") String kode_usaha) {
+        List<RefKodeUsaha> listKodeUsaha = nsaProfilrService.findNamaKodeUsahaByKode(kode_usaha);
+        Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content", listKodeUsaha);
         return hasil;
     }
     
