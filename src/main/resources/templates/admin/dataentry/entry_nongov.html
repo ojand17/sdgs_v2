@@ -163,6 +163,39 @@
                 </div>
             </div>
         </div>
+        
+        <div class="modal hide fade addModalTarget" data-backdrop="static" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float:right">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h3 class="modal-title lang_indo" id="exampleModalLabel">Monitor Program Non Pemerintah</h3>
+                        <h3 class="modal-title lang_eng" id="exampleModalLabel" style="display: none">Non Government Program Monitoring</h3>
+                    </div>
+                    <form class="form-horizontal">
+                        <div class="modal-body">
+                            <div class="control-group">
+                                <label for="nm_inst" class="lang_indo">Nilai Baru :</label>
+                                <label for="nm_inst" class="lang_eng" style="display: none">New Value :</label>
+                                <input name="idtarget" id="idtarget" type="hidden" class="input-block-level"/>
+                                <input name="jenistarget" id="jenistarget" type="hidden" class="input-block-level"/>
+                                <input name="new_target" id="new_target" type="text" class="input-block-level"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary lang_indo" data-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-secondary lang_eng" data-dismiss="modal" style="display: none">Close</button>
+                            <button type="button" id="simpanTarget" class="btn btn-success">
+                            	<span class="lang_indo">Simpan</span>
+                            	<span class="lang_eng" style="display: none">Submit</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <div th:include="admin/layout :: footer"></div>
 </body>
@@ -401,7 +434,6 @@
                 var id_monper   = v_data_id[0];
                 var tahun       = v_data_id[1];
                 var sts;
-                var stsBud;
                 $.ajax({
                     type: "GET",
                     url: urls+'list-get-sts-monper-nongov_act/'+id_monper,
@@ -430,9 +462,12 @@
             	var header = '';
             	var headerFull = '';
                 header += '<tr class="" >';
-                header += '<th rowspan="2" style="text-align:center;font-size:80%;width: 5%"> <span class="lang_eng" style="display:none">Output Activity Code</span> <span class="lang_indo">Kode Output Kegiatan</span> </th>';
-                header += '<th rowspan="2" style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Output Activity Name</span> <span class="lang_indo">Nama Output Kegiatan</span> </th><th rowspan="2">Role</th>';
-                header += '<th rowspan="2" style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Unit</span><span class="lang_indo">Unit</span> </th> <th rowspan="2" style="text-align:center;font-size:80%;"> <span class="lang_eng" style="display:none">Target SDGs</span> <span class="lang_indo">Target SDG</span> </th> ';
+                header += '<th rowspan="2" style="text-align:center;width: 5%"> <span class="lang_eng" style="display:none">Output Activity Code</span> <span class="lang_indo">Kode Output Kegiatan</span> </th>';
+                header += '<th rowspan="2" style="text-align:center;"><span class="lang_eng" style="display:none">Output Activity Name</span> <span class="lang_indo">Nama Output Kegiatan</span> </th>';
+                header += '<th rowspan="2"><span class="lang_eng" style="display:none">Implementation Agent</span> <span class="lang_indo">Lembaga Pelaksana</span></th>';
+                header += '<th rowspan="2" style="text-align:center;"><span class="lang_eng" style="display:none">Unit</span><span class="lang_indo">Unit</span> </th>';
+                header += '<th rowspan="2" style="text-align:center;"> Target SDGs </th>';
+                header += '<th rowspan="2" style="text-align:center;"><span class="lang_eng" style="display:none">New Target</span><span class="lang_indo">Target Baru</span> </th>';
                 headerFull += header;
                 var span="";
                 var col2 = false;
@@ -450,23 +485,23 @@
                 	col4 = true;
                 }
                 header += '<th '+span+'><span class="lang_eng" style="display:none">Output Activity</span> <span class="lang_indo">Output Kegiatan</span></th></tr><tr>';
-                header += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization I</span> <span class="lang_indo">Realisasi I</span> </th> ';
+                header += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization I</span> <span class="lang_indo">Realisasi I</span> </th> ';
                 
                 headerFull += '<th colspan="4"><span class="lang_eng" style="display:none">Output Activity</span> <span class="lang_indo">Output Kegiatan</span></th></tr><tr>';
-                headerFull += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization I</span> <span class="lang_indo">Realisasi I</span> </th> ';
+                headerFull += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization I</span> <span class="lang_indo">Realisasi I</span> </th> ';
                 
                 if(sts=="semesterly"){
-                	header += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization II</span> <span class="lang_indo">Realisasi II</span> </th> ';
+                	header += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization II</span> <span class="lang_indo">Realisasi II</span> </th> ';
                 }else if(sts=="quarterly"){
-                	header += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization II</span> <span class="lang_indo">Realisasi II</span> </th> ';
-                	header += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization III</span> <span class="lang_indo">Realisasi III</span> </th> ';
-                    header += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization IV</span> <span class="lang_indo">Realisasi IV</span> </th> ';
+                	header += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization II</span> <span class="lang_indo">Realisasi II</span> </th> ';
+                	header += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization III</span> <span class="lang_indo">Realisasi III</span> </th> ';
+                    header += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization IV</span> <span class="lang_indo">Realisasi IV</span> </th> ';
                 }
                 
-                headerFull += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization II</span> <span class="lang_indo">Realisasi II</span> </th> ';
-                headerFull += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization II</span> <span class="lang_indo">Realisasi II</span> </th> ';
-            	headerFull += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization III</span> <span class="lang_indo">Realisasi III</span> </th> ';
-                headerFull += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization IV</span> <span class="lang_indo">Realisasi IV</span> </th> ';
+                headerFull += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization II</span> <span class="lang_indo">Realisasi II</span> </th> ';
+                headerFull += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization II</span> <span class="lang_indo">Realisasi II</span> </th> ';
+            	headerFull += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization III</span> <span class="lang_indo">Realisasi III</span> </th> ';
+                headerFull += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization IV</span> <span class="lang_indo">Realisasi IV</span> </th> ';
                 headerFull += '</tr>';
                 header += '</tr>';
                 if(t){
@@ -716,6 +751,7 @@
                             			'<td></td>'+
                             			'<td></td>'+
                             			'<td></td>'+
+                            			'<td></td>'+
                             			'<td>'+btnApply1+'</td>'+appind+
                             		'</tr>'
                             		); 
@@ -738,13 +774,36 @@
                             }
                         }},
                         {"data": function (row, data, index, display) {
-                            return "<div style='font-size:90%;'>"+(row[9]?row[9]:'')+"</div>";
+                            return "<div style='font-size:90%;'>"+(row[27]?row[27]:'')+"</div>";
                         }},
                         {"data": function (row, data, index, display) {
                             return "<div style='font-size:90%;'>"+(row[10]?row[10]:'')+"</div>";
                         }},
                         {"data": function (row, data, index, display) {
                         	return "<div style='font-size:90%;'>"+(row[11]?row[11]:'')+"</div>";
+                        }},
+                        {"data": function (row, data, index, display) {
+                        	var color_sts = "";
+                        	var text = "";
+                        	var update = ""
+                            if(row[28] != null){
+                                text = " "+row[28];
+                                color_sts = 'btn btn-success';
+                                update="update_target";
+                             }else{
+                            	text = " - ";
+                            	update="update_target";
+                            }
+                        	var id = row[33];
+                        	var val = "";
+                    		if(row[29]){
+                    			color_sts = 'text-success';
+                        		update = "";
+                        	}
+                        	if(cek1>0){
+                        		update = "";
+                        	}
+                        	return '<a data-id="'+id+'" data-jenis="indicator" title="Update" class="'+color_sts+' '+update+' " href="#"><i class="icon-edit "></i>'+text+"</a> ";
                         }},
                         {"data": function (row, data, index, display) {
                         	var color_sts = "";
@@ -765,18 +824,10 @@
                     		val2 = row[13];
                     		val3 = row[14];
                     		val4 = row[15];
-                        	$.ajax({
-            					type: "GET",
-                                url: urls+'get-approve/entry_nsa_indicator/'+tahun+'/'+id_monper+'/1'+'/'+v_idrole,
-                                async:false,
-                                success: function (result) {
-                                	apply = result.content;
-                                	if(apply.length>0){
-                                		color_sts = 'text-success';
-                                		update = "";
-                                	}
-                                },
-                            });
+                    		if(row[29]){
+                    			color_sts = 'text-success';
+                        		update = "";
+                        	}
                         	if(cek1>0){
                         		update = "";
                         	}
@@ -801,18 +852,10 @@
                     		val2 = row[13];
                     		val3 = row[14];
                     		val4 = row[15];
-                        	$.ajax({
-            					type: "GET",
-                                url: urls+'get-approve/entry_nsa_indicator/'+tahun+'/'+id_monper+'/2'+'/'+v_idrole,
-                                async:false,
-                                success: function (result) {
-                                	apply = result.content;
-                                	if(apply.length>0){
-                                		color_sts = 'text-success';
-                                		update = "";
-                                	}
-                                },
-                            });
+                    		if(row[30]){
+                    			color_sts = 'text-success';
+                        		update = "";
+                        	}
                         	if(cek2>0){
                         		update = "";
                         	}
@@ -837,18 +880,10 @@
                     		val2 = row[13];
                     		val3 = row[14];
                     		val4 = row[15];
-                        	$.ajax({
-            					type: "GET",
-                                url: urls+'get-approve/entry_nsa_indicator/'+tahun+'/'+id_monper+'/3'+'/'+v_idrole,
-                                async:false,
-                                success: function (result) {
-                                	apply = result.content;
-                                	if(apply.length>0){
-                                		color_sts = 'text-success';
-                                		update = "";
-                                	}
-                                },
-                            });
+                    		if(row[31]){
+                    			color_sts = 'text-success';
+                        		update = "";
+                        	}
                         	if(cek3>0){
                         		update = "";
                         	}
@@ -873,18 +908,10 @@
                     		val2 = row[13];
                     		val3 = row[14];
                     		val4 = row[15];
-                        	$.ajax({
-            					type: "GET",
-                                url: urls+'get-approve/entry_nsa_indicator/'+tahun+'/'+id_monper+'/4'+'/'+v_idrole,
-                                async:false,
-                                success: function (result) {
-                                	apply = result.content;
-                                	if(apply.length>0){
-                                		color_sts = 'text-success';
-                                		update = "";
-                                	}
-                                },
-                            });
+                    		if(row[32]){
+                    			color_sts = 'text-success';
+                        		update = "";
+                        	}
                         	if(cek4>0){
                         		update = "";
                         	}
@@ -919,14 +946,14 @@
                 var v_data_id   = v_dataid.split("###");;
                 var id_monper   = v_data_id[0];
                 var tahun       = v_data_id[1];
-                var stsBud;
+                var sts = "";
                 
                 $.ajax({
                     type: "GET",
                     url: urls+'list-get-sts-monper-nongov/'+id_monper,
                     async:false,
                     success: function (result1) {
-                    	stsBud = result1.content[0];
+                    	sts = result1.content[0];
                     }
                 });
                 
@@ -949,48 +976,47 @@
             	var header = '';
             	var headerFull = '';
                 header += '<tr class="" >';
-                header += '<th rowspan="2" style="text-align:center;font-size:80%;width: 5%"> <span class="lang_eng" style="display:none">Indicator Code</span> <span class="lang_indo">Kode Indikator</span> </th>';
-                header += '<th rowspan="2" style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Activity Name</span> <span class="lang_indo">Nama Kegiatan</span> </th><th rowspan="2">Role</th>';
+                header += '<th rowspan="2" style="text-align:center;width: 5%"> <span class="lang_eng" style="display:none">Output Activity Code</span> <span class="lang_indo">Kode Output Kegiatan</span> </th>';
+                header += '<th rowspan="2" style="text-align:center;"><span class="lang_eng" style="display:none">Output Activity Name</span> <span class="lang_indo">Nama Output Kegiatan</span> </th>';
+                header += '<th rowspan="2"><span class="lang_eng" style="display:none">Implementation Agent</span> <span class="lang_indo">Lembaga Pelaksana</span></th>';
+                header += '<th rowspan="2" style="text-align:center;"> <span class="lang_eng" style="display:none">Budget Allocation</span><span class="lang_indo">Alokasi Dana</span> </th>';
+                header += '<th rowspan="2" style="text-align:center;"><span class="lang_eng" style="display:none">New Budget Allocation</span><span class="lang_indo">Alokasi Dana Baru</span> </th>';
+                headerFull += header;
+                var span="";
+                var col2 = false;
+                var col3 = false;
+                var col4 = false;
+                if(sts=="semesterly"){
+                	span="colspan='2'";;
+                	col2=true;
+                	col3 = false;
+                	col4 = false;
+                }else if(sts=="quarterly"){
+                	span="colspan='4'";
+                	col2=true;
+                	col3 = true;
+                	col4 = true;
+                }
+                header += '<th '+span+'><span class="lang_eng" style="display:none">Output Activity</span> <span class="lang_indo">Output Kegiatan</span></th></tr><tr>';
+                header += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization I</span> <span class="lang_indo">Realisasi I</span> </th> ';
                 
-                headerFull += '<tr class="" >';
-                headerFull += '<th rowspan="2" style="text-align:center;font-size:80%;width: 5%"> <span class="lang_eng" style="display:none">Indicator Code</span> <span class="lang_indo">Kode Indikator</span> </th>';
-                headerFull += '<th rowspan="2" style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Indicator Name</span> <span class="lang_indo">Nama Indikator</span> </th><th rowspan="2">Role</th>';
-                headerFull += '<th rowspan="2" style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Unit</span><span class="lang_indo">Unit</span> </th> <th rowspan="2" style="text-align:center;font-size:80%;"> <span class="lang_eng" style="display:none">Target SDGs</span> <span class="lang_indo">Target SDG</span> </th> ';
+                headerFull += '<th colspan="4"><span class="lang_eng" style="display:none">Output Activity</span> <span class="lang_indo">Output Kegiatan</span></th></tr><tr>';
+                headerFull += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization I</span> <span class="lang_indo">Realisasi I</span> </th> ';
                 
-                var spanBud="";
-                var colBud2 = false;
-                var colBud3 = false;
-                var colBud4 = false;
-                if(stsBud=="semesterly"){
-                	spanBud="colspan='2'";
-                	colBud2=true;
-                	colBud3 = false;
-                	colBud4 = false;
-                }else if(stsBud=="quarterly"){
-                	spanBud="colspan='4'";
-                	colBud2=true;
-                	colBud3 = true;
-                	colBud4 = true;
+                if(sts=="semesterly"){
+                	header += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization II</span> <span class="lang_indo">Realisasi II</span> </th> ';
+                }else if(sts=="quarterly"){
+                	header += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization II</span> <span class="lang_indo">Realisasi II</span> </th> ';
+                	header += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization III</span> <span class="lang_indo">Realisasi III</span> </th> ';
+                    header += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization IV</span> <span class="lang_indo">Realisasi IV</span> </th> ';
                 }
                 
-                header += '<th '+spanBud+'>Budget</th></tr><tr>';
-                headerFull += '<th colspan="4">Budget</th></tr><tr>';
-                
-                header += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization I</span> <span class="lang_indo">Realisasi I</span> </th> ';
-                headerFull += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization I</span> <span class="lang_indo">Realisasi I</span> </th> ';
-            	if(stsBud=="semesterly"){
-                	header += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization II</span> <span class="lang_indo">Realisasi II</span> </th> ';
-                }else if(stsBud=="quarterly"){
-                	header += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization II</span> <span class="lang_indo">Realisasi II</span> </th> ';
-                	header += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization III</span> <span class="lang_indo">Realisasi III</span> </th> ';
-                    header += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization IV</span> <span class="lang_indo">Realisasi IV</span> </th> ';
-                } 
-            	headerFull += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization II</span> <span class="lang_indo">Realisasi II</span> </th> ';
-            	headerFull += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization III</span> <span class="lang_indo">Realisasi III</span> </th> ';
-            	headerFull += '<th style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Realization IV</span> <span class="lang_indo">Realisasi IV</span> </th> ';
-            	headerFull += '</tr>';
+                headerFull += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization II</span> <span class="lang_indo">Realisasi II</span> </th> ';
+                headerFull += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization II</span> <span class="lang_indo">Realisasi II</span> </th> ';
+            	headerFull += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization III</span> <span class="lang_indo">Realisasi III</span> </th> ';
+                headerFull += '<th style="text-align:center;"><span class="lang_eng" style="display:none">Realization IV</span> <span class="lang_indo">Realisasi IV</span> </th> ';
+                headerFull += '</tr>';
                 header += '</tr>';
-                
                 if(t){
                 	$('#tabel-entri-sdg thead').html(headerFull);
                 	$('#tabel-entri-sdg tbody').html('');
@@ -1017,13 +1043,11 @@
                         var cektabel = $('#tabel-entri-sdg > tbody').find('.dataTables_empty').length;
                         if(cektabel==0){
                         	var tabel = $('#tabel-entri-sdg > tbody').find('tr:last');
-                        	
-                          //Budget
-                        	var btnApplyBud1=(cek1>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###1" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
-                        	var btnApplyBud2=(cek2>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###2" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
-                        	var btnApplyBud3=(cek3>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###3" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
-                        	var btnApplyBud4=(cek4>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###4" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
-                            
+                        	//Indicator
+                        	var btnApply1=(cek1>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###1" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
+                        	var btnApply2=(cek2>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###2" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
+                        	var btnApply3=(cek3>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###3" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
+                        	var btnApply4=(cek4>0)?'':'<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###4" title="Apply" class="btn btn-success apply" href="#"><i class="icon-upload "></i>Apply</a></td>';
                         	$.ajax({
             					type: "GET",
                                 url: urls+'get-approve/entry_nsa_budget/'+tahun+'/'+id_monper+'/1'+'/'+v_idrole,
@@ -1032,18 +1056,18 @@
                                 	apply = result.content;
                                 	if(apply.length>0){
                                 		if(apply[0][1]=="1"){
-                                			btnApplyBud1='<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###1" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
+                                			btnApply1='<a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###1" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
                                 		}else if(apply[0][1]=="2"){
                                 			if($("#fs").is(':checked')){
-                                				btnApplyBud1 = "<span class='label label-success'>Disetujui</span>";
+                                				btnApply1 = "<span class='label label-success'>Disetujui</span>";
                 							}else{
-                								btnApplyBud1 = "<span class='label label-success'>Approved</span>";
+                								btnApply1 = "<span class='label label-success'>Approved</span>";
                 							}
                                 		}else if(apply[0][1]=="4"){
                                 			if($("#fs").is(':checked')){
-                                				btnApplyBud1 = "<span class='label label-info'>Tampil Laporan</span>";
+                                				btnApply1 = "<span class='label label-info'>Tampil Laporan</span>";
                 							}else{
-                								btnApplyBud1 = "<span class='label label-info'>Show Report</span>";
+                								btnApply1 = "<span class='label label-info'>Show Report</span>";
                 							}
                                 		}else if(apply[0][1]=="3"){
                                 			var label;
@@ -1053,9 +1077,9 @@
                 								label = "<span class='label label-important'>Rejected</span>";
                 							}
                                 			if(cek1>0){
-                                				btnApplyBud1=label;
+                                				btnApply1=label;
                                 			}else{
-                                				btnApplyBud1=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###1" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
+                                				btnApply1=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###1" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
                                 			}
                                 		}else if(apply[0][1]=="5"){
                                 			var label;
@@ -1065,15 +1089,15 @@
                 								label = "<span class='label label-default'>No Action</span>";
                 							}
                                 			if(cek1>0){
-                                				btnApplyBud1=label;
+                                				btnApply1=label
                                 			}else{
-                                				btnApplyBud1=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###1" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
+                                				btnApply1=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###1" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
                                 			}
                                 		}
                                 	}
                                 },
                             });
-                            $.ajax({
+                        	$.ajax({
             					type: "GET",
             					url: urls+'get-approve/entry_nsa_budget/'+tahun+'/'+id_monper+'/2'+'/'+v_idrole,
                                 async:false,
@@ -1081,18 +1105,18 @@
                                 	apply = result.content;
                                 	if(apply.length>0){
                                 		if(apply[0][1]=="1"){
-                                			btnApplyBud2=' <a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###2" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
+                                			btnApply2=' <a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###2" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
                                 		}else if(apply[0][1]=="2"){
                                 			if($("#fs").is(':checked')){
-                                				btnApplyBud2 = "<span class='label label-success'>Disetujui</span>";
+                                				btnApply2 = "<span class='label label-success'>Disetujui</span>";
                 							}else{
-                								btnApplyBud2 = "<span class='label label-success'>Approved</span>";
+                								btnApply2 = "<span class='label label-success'>Approved</span>";
                 							}
                                 		}else if(apply[0][1]=="4"){
                                 			if($("#fs").is(':checked')){
-                                				btnApplyBud2 = "<span class='label label-info'>Tampil Laporan</span>";
+                                				btnApply2 = "<span class='label label-info'>Tampil Laporan</span>";
                 							}else{
-                								btnApplyBud2 = "<span class='label label-info'>Show Report</span>";
+                								btnApply2 = "<span class='label label-info'>Show Report</span>";
                 							}
                                 		}else if(apply[0][1]=="3"){
                                 			var label;
@@ -1102,9 +1126,9 @@
                 								label = "<span class='label label-important'>Rejected</span>";
                 							}
                                 			if(cek2>0){
-                                				btnApplyBud2=label;
+                                				btnApply2=label;
                                 			}else{
-                                				btnApplyBud2=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###2" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
+                                				btnApply2=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###2" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';	
                                 			}
                                 		}else if(apply[0][1]=="5"){
                                 			var label;
@@ -1114,16 +1138,16 @@
                 								label = "<span class='label label-important'>No Action</span>";
                 							}
                                 			if(cek2>0){
-                                				btnApplyBud2=label;
+                                				btnApply2=label;
                                 			}else{
-                                				btnApplyBud2=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###2" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
+                                				btnApply2=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###2" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';	
                                 			}
                                 		}
                                 		
                                 	}
                                 },
                             });
-                            $.ajax({
+                        	$.ajax({
             					type: "GET",
             					url: urls+'get-approve/entry_nsa_budget/'+tahun+'/'+id_monper+'/3'+'/'+v_idrole,
                                 async:false,
@@ -1131,18 +1155,18 @@
                                 	apply = result.content;
                                 	if(apply.length>0){
                                 		if(apply[0][1]=="1"){
-                                			btnApplyBud3=' <a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###3" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
+                                			btnApply3=' <a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###3" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
                                 		}else if(apply[0][1]=="2"){
                                 			if($("#fs").is(':checked')){
-                                				btnApplyBud3 = "<span class='label label-success'>Disetujui</span>";
+                                				btnApply3 = "<span class='label label-success'>Disetujui</span>";
                 							}else{
-                								btnApplyBud3 = "<span class='label label-success'>Approved</span>";
+                								btnApply3 = "<span class='label label-success'>Approved</span>";
                 							}
                                 		}else if(apply[0][1]=="4"){
                                 			if($("#fs").is(':checked')){
-                                				btnApplyBud3 = "<span class='label label-info'>Tampil Laporan</span>";
+                                				btnApply3 = "<span class='label label-info'>Tampil Laporan</span>";
                 							}else{
-                								btnApplyBud3 = "<span class='label label-info'>Show Report</span>";
+                								btnApply3 = "<span class='label label-info'>Show Report</span>";
                 							}
                                 		}else if(apply[0][1]=="3"){
                                 			var label;
@@ -1152,9 +1176,9 @@
                 								label = "<span class='label label-important'>Rejected</span>";
                 							}
                                 			if(cek3>0){
-                                				btnApplyBud3=label;
+                                				btnApply3=label
                                 			}else{
-                                				btnApplyBud3=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###3" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
+                                				btnApply3=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###3" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';	
                                 			}
                                 		}else if(apply[0][1]=="5"){
                                 			var label;
@@ -1163,17 +1187,17 @@
                 							}else{
                 								label = "<span class='label label-important'>No Action</span>";
                 							}
-											if(cek3>0){
-												btnApplyBud3=label;
+                                			if(cek3>0){
+                                				btnApply3=label
                                 			}else{
-                                				btnApplyBud3=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###3" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
+                                				btnApply3=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###3" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';	
                                 			}
                                 		}
                                 		
                                 	}
                                 },
                             });
-                            $.ajax({
+                        	$.ajax({
             					type: "GET",
             					url: urls+'get-approve/entry_nsa_budget/'+tahun+'/'+id_monper+'/4'+'/'+v_idrole,
                                 async:false,
@@ -1181,18 +1205,18 @@
                                 	apply = result.content;
                                 	if(apply.length>0){
                                 		if(apply[0][1]=="1"){
-                                			btnApplyBud4=' <a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###4" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
+                                			btnApply4=' <a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###4" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a>';
                                 		}else if(apply[0][1]=="2"){
                                 			if($("#fs").is(':checked')){
-                                				btnApplyBud4 = "<span class='label label-success'>Disetujui</span>";
+                                				btnApply4 = "<span class='label label-success'>Disetujui</span>";
                 							}else{
-                								btnApplyBud4 = "<span class='label label-success'>Approved</span>";
+                								btnApply4 = "<span class='label label-success'>Approved</span>";
                 							}
                                 		}else if(apply[0][1]=="4"){
                                 			if($("#fs").is(':checked')){
-                                				btnApplyBud4 = "<span class='label label-info'>Tampil Laporan</span>";
+                                				btnApply4 = "<span class='label label-info'>Tampil Laporan</span>";
                 							}else{
-                								btnApplyBud4 = "<span class='label label-info'>Show Report</span>";
+                								btnApply4 = "<span class='label label-info'>Show Report</span>";
                 							}
                                 		}else if(apply[0][1]=="3"){
                                 			var label;
@@ -1202,9 +1226,9 @@
                 								label = "<span class='label label-important'>Rejected</span>";
                 							}
                                 			if(cek4>0){
-                                				btnApplyBud4=label;
+                                				btnApply4=label
                                 			}else{
-                                				btnApplyBud4=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###4" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
+                                				btnApply4=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###4" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';	
                                 			}
                                 		}else if(apply[0][1]=="5"){
                                 			var label;
@@ -1214,30 +1238,33 @@
                 								label = "<span class='label label-important'>No Action</span>";
                 							}
                                 			if(cek4>0){
-                                				btnApplyBud4=label;
+                                				btnApply4=label
                                 			}else{
-                                				btnApplyBud4=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###4" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
+                                				btnApply4=label+'<br/><br/><a data-id="0###'+v_idrole+'###'+id_monper+'###'+tahun+'###1###entry_nsa_budget###4" title="Unapply" class="btn btn-danger unapply" href="#"><i class="icon-upload "></i>Unapply</a></td>';
                                 			}
                                 		}
                                 		
                                 	}
                                 },
                             });
-
-                            var appbud="";
-                            if(stsBud=="semesterly"){
-                            	appbud = '<td>'+btnApplyBud2+'</td>';
-                            }else if(stsBud=="quarterly"){
-                            	appbud = '<td>'+btnApplyBud2+'</td>'+
-                    			'<td>'+btnApplyBud3+'</td>'+
-                    			'<td>'+btnApplyBud4+'</td>';
+                            
+                          
+                            var appind="";
+                            if(sts=="semesterly"){
+                            	appind = '<td>'+btnApply2+'</td>';
+                            }else if(sts=="quarterly"){
+                            	appind = '<td>'+btnApply2+'</td>'+
+                    			'<td>'+btnApply3+'</td>'+
+                    			'<td>'+btnApply4+'</td>';
                             }
                             tabel.after(
                             		'<tr>'+
                             			'<td></td>'+
                             			'<td></td>'+
                             			'<td></td>'+
-                            			'<td>'+btnApplyBud1+'</td>'+appbud+
+                            			'<td></td>'+
+                            			'<td></td>'+
+                            			'<td>'+btnApply1+'</td>'+appind+
                             		'</tr>'
                             		); 
                         }
@@ -1249,23 +1276,52 @@
                     "searching": true,
                     "columns": [
                         {"data": function (row, data, index, display) {
-                        	return "<div style='font-size:90%;'>"+(row[24]?row[24]:'')+"</div><span style='font-size:90%;'>"+(row[24]?row[24]:'')+"."+(row[25]?row[25]:'')+"</span>";
+                        	return "<div style='font-size:90%;'>"+(row[24]?row[24]:'')+"</div><span style='font-size:90%;'>"+(row[24]?row[24]:'')+"."+(row[25]?row[25]:'')+"</span>"+(row[34]=='real_indicator'?"<div style='font-size:90%;'>"+(row[24]?row[24]:'')+"."+(row[25]?row[25]:'')+"."+(row[26]?row[26]:'')+"</div>":"");
                         }},
                         {"data": function (row, data, index, display) {
                             if($('#fs').is(':checked')){
-                                return "<div style='font-size:90%;'>"+(row[3]?row[3]:'')+"</div><span style='font-size:90%; padding-left: 15px'>"+(row[5]?row[5]:'')+"</span><div style='font-size:90%; padding-left: 30px'>"+(row[7]?row[7]:'')+"</div>";
+                                return "<div style='font-size:90%;'>"+(row[3]?row[3]:'')+"</div><span style='font-size:90%; padding-left: 15px'>"+(row[5]?row[5]:'')+"</span>"+(row[34]=='real_indicator'?"<div style='font-size:90%; padding-left: 30px'>"+(row[7]?row[7]:'')+"</div>":"");
                             }else{
-                                return "<div style='font-size:90%;'>"+(row[4]?row[4]:'')+"</div><span style='font-size:90%; padding-left: 15px'>"+(row[6]?row[6]:'')+"</span><div style='font-size:90%; padding-left: 30px'>"+(row[8]?row[8]:'')+"</div>";
+                                return "<div style='font-size:90%;'>"+(row[4]?row[4]:'')+"</div><span style='font-size:90%; padding-left: 15px'>"+(row[6]?row[6]:'')+"</span>"+(row[34]=='real_indicator'?"<div style='font-size:90%; padding-left: 30px'>"+(row[8]?row[8]:'')+"</div>":"");
                             }
                         }},
                         {"data": function (row, data, index, display) {
-                            return "<div style='font-size:90%;'>"+(row[9]?row[9]:'')+"</div>";
+                            return "<div style='font-size:90%;'>"+(row[27]?row[27]:'')+"</div>";
                         }},
                         {"data": function (row, data, index, display) {
                             return "<div style='font-size:90%;'>"+(row[10]?row[10]:'')+"</div>";
                         }},
                         {"data": function (row, data, index, display) {
                         	return "<div style='font-size:90%;'>"+(row[11]?row[11]:'')+"</div>";
+                        }},
+                        {"data": function (row, data, index, display) {
+                        	var color_sts = "";
+                        	var text = "";
+                        	var update = ""
+                            if(row[28] != null){
+                                text = " "+row[28];
+                                color_sts = 'btn btn-success';
+                                update="update_target";
+                             }else{
+                            	text = " - ";
+                            	update="update_target";
+                            }
+                        	var id = "";
+                        	var jenis = row[34];
+                        	if(jenis == 'activity'){
+                        		id = row[23];
+                            }else{
+                            	id = row[22];
+                            }
+                        	var val = "";
+                    		if(row[29]){
+                    			color_sts = 'text-success';
+                        		update = "";
+                        	}
+                        	if(cek1>0){
+                        		update = "";
+                        	}
+                        	return '<a data-id="'+id+'" data-jenis="'+jenis+'" title="Update" class="'+color_sts+' '+update+' " href="#"><i class="icon-edit "></i>'+text+"</a> ";
                         }},
                         {"data": function (row, data, index, display) {
                         	var color_sts = "";
@@ -1286,18 +1342,10 @@
                     		val2 = row[17];
                     		val3 = row[18];
                     		val4 = row[19];
-                        	$.ajax({
-            					type: "GET",
-                                url: urls+'get-approve/entry_nsa_budget/'+tahun+'/'+id_monper+'/1'+'/'+v_idrole,
-                                async:false,
-                                success: function (result) {
-                                	apply = result.content;
-                                	if(apply.length>0){
-                                		color_sts = 'text-success';
-                                		update = "";
-                                	}
-                                },
-                            });
+                    		if(row[29]){
+                    			color_sts = 'text-success';
+                        		update = "";
+                        	}
                         	if(cek1>0){
                         		update = "";
                         	}
@@ -1307,10 +1355,10 @@
                         	var color_sts = "";
                         	var text = "";
                         	var update = ""
-                            if(row[17] != null){
-                                text = " "+row[17];
-                                color_sts = 'btn btn-success';
-                                update="update";
+                       		if(row[17] != null){
+                                   text = " "+row[17];
+                                   color_sts = 'btn btn-success';
+                                   update="update";
                              }else{
                             	text = " - ";
                             	update="update";
@@ -1322,18 +1370,10 @@
                     		val2 = row[17];
                     		val3 = row[18];
                     		val4 = row[19];
-                        	$.ajax({
-            					type: "GET",
-                                url: urls+'get-approve/entry_nsa_budget/'+tahun+'/'+id_monper+'/2'+'/'+v_idrole,
-                                async:false,
-                                success: function (result) {
-                                	apply = result.content;
-                                	if(apply.length>0){
-                                		color_sts = 'text-success';
-                                		update = "";
-                                	}
-                                },
-                            });
+                    		if(row[30]){
+                    			color_sts = 'text-success';
+                        		update = "";
+                        	}
                         	if(cek2>0){
                         		update = "";
                         	}
@@ -1343,10 +1383,10 @@
                         	var color_sts = "";
                         	var text = "";
                         	var update = ""
-                            if(row[18] != null){
-                                text = " "+row[18];
-                                color_sts = 'btn btn-success';
-                                update="update";
+                       		if(row[18] != null){
+                                   text = " "+row[18];
+                                   color_sts = 'btn btn-success';
+                                   update="update";
                              }else{
                             	text = " - ";
                             	update="update";
@@ -1358,18 +1398,10 @@
                     		val2 = row[17];
                     		val3 = row[18];
                     		val4 = row[19];
-                        	$.ajax({
-            					type: "GET",
-                                url: urls+'get-approve/entry_nsa_budget/'+tahun+'/'+id_monper+'/3'+'/'+v_idrole,
-                                async:false,
-                                success: function (result) {
-                                	apply = result.content;
-                                	if(apply.length>0){
-                                		color_sts = 'text-success';
-                                		update = "";
-                                	}
-                                },
-                            });
+                    		if(row[31]){
+                    			color_sts = 'text-success';
+                        		update = "";
+                        	}
                         	if(cek3>0){
                         		update = "";
                         	}
@@ -1379,10 +1411,10 @@
                         	var color_sts = "";
                         	var text = "";
                         	var update = ""
-                            if(row[19] != null){
-                                text = " "+row[19];
-                                color_sts = 'btn btn-success';
-                                update="update";
+                       		if(row[19] != null){
+                                   text = " "+row[19];
+                                   color_sts = 'btn btn-success';
+                                   update="update";
                              }else{
                             	text = " - ";
                             	update="update";
@@ -1394,24 +1426,15 @@
                     		val2 = row[17];
                     		val3 = row[18];
                     		val4 = row[19];
-                        	$.ajax({
-            					type: "GET",
-                                url: urls+'get-approve/entry_nsa_budget/'+tahun+'/'+id_monper+'/4'+'/'+v_idrole,
-                                async:false,
-                                success: function (result) {
-                                	apply = result.content;
-                                	if(apply.length>0){
-                                		color_sts = 'text-success';
-                                		update = "";
-                                	}
-                                },
-                            });
+                    		if(row[32]){
+                    			color_sts = 'text-success';
+                        		update = "";
+                        	}
                         	if(cek4>0){
                         		update = "";
                         	}
                         	return '<a data-id="'+row[23]+'###'+val1+'###'+val2+'###'+val3+'###'+val4+'###4'+'###'+id+'###budget" title="Update" class="'+color_sts+' '+update+' " href="#"><i class="icon-edit "></i>'+text+"</a> ";
                         }},
-                        
                     ],
                     "columnDefs": [
                     	{
@@ -1420,24 +1443,19 @@
                             "searchable": false
                         },
                         {
-                            "targets": [ 4 ],
-                            "visible": false,
-                            "searchable": false
-                        },
-                    	{
-                            "targets": [ 6 ],
-                            "visible": colBud2,
-                            "searchable": colBud2
-                        },
-                        {
                             "targets": [ 7 ],
-                            "visible": colBud3,
-                            "searchable": colBud3
+                            "visible": col2,
+                            "searchable": col2
                         },
                         {
                             "targets": [ 8 ],
-                            "visible": colBud4,
-                            "searchable": colBud4
+                            "visible": col3,
+                            "searchable": col3
+                        },
+                        {
+                            "targets": [ 9 ],
+                            "visible": col4,
+                            "searchable": col4
                         },
                     ],
                     select: true
@@ -1606,9 +1624,14 @@
                 $('#jenis').val(jenis).hide();
                 $('.addModal').modal("show");
                 $('#simpan_').show();
-            });
-            
-            $("#tabel-entri-sdg").on('click', '.apply', function () {
+            }).on('click','.update_target', function(){
+            	var dataid = $(this).data('id');
+            	var jenis = $(this).data('jenis');
+            	$('#idtarget').val(dataid);
+            	$('#jenistarget').val(jenis);
+            	$('#new_target').val('');
+            	$('.addModalTarget').modal("show");
+            }).on('click', '.apply', function () {
             	var data  = $(this).attr('data-id').split('###');
                 var id_form_type = data[0];
                 var id_role = data[1];
@@ -1695,6 +1718,29 @@
                     if (dismiss === 'cancel') {
                     }
                 });
+            });
+
+            $('#simpanTarget').on('click', function(){
+				var id = $('#idtarget').val();
+				var jenis = $('#jenistarget').val();
+				var val = $('#new_target').val()?$('#new_target').val():0;
+
+				$.ajax({
+		            type: "POST",
+		            url: urls+'save-new-target-non-gov/'+id+'/'+jenis+'/'+val,
+		            beforeSend : function(xhr){
+		            	xhr.setRequestHeader(header,token);
+		            },
+		            headers:{'Accept':'application/json','Content-Type':'application/json'},
+		            success: function (result) {
+		            	if(jenis=="indicator"){
+		                	grid();	
+		                }else{
+		                	gridBud();
+		                }
+		            	$('.addModalTarget').modal('hide');
+		            },
+		        });
             });
 
             // var valdaerah = $("#daerah").val();

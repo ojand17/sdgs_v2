@@ -546,7 +546,9 @@ public class DataEntryController {
     			+ "b.nm_program_eng, a.nm_activity, a.nm_activity_eng, c.nm_indicator, c.nm_indicator_eng, "
     			+ "f.nm_role, d.nm_unit, e.value, h.achievement1, h.achievement2, h.achievement3, h.achievement4, "
     			+ "i.achievement1 as achi1, i.achievement2 as achi2, i.achievement3 as achi3, i.achievement4 as achi4, "
-    			+ "h.id, i.id as idbud, c.id as idind, a.id as idact, b.internal_code as intid_program, a.internal_code as intid_activity, c.internal_code as intid_nsa_indicator "
+    			+ "h.id, i.id as idbud, c.id as idind, a.id as idact, b.internal_code as intid_program, "
+    			+ "a.internal_code as intid_activity, c.internal_code as intid_nsa_indicator, c.impl_agen,e.new_value,"
+    			+ "j.approval aprv1,k.approval aprv2,l.approval aprv3,m.approval aprv4,e.id id_target "
     			+ "from nsa_activity as a "
     			+ "left join nsa_program b on a.id_program = b.id "
     			+ "left join nsa_indicator c on a.id_program = c.id_program and a.id = c.id_activity "
@@ -556,6 +558,10 @@ public class DataEntryController {
     			+ "left join ran_rad g on f.id_prov = g.id_prov and b.id_monper = g.id_monper "
     			+ "left join entry_nsa_indicator h on h.id_assign = c.id and h.year_entry = :year and h.id_monper = g.id_monper "
     			+ "left join entry_nsa_budget i on i.id_nsa_activity = a.id and i.year_entry = :year and i.id_monper = g.id_monper "
+    			+ "left join entry_approval j on j.id_role = a.id_role and j.id_monper = b.id_monper and j.year = e.year and j.type = 'entry_nsa_indicator' and j.periode = '1' "
+    			+ "left join entry_approval k on k.id_role = a.id_role and k.id_monper = b.id_monper and k.year = e.year and k.type = 'entry_nsa_indicator' and k.periode = '2' "
+    			+ "left join entry_approval l on l.id_role = a.id_role and l.id_monper = b.id_monper and l.year = e.year and l.type = 'entry_nsa_indicator' and l.periode = '3' "
+    			+ "left join entry_approval m on m.id_role = a.id_role and m.id_monper = b.id_monper and m.year = e.year and m.type = 'entry_nsa_indicator' and m.periode = '4' "
     			+ "where g.id_monper = :id_monper and g.id_prov = :id_prov and c.id is not null  "+role
     			+ "order by b.id, c.id, a.id ";
         query = em.createNativeQuery(sql);
@@ -632,15 +638,26 @@ public class DataEntryController {
     	String role = (id_role.equals("0"))?"":" and a.id_role = '"+id_role+"' ";
     	Query query;
     	String sql = "select b.id_program, a.id_activity, '' as id_nsa_indicator, b.nm_program, "
-    			+ "b.nm_program_eng, a.nm_activity, a.nm_activity_eng, '' as nm_indicator, '' as nm_indicator_eng, "
-    			+ "f.nm_role, '' as nm_unit, '' as value, '' as achievement1, '' as achievement2, '' as achievement3, '' as achievement4, "
+    			+ "b.nm_program_eng, a.nm_activity, a.nm_activity_eng, c.nm_indicator, c.nm_indicator_eng, "
+    			+ "f.nm_role, '' as nm_unit, CASE WHEN a.budget_allocation is null or a.budget_allocation = '' THEN c.budget_allocation ELSE a.budget_allocation end as value, '' as achievement1, '' as achievement2, '' as achievement3, '' as achievement4, "
     			+ "i.achievement1 as achi1, i.achievement2 as achi2, i.achievement3 as achi3, i.achievement4 as achi4, "
-    			+ "'' as id, i.id as idbud, '' as idind, a.id as idact, b.internal_code as intid_program, a.internal_code as intid_activity "
+    			+ "'' as id, i.id as idbud, c.id as idind, a.id as idact, b.internal_code as intid_program, "
+    			+ "a.internal_code as intid_activity, c.internal_code as intid_nsa_indicator, c.impl_agen, "
+    			+ "CASE WHEN a.budget_allocation is null or a.budget_allocation = '' THEN c.new_budget_allocation ELSE a.new_budget_allocation end new_value,"
+    			+ "j.approval aprv1,k.approval aprv2,l.approval aprv3,m.approval aprv4,e.id id_target,"
+    			+ "CASE WHEN a.budget_allocation is null or a.budget_allocation = '' THEN 'real_indicator' ELSE 'activity' end as jenis "
     			+ "from nsa_activity as a "
     			+ "left join nsa_program b on a.id_program = b.id "
+    			+ "left join nsa_indicator c on a.id_program = c.id_program and a.id = c.id_activity "
+    			+ "left join ref_unit d on c.unit = d.id_unit "
+    			+ "left join nsa_target e on e.id_nsa_indicator = c.id and year = :year "
     			+ "left join ref_role f on a.id_role = f.id_role "
     			+ "left join ran_rad g on f.id_prov = g.id_prov and b.id_monper = g.id_monper "
     			+ "left join entry_nsa_budget i on i.id_nsa_activity = a.id and i.year_entry = :year and i.id_monper = g.id_monper "
+    			+ "left join entry_approval j on j.id_role = a.id_role and j.id_monper = b.id_monper and j.year = e.year and j.type = 'entry_nsa_budget' and j.periode = '1' "
+    			+ "left join entry_approval k on k.id_role = a.id_role and k.id_monper = b.id_monper and k.year = e.year and k.type = 'entry_nsa_budget' and k.periode = '2' "
+    			+ "left join entry_approval l on l.id_role = a.id_role and l.id_monper = b.id_monper and l.year = e.year and l.type = 'entry_nsa_budget' and l.periode = '3' "
+    			+ "left join entry_approval m on m.id_role = a.id_role and m.id_monper = b.id_monper and m.year = e.year and m.type = 'entry_nsa_budget' and m.periode = '4' "
     			+ "where g.id_monper = :id_monper and g.id_prov = :id_prov "+role
     			+ "order by b.id, a.id ";
         query = em.createNativeQuery(sql);
@@ -1683,6 +1700,29 @@ public class DataEntryController {
     	}
         
 //        entrySdgService.updateEntrySdg(id_sdg_indicator, achievement1, achievement2, achievement3, achievement4, year_entry, id_role, id_monper);
+    }
+    
+    @PostMapping(path = "admin/save-new-target-non-gov/{id}/{jenis}/{nilai}", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    @Transactional
+    public void saveNewtarget(@PathVariable("id") String id,@PathVariable("jenis") String jenis,@PathVariable("nilai") String nilai) {
+    	String table = "";
+    	String field = "";
+    	nilai = nilai.equals("0")?null:nilai;
+    	if(jenis.equals("indicator")) {
+    		table = "nsa_target";
+    		field = "new_value";
+    	}else if(jenis.equals("activity")) {
+    		table = "nsa_activity";
+    		field = "new_budget_allocation";
+    	}else {
+    		table = "nsa_indicator";
+    		field = "new_budget_allocation";
+    	}
+    	Query query = em.createNativeQuery("update "+table+" set "+field+" = :new_value where id=:id");
+		query.setParameter("new_value", nilai);
+        query.setParameter("id", id);
+        query.executeUpdate();
     }
     
     @PostMapping(path = "admin/save-entry-corporation_prog_indicator/{achiev}", consumes = "application/json", produces = "application/json")
