@@ -1225,13 +1225,12 @@ public class RanRadSdgController {
     	provin.ifPresent(foundUpdateObject -> model.addAttribute("prov", foundUpdateObject));
         monper.ifPresent(foundUpdateObject -> model.addAttribute("monPer", foundUpdateObject));
         roleDrop.ifPresent(foundUpdateObject -> model.addAttribute("role", foundUpdateObject));
-        model.addAttribute("title", "Define RAN/RAD/Government Program");
         list.ifPresent(foundUpdateObject -> model.addAttribute("govProg", foundUpdateObject));
         list1.ifPresent(foundUpdateObject1 -> model.addAttribute("govActivity", foundUpdateObject1));
         model.addAttribute("lang", session.getAttribute("bahasa"));
         model.addAttribute("name", session.getAttribute("name"));
         model.addAttribute("unit", result);
-        model.addAttribute("sdgIndicator", sdgIndicatorService.findAll());
+        //model.addAttribute("sdgIndicator", sdgIndicatorService.findAll());
         model.addAttribute("privilege", role.get().getPrivilege());
         model.addAttribute("listPemda", listPemda);
         return "admin/ran_rad/non-gov/indicator";

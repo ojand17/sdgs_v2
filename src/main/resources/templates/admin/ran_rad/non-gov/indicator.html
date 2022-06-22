@@ -43,6 +43,7 @@
 							<span class="lang_eng" style="display:none">Activity : </span><span class="lang_indo">Kegiatan : </span>
 							<a th:href="@{'/admin/ran_rad/non-gov/program/'+${govProg.id}+'/activity'}" th:text="${govProg.internal_code+'.'+govActivity.internal_code+' - '+govActivity.nm_activity}" class="lang_indo"></a>
 							<a th:href="@{'/admin/ran_rad/non-gov/program/'+${govProg.id}+'/activity'}" th:text="${govProg.internal_code+'.'+govActivity.internal_code+' - '+govActivity.nm_activity_eng}" class="lang_eng" style="display:none"></a>
+							<input type="hidden" th:value="${govActivity.budget_allocation}" id="alokasi_kegiatan"/>
 					</div>
 				</div>
 			</div>
@@ -190,7 +191,7 @@
 				    <label class="lang_eng control-label" style="display:none">Activity Location</label>
 				    <label class="lang_indo control-label">Lokasi Kegiatan</label>
 				    <div class="controls">
-				    	<select id="idpemda" name="idpemda" class="input-xlarge input-block-level" style="width:100%">
+				    	<select id="idpemda" name="idpemda" class="input-xlarge input-block-level" style="width:100%" multiple="multiple">
 				    		<option></option>
 					    	<option th:each="f:${listPemda}" th:value="${f.id_pemda}" th:text="${f.nm_pemda}"></option>
 					    </select>
@@ -198,7 +199,8 @@
 				    </div>
 				  </div>
 				  <div class="control-group">
-				    <label class="lang_eng" style="display:none"> Budget Allocation</label><label class="lang_indo"> Alokasi Anggaran</label>
+				    <label class="lang_eng" style="display:none"> Budget Allocation *</label><label class="lang_indo"> Alokasi Anggaran Output Kegiatan <small>*dalam satuan rupiah</small></label>
+				    
 				    <div class="controls">
 				    	<input type="text" id="budget_allocation" name="budget_allocation" class=" input-xlarge input-block-level"/>
 				    	<span class="help-block" id="error_budget_allocation"></span>
@@ -339,6 +341,11 @@
 				allowClear: true,
 				dropdownParent: $("#myModal")
 			});
+			var alokasi_kegiatan = $('#alokasi_kegiatan').val();
+			if(alokasi_kegiatan){
+				$('#budget_allocation').val('');
+				$('#budget_allocation').attr('readonly',true);
+			}
 			//Bahasa
 	        var titleDel = "Anda Yakin";
 	        var messDel = "Menghapus Data?";
@@ -665,7 +672,7 @@
 				}
 				var baseline = $('#baseline').val();
 				var budsource = $('#budsource').val();
-				var idpemda = $('#idpemda').val();
+				var idpemda = $('#idpemda').val()?$('#idpemda').val().toString():'';
 				var budget_allocation = $('#budget_allocation').val();
 				var funding_source = $('#funding_source').val();
 				var impl_agen = $('#impl_agen').val();
@@ -764,7 +771,8 @@
         				$('#unit').val(val.unit);
         				$('#internal_code').val(val.internal_code?val.internal_code:'');
         				$('#unit').val(val.unit);
-        				$('#idpemda').val(val.idpemda).trigger('change');
+        				var idpemda = val.idpemda?val.idpemda.split(','):'';
+        				$('#idpemda').val(idpemda).trigger('change');
         				$('#budget_allocation').val(val.budget_allocation);
         				$('#funding_source').val(val.funding_source);
         				$('#impl_agen').val(val.impl_agen);
@@ -772,6 +780,10 @@
         				if(privilege=='ADMIN' || privilege=='SUPER'){
         	                 $('#hide_kode_internal').show();
         	            }
+        				if(alokasi_kegiatan){
+        					$('#budget_allocation').val('');
+        					$('#budget_allocation').attr('readonly',true);
+        				}
         				$.ajax({
         					type: "GET",
                             url: urls+'list-getNsaMapByGovInd/'+val.id,
@@ -834,7 +846,8 @@
         				$('#nm_indicator_eng').val(val.nm_indicator_eng).attr("readonly",true);
         				$('#unit').val(val.unit).attr("disabled",true);
         				$('#internal_code').val(val.internal_code?val.internal_code:'').attr("readonly",true);
-        				$('#idpemda').val(val.idpemda).trigger('change').attr("disabled",true);
+        				var idpemda = val.idpemda?val.idpemda.split(','):'';
+        				$('#idpemda').val(idpemda).trigger('change').attr("disabled",true);
         				$('#budget_allocation').val(val.budget_allocation).attr("readonly",true);
         				$('#funding_source').val(val.funding_source).attr("readonly",true);
         				$('#impl_agen').val(val.impl_agen).attr("readonly",true);
@@ -842,6 +855,10 @@
         				if(privilege=='ADMIN' || privilege=='SUPER'){
         	                 $('#hide_kode_internal').show();
         	             }
+        				if(alokasi_kegiatan){
+        					$('#budget_allocation').val('');
+        					$('#budget_allocation').attr('readonly',true);
+        				}
         				$.ajax({
         					type: "GET",
                             url: urls+'list-getNsaMapByGovInd/'+val.id,
