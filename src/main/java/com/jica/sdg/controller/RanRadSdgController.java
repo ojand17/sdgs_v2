@@ -1313,6 +1313,28 @@ public class RanRadSdgController {
     	nsaIndicatorService.deleteNsaIndicator(id);
 	}
     
+    @PostMapping(path = "admin/save-usahaTarget/{id_nsa_indicator}/{id_role}", consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	public void saveUsahaTarget(@RequestBody Map<String, Object> payload,@PathVariable("id_nsa_indicator") Integer id_nsa_indicator,@PathVariable("id_role") Integer id_role) {
+    	JSONObject jsonObject = new JSONObject(payload);
+        JSONObject catatan = jsonObject.getJSONObject("target");
+        JSONArray c = catatan.getJSONArray("target");
+        usahaTargetService.deleteByInd(id_nsa_indicator);
+        for (int i = 0 ; i < c.length(); i++) {
+        	JSONObject obj = c.getJSONObject(i);
+        	String year = obj.getString("year");
+        	String value = obj.getString("nilai");
+        	if(!value.equals("")) {
+        		UsahaTarget nsa = new UsahaTarget();
+        		nsa.setId_usaha_indicator(id_nsa_indicator);
+        		nsa.setId_role(id_role);
+        		nsa.setYear(Integer.parseInt(year));
+        		nsa.setValue(Integer.parseInt(value));
+        		usahaTargetService.saveTarget(nsa);
+        	}
+        }
+    }
+    
     @PostMapping(path = "admin/save-nsaTarget/{id_nsa_indicator}/{id_role}", consumes = "application/json", produces = "application/json")
 	@ResponseBody
 	public void saveNsaTarget(@RequestBody Map<String, Object> payload,@PathVariable("id_nsa_indicator") Integer id_nsa_indicator,@PathVariable("id_role") Integer id_role) {
@@ -1333,6 +1355,14 @@ public class RanRadSdgController {
         		nsaTargetService.saveNsaTarget(nsa);
         	}
         }
+    }
+    
+    @GetMapping("admin/get-usahaTarget/{id}/{year}")
+    public @ResponseBody Map<String, Object> getUsahaTarget(@PathVariable("id") Integer id, @PathVariable("year") Integer year) {
+        List<UsahaTarget> list = usahaTargetService.findByYear(id, year);
+		Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content",list);
+        return hasil;
     }
     
     @GetMapping("admin/get-nsaTarget/{id}/{year}")
@@ -1647,6 +1677,7 @@ public class RanRadSdgController {
         JSONObject catatan = jsonObject.getJSONObject("target");
         JSONArray c = catatan.getJSONArray("target");
         usahaTargetService.deleteByInd(id_nsa_indicator);
+        System.out.println(c);
         for (int i = 0 ; i < c.length(); i++) {
         	JSONObject obj = c.getJSONObject(i);
         	String year = obj.getString("year");

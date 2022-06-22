@@ -163,6 +163,38 @@
                 </div>
             </div>
         </div>
+        <div class="modal hide fade addModalTarget" data-backdrop="static" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float:right">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h3 class="modal-title lang_indo" id="exampleModalLabel">Monitor Program Pelaku Usaha</h3>
+                        <h3 class="modal-title lang_eng" id="exampleModalLabel" style="display: none">Corporation Program Monitoring</h3>
+                    </div>
+                    <form class="form-horizontal">
+                        <div class="modal-body">
+                            <div class="control-group">
+                                <label for="nm_inst" class="lang_indo">Nilai Baru :</label>
+                                <label for="nm_inst" class="lang_eng" style="display: none">New Value :</label>
+                                <input name="idtarget" id="idtarget" type="hidden" class="input-block-level"/>
+                                <input name="jenistarget" id="jenistarget" type="hidden" class="input-block-level"/>
+                                <input name="new_target" id="new_target" type="text" class="input-block-level"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary lang_indo" data-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-secondary lang_eng" data-dismiss="modal" style="display: none">Close</button>
+                            <button type="button" id="simpanTarget" class="btn btn-success">
+                            	<span class="lang_indo">Simpan</span>
+                            	<span class="lang_eng" style="display: none">Submit</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <div th:include="admin/layout :: footer"></div>
 </body>
@@ -430,9 +462,10 @@
             	var header = '';
             	var headerFull = '';
                 header += '<tr class="" >';
-                header += '<th rowspan="2" style="text-align:center;font-size:80%;width: 5%"> <span class="lang_eng" style="display:none">Output Activity Code</span> <span class="lang_indo">Kode Output Kegiatan</span> </th>';
+                header += '<th rowspan="2" style="text-align:center;font-size:80%;width: 8%"> <span class="lang_eng" style="display:none">POJK Code</span> <span class="lang_indo">Kode POJK</span> </th>';
+                header += '<th rowspan="2" style="text-align:center;font-size:80%;width: 5%"> <span class="lang_eng" style="display:none">Description</span> <span class="lang_indo">Uraian Kegiatan</span> </th>';
                 header += '<th rowspan="2" style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Output Activity Name</span> <span class="lang_indo">Nama Output Kegiatan</span> </th><th rowspan="2">Role</th>';
-                header += '<th rowspan="2" style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Unit</span><span class="lang_indo">Unit</span> </th> <th rowspan="2" style="text-align:center;font-size:80%;"> <span class="lang_eng" style="display:none">Target SDGs</span> <span class="lang_indo">Target SDG</span> </th> ';
+                header += '<th rowspan="2" style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Unit</span><span class="lang_indo">Unit</span> </th> <th rowspan="2" style="text-align:center;font-size:80%;"> <span class="lang_eng" style="display:none">Target SDGs</span> <span class="lang_indo">Target SDG</span> </th> <th rowspan="2" style="text-align:center;font-size:80%;"> <span class="lang_eng" style="display:none">New Target</span> <span class="lang_indo">Target Baru</span> </th> ';
                 headerFull += header;
                 var span="";
                 var col2 = false;
@@ -716,6 +749,8 @@
                             			'<td></td>'+
                             			'<td></td>'+
                             			'<td></td>'+
+                            			'<td></td>'+
+                            			'<td></td>'+
                             			'<td>'+btnApply1+'</td>'+appind+
                             		'</tr>'
                             		); 
@@ -728,7 +763,10 @@
                     "searching": true,
                     "columns": [
                         {"data": function (row, data, index, display) {
-                        	return "<div style='font-size:90%;'>"+(row[24]?row[24]:'')+"</div><span style='font-size:90%;'>"+(row[24]?row[24]:'')+"."+(row[25]?row[25]:'')+"</span><div style='font-size:90%;'>"+(row[24]?row[24]:'')+"."+(row[25]?row[25]:'')+"."+(row[26]?row[26]:'')+"</div>";
+                        	return "<div style='font-size:90%;'>"+(row[1]?row[1]:'')+"</div>";
+                        }},
+                        {"data": function (row, data, index, display) {
+                        	return "<div style='font-size:90%;'>"+(row[2]?row[2]:'')+"</div>";
                         }},
                         {"data": function (row, data, index, display) {
                             if($('#fs').is(':checked')){
@@ -745,6 +783,29 @@
                         }},
                         {"data": function (row, data, index, display) {
                         	return "<div style='font-size:90%;'>"+(row[11]?row[11]:'')+"</div>";
+                        }},
+                        {"data": function (row, data, index, display) {
+                        	var color_sts = "";
+                        	var text = "";
+                        	var update = ""
+                            if(row[27] != null){
+                                text = " "+row[27];
+                                color_sts = 'btn btn-success';
+                                update="update_target";
+                             }else{
+                            	text = " - ";
+                            	update="update_target";
+                            }
+                        	var id = row[32];
+                        	var val = "";
+                    		if(row[28]){
+                    			color_sts = 'text-success';
+                        		update = "";
+                        	}
+                        	if(cek1>0){
+                        		update = "";
+                        	}
+                        	return '<a data-id="'+id+'" data-jenis="indicator" title="Update" class="'+color_sts+' '+update+' " href="#"><i class="icon-edit "></i>'+text+"</a> ";
                         }},
                         {"data": function (row, data, index, display) {
                         	var color_sts = "";
@@ -893,17 +954,17 @@
                     ],
                     "columnDefs": [
                         {
-                            "targets": [ 6 ],
+                            "targets": [ 7 ],
                             "visible": col2,
                             "searchable": col2
                         },
                         {
-                            "targets": [ 7 ],
+                            "targets": [ 8 ],
                             "visible": col3,
                             "searchable": col3
                         },
                         {
-                            "targets": [ 8 ],
+                            "targets": [ 9 ],
                             "visible": col4,
                             "searchable": col4
                         },
@@ -949,7 +1010,8 @@
             	var header = '';
             	var headerFull = '';
                 header += '<tr class="" >';
-                header += '<th rowspan="2" style="text-align:center;font-size:80%;width: 5%"> <span class="lang_eng" style="display:none">Indicator Code</span> <span class="lang_indo">Kode Indikator</span> </th>';
+                header += '<th rowspan="2" style="text-align:center;font-size:80%;width: 5%"> <span class="lang_eng" style="display:none">POJK Code</span> <span class="lang_indo">Kode POJK</span> </th>';
+                header += '<th rowspan="2" style="text-align:center;font-size:80%;width: 5%"> <span class="lang_eng" style="display:none">Description</span> <span class="lang_indo">Uraian Kegiatan</span> </th>';
                 header += '<th rowspan="2" style="text-align:center;font-size:80%;"><span class="lang_eng" style="display:none">Activity Name</span> <span class="lang_indo">Nama Kegiatan</span> </th><th rowspan="2">Role</th>';
                 
                 headerFull += '<tr class="" >';
@@ -1237,6 +1299,7 @@
                             			'<td></td>'+
                             			'<td></td>'+
                             			'<td></td>'+
+                            			'<td></td>'+
                             			'<td>'+btnApplyBud1+'</td>'+appbud+
                             		'</tr>'
                             		); 
@@ -1249,7 +1312,10 @@
                     "searching": true,
                     "columns": [
                         {"data": function (row, data, index, display) {
-                        	return "<div style='font-size:90%;'>"+(row[24]?row[24]:'')+"</div><span style='font-size:90%;'>"+(row[24]?row[24]:'')+"."+(row[25]?row[25]:'')+"</span>";
+                        	return "<div style='font-size:90%;'>"+(row[1]?row[1]:'')+"</div>";
+                        }},
+                        {"data": function (row, data, index, display) {
+                        	return "<div style='font-size:90%;'>"+(row[2]?row[2]:'')+"</div>";
                         }},
                         {"data": function (row, data, index, display) {
                             if($('#fs').is(':checked')){
@@ -1415,27 +1481,27 @@
                     ],
                     "columnDefs": [
                     	{
-                            "targets": [ 3 ],
-                            "visible": false,
-                            "searchable": false
-                        },
-                        {
                             "targets": [ 4 ],
                             "visible": false,
                             "searchable": false
                         },
+                        {
+                            "targets": [ 5 ],
+                            "visible": false,
+                            "searchable": false
+                        },
                     	{
-                            "targets": [ 6 ],
+                            "targets": [ 7 ],
                             "visible": colBud2,
                             "searchable": colBud2
                         },
                         {
-                            "targets": [ 7 ],
+                            "targets": [ 8 ],
                             "visible": colBud3,
                             "searchable": colBud3
                         },
                         {
-                            "targets": [ 8 ],
+                            "targets": [ 9 ],
                             "visible": colBud4,
                             "searchable": colBud4
                         },
@@ -1456,6 +1522,28 @@
                 var dataid      = $(this).attr('data-id');
                 var checkBox    = document.getElementById("myCheck"+dataid);
                 
+            });
+            
+            $('.addModalTarget').on('click', '#simpanTarget', function(e){
+				var id = $('#idtarget').val();
+				var jenis = $('#jenistarget').val();
+				var val = $('#new_target').val()?$('#new_target').val():0;
+				$.ajax({
+		            type: "POST",
+		            url: urls+'save-new-target-usaha/'+id+'/'+jenis+'/'+val,
+		            beforeSend : function(xhr){
+		            	xhr.setRequestHeader(header,token);
+		            },
+		            headers:{'Accept':'application/json','Content-Type':'application/json'},
+		            success: function (result) {
+		            	if(jenis=="indicator"){
+		                	grid();	
+		                }else{
+		                	gridBud();
+		                }
+		            	$('.addModalTarget').modal('hide');
+		            },
+		        });
             });
             
             $('#simpan_').on('click', '#simpan', function(e){
@@ -1606,6 +1694,15 @@
                 $('#jenis').val(jenis).hide();
                 $('.addModal').modal("show");
                 $('#simpan_').show();
+            });
+            
+            $('#tabel-entri-sdg').on('click', '.update_target', function(){
+                var dataid = $(this).data('id');
+            	var jenis = $(this).data('jenis');
+            	$('#idtarget').val(dataid);
+            	$('#jenistarget').val(jenis);
+            	$('#new_target').val('');
+            	$('.addModalTarget').modal("show");
             });
             
             $("#tabel-entri-sdg").on('click', '.apply', function () {

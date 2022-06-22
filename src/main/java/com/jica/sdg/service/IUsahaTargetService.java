@@ -18,4 +18,6 @@ public interface IUsahaTargetService {
     void deleteTarget(Integer id);
     
     void deleteByInd(Integer id);
+    
+//    void deleteByNsaInd(Integer id);
 }

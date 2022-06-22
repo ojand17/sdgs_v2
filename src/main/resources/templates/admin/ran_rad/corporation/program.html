@@ -67,7 +67,10 @@
                                             	<span class="lang_eng" style="display:none">Code</span>
                                             	<span class="lang_indo">Kode</span>
                                             </th> -->
-                                            <th style="text-align:center;font-size:80%;"  class="head-tabel" data-lang_eng="SDG E-Monev Code" data-lang_indo="Kode SDG E-Monev">
+                                            <th style="text-align:center;font-size:80%;"  class="head-tabel" data-lang_eng="POJK Code" data-lang_indo="Kode POJK">
+                                            </th>
+                                            <th style="text-align:center;font-size:80%;">
+                                            	Uraian POJK
                                             </th>
                                             <th style="text-align:center;font-size:80%;">
                                             	Program
@@ -98,7 +101,6 @@
                         <h3 class="lang_indo">Tambah Program Pelaku Usaha</h3>
                     </div>
                     <div class="modal-body">
-                        <form id="form-sdgGoals">
                             <div class="control-group" style="display:none;">
                                 <label class="lang_eng control-label" style="display:none;text-align:left">Program Code</label>
                                 <label class="lang_indo control-label" style="text-align:left">Kode Program</label>
@@ -155,7 +157,7 @@
                             <div class="col-md-12" >
                                 <div class="control-group col-md-4" style="width: 100%">
                                     <label class="lang_eng control-label" style="display:none;text-align:left">Indicator Sdgs</label>
-                                    <label class="lang_indo control-label" style="text-align:left">Indikator Sdgs</label>
+                                    <label class="lang_indo control-label" style="text-align:left">Indikator SDGs</label>
                                     <div class="controls">
                                         <select name="id_indicator" id="id_indicator" style="width: 100%">
                                             <option value="0" >-- Pilih --</option>
@@ -217,19 +219,21 @@
                                 </div>
                             </div>
                             
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th width="50%">
-                                            <span class="lang_eng control-label" style="display:none">Year</span>
-                                            <span class="lang_indo control-label">Tahun</span>
-                                        </th>
-                                        <th width="50%">Target</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody-target">
-                                </tbody>
-                            </table>
+                            <form id="form-target">
+					<table class="table table-bordered">
+                        <thead>
+							<tr>
+                                <th width="50%">
+                                	<span class="lang_eng control-label" style="display:none">Year</span>
+				    				<span class="lang_indo control-label">Tahun</span>
+                                </th>
+                                <th width="50%">Target</th>
+							</tr>
+                        </thead>
+                        <tbody id="tbody-target">
+                        </tbody>
+                    </table>
+                    </form>
                             
                             
                                     
@@ -277,7 +281,6 @@
                  </div>
 				  </div>
 				  </div>
-                        </form>
                     </div>
                     <div class="modal-footer">
                         <button class="btn" data-dismiss="modal" aria-hidden="true">
@@ -472,7 +475,10 @@
 							return "<div style='font-size:90%;'>"+row.id_program+"</div>";
 						}}, */
 						{"data": function (row, data, index, display) {
-							return "<div style='font-size:90%;'>"+(row.internal_code?row.internal_code:'')+"</div>";
+							return "<div style='font-size:90%;'>"+(row.kode?row.kode:'')+"</div>";
+						}},
+						{"data": function (row, data, index, display) {
+							return "<div style='font-size:90%;'>"+(row.uraian?row.uraian:'')+"</div>";
 						}},
 						{"data": function (row, data, index, display) {
 							var nama;
@@ -481,7 +487,8 @@
 							}else{
 								nama = row.nm_program_eng?row.nm_program_eng:row.nm_program;
 							}
-							return "<div style='font-size:90%;'><a href='"+urls+"ran_rad/corporation/program/"+row.id+"/activity' class='target'>"+nama+"</div>";
+//							return "<div style='font-size:90%;'><a href='"+urls+"ran_rad/corporation/program/"+row.id+"/activity' class='target'>"+nama+"</div>";
+							return "<div style='font-size:90%;'>"+nama+"</div>";
 						}},
 					{"data": function (row, data, index, display) {
 							return "<div style='text-align:center;'>"+
@@ -583,7 +590,7 @@
                                     for(i=array['start_year'];i<=array['end_year'];i++){
                                         target += '<tr>'+
                                                 '<td><input type="text" name="target[][year]" class="input-block-level" value="'+($.trim(i))+'" readonly="true"/></td>'+
-                                                '<td><input type="text" name="target'+h+'" id="target'+h+'" class="input-block-level"  value="" /></td>'+
+                                                '<td><input type="text" name="target[][nilai]" id="target[][nilai]" class="input-block-level"  value="" /></td>'+
                                         '</tr>';
                                         h++;
                                     }
@@ -651,7 +658,29 @@
 	        	sessionStorage.monper_cor_prog  = $('#id_monper').val();
 	        	sessionStorage.role_cor_prog  = $('#id_role').val();
 	        	table.ajax.url(urls+'list-corporationProg/'+$('#id_role').val()+'/'+$('#id_monper').val()).load();
-                        
+                        var id_monper = $('#id_monper').val();
+                            $.ajax({
+                                type: "GET",
+                                url: urls+'get-monPer/'+id_monper,
+                                async:false,
+                                success: function (result) {
+                                    var array = result.content;
+                                    console.log(array);
+                                    var target="";
+                                    $("#tbody-target").html("");
+                                    var h=1;
+                                    for(i=array['start_year'];i<=array['end_year'];i++){
+                                        target += '<tr>'+
+                                                '<td><input type="text" name="target[][year]" class="input-block-level" value="'+($.trim(i))+'" readonly="true"/></td>'+
+                                                '<td><input type="text" name="target[][nilai]" id="target[][nilai]" class="input-block-level"  value="" /></td>'+
+                                        '</tr>';
+                                        h++;
+                                    }
+                                    $("#tbody-target").append(target);
+                                    
+                                    
+                                },
+                            });
 
 	        	//table.ajax.reload( null, false );
 	        });
@@ -784,8 +813,22 @@
 	                    headers:{'Accept':'application/json','Content-Type':'application/json'},
 						data: data,
 	                    success: function (result) {
+                                console.log(result.id_program);
 	                    	//table.ajax.url(urls+'list-nsaProg/'+$('#id_role').val()+'/'+$('#id_monper').val()).load();
 	                    	table.ajax.reload( null, false );
+	                    	var id_program = result.id_program;
+	                    	var target =  $('#form-target').serializeObject();
+	                    	$.ajax({
+	                            type    :"POST",
+	                            url     :urls+'save-corporationTarget/'+id_program+'/'+$('#id_role').val(),
+	                            headers :{'Accept':'application/json','Content-Type':'application/json'},
+	                            data    : JSON.stringify({target}),
+	                            beforeSend : function(xhr){
+	                            	xhr.setRequestHeader(header,token);
+	                            },
+	                            success :function(result){
+	                            },             
+	                         });
 	                    	$('#myModal').modal('hide');
 	                    },
 	                });
@@ -810,9 +853,21 @@
                                 $("#tbody-target").html("");
                                 var h=1;
                                 for(i=array['start_year'];i<=array['end_year'];i++){
+                                    var nilai="";
+                                    $.ajax({
+                                        type: "GET",
+                                        url: urls+'get-usahaTarget/'+val.id+'/'+($.trim(i)),
+                                        async:false,
+                                        success: function (hasil) {
+                                            var val = hasil.content;
+                                            if(val.length>0){
+                                                nilai = val[0]["value"];	
+                                            }
+	                            	}
+                                    });
                                     target += '<tr>'+
                                             '<td><input type="text" name="target[][year]" class="input-block-level" value="'+($.trim(i))+'" readonly="true"/></td>'+
-                                            '<td><input type="text" name="target'+h+'" id="target'+h+'" class="input-block-level"  value="" /></td>'+
+                                            '<td><input type="text" name="target[][nilai]" id="target[][nilai]" class="input-block-level"  value="'+nilai+'" /></td>'+
                                     '</tr>';
                                     h++;
                                 }
@@ -838,13 +893,14 @@
                         $('#uraian').val(val.uraian);
                         $('#indicator_capaian').val(val.indicator_capaian);
                         $('#unit').val(val.unit);
+                        $('#jangka_waktu').val(val.jangka_waktu);
                         $('#kd_bps').val(val.kd_bps).trigger('change');
                         $('#budget_allocation').val(val.budget_allocation);
-                        $('#target1').val(val.target1);
-                        $('#target2').val(val.target2);
-                        $('#target3').val(val.target3);
-                        $('#target4').val(val.target4);
-                        $('#target5').val(val.target5);
+//                        $('#target1').val(val.target1);
+//                        $('#target2').val(val.target2);
+//                        $('#target3').val(val.target3);
+//                        $('#target4').val(val.target4);
+//                        $('#target5').val(val.target5);
                                         
         				var privilege = [[${privilege}]];
         				if(privilege=='ADMIN' || privilege=='SUPER'){
@@ -871,9 +927,21 @@
                                 $("#tbody-target").html("");
                                 var h=1;
                                 for(i=array['start_year'];i<=array['end_year'];i++){
+                                    var nilai="";
+                                    $.ajax({
+                                        type: "GET",
+                                        url: urls+'get-usahaTarget/'+val.id+'/'+($.trim(i)),
+                                        async:false,
+                                        success: function (hasil) {
+                                            var val = hasil.content;
+                                            if(val.length>0){
+                                                nilai = val[0]["value"];	
+                                            }
+	                            	}
+                                    });
                                     target += '<tr>'+
                                             '<td><input type="text" name="target[][year]" class="input-block-level" value="'+($.trim(i))+'" readonly="true"/></td>'+
-                                            '<td><input type="text" name="target'+h+'" id="target'+h+'" class="input-block-level"  value="" /></td>'+
+                                            '<td><input type="text" name="target[][nilai]" id="target[][nilai]" class="input-block-level"  value="'+nilai+'" /></td>'+
                                     '</tr>';
                                     h++;
                                 }
