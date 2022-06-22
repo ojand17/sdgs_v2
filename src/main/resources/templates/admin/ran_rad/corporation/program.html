@@ -143,7 +143,7 @@
                                 </div>
                                 <div class="control-group" style="">
                                     <div class="controls">
-                                        <input type="text" id="kode" name="kode" placeholder="Uraian" class=" input-block-level" readonly/>
+                                        <input type="text" id="kode" name="kode" placeholder="Kode" class=" input-block-level" readonly/>
                                         <span class="help-block" id="error_uraian"></span>
                                     </div>
                                     <div class="controls">
@@ -207,51 +207,31 @@
                                     <span class="help-block" id="error_budget_allocation"></span>
                                 </div>
                             </div>
-                            
+                                    
                             <div class="control-group">
-                                <label class="lang_eng control-label" style="display:none;text-align:left">Target Tahun ke 1</label>
-                                <label class="lang_indo control-label" style="text-align:left">Target Tahun ke 1</label>
+                                <label class="lang_eng control-label" style="display:none;text-align:left">Time Period</label>
+                                <label class="lang_indo control-label" style="text-align:left">Jangka Waktu</label>
                                 <div class="controls">
-                                    <input type="text" id="target1" name="target1" class=" input-block-level"/>
-                                    <span class="help-block" id="error_target1"></span>
+                                    <input type="text" id="jangka_waktu" name="jangka_waktu" class=" input-block-level"/>
+                                    <span class="help-block" id="error_jangka_waktu"></span>
                                 </div>
                             </div>
                             
-                            <div class="control-group">
-                                <label class="lang_eng control-label" style="display:none;text-align:left">Target Tahun ke 2</label>
-                                <label class="lang_indo control-label" style="text-align:left">Target Tahun ke 2</label>
-                                <div class="controls">
-                                    <input type="text" id="target2" name="target2" class=" input-block-level"/>
-                                    <span class="help-block" id="error_target2"></span>
-                                </div>
-                            </div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th width="50%">
+                                            <span class="lang_eng control-label" style="display:none">Year</span>
+                                            <span class="lang_indo control-label">Tahun</span>
+                                        </th>
+                                        <th width="50%">Target</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-target">
+                                </tbody>
+                            </table>
                             
-                            <div class="control-group">
-                                <label class="lang_eng control-label" style="display:none;text-align:left">Target Tahun ke 3</label>
-                                <label class="lang_indo control-label" style="text-align:left">Target Tahun ke 3</label>
-                                <div class="controls">
-                                    <input type="text" id="target3" name="target3" class=" input-block-level"/>
-                                    <span class="help-block" id="error_target3"></span>
-                                </div>
-                            </div>
                             
-                            <div class="control-group">
-                                <label class="lang_eng control-label" style="display:none;text-align:left">Target Tahun ke 4</label>
-                                <label class="lang_indo control-label" style="text-align:left">Target Tahun ke 4</label>
-                                <div class="controls">
-                                    <input type="text" id="target4" name="target4" class=" input-block-level"/>
-                                    <span class="help-block" id="error_target4"></span>
-                                </div>
-                            </div>
-                            
-                            <div class="control-group">
-                                <label class="lang_eng control-label" style="display:none;text-align:left">Target Tahun ke 5</label>
-                                <label class="lang_indo control-label" style="text-align:left">Target Tahun ke 5</label>
-                                <div class="controls">
-                                    <input type="text" id="target5" name="target5" class=" input-block-level"/>
-                                    <span class="help-block" id="error_target5"></span>
-                                </div>
-                            </div>
                                     
                             <div class="control-group">
                                 <label class="lang_eng control-label" style="display:none;text-align:left">Provinsi/Kabupaten</label>
@@ -330,21 +310,11 @@
 	        	$('.provinsi').show();
 	        }
                 
-                $('#idpojk').on('change', function(e){
-                    var idpojk = $("#idpojk").val();
-                    var v_html = '';
-                    if(idpojk == '1'){
-                        console.log(idpojk);
-                        v_html = '<option value="0" >-- Pilih --</option><option value="1" >Proporsi perempuan yang berada di posisi managerial</option><option value="2" >Average hourly earnings of female and male employees, by occupation, age and persons with disabilities</option>';
-                    }else if(idpojk == '2'){
-                        console.log(idpojk);
-                        v_html = '<option value="0" >-- Pilih --</option><option value="1" >Indeks Perilaku Anti Korupsi (IPAK)</option>';
-                    }else{
-                        console.log(idpojk);
-                        v_html = '';
-                    }
-                    $("#idsdgind").html(v_html);
-	        });
+//                $('#idpojk').on('change', function(e){
+//                    var idpojk = $("#idpojk").val();
+//                    
+//	        });
+
                 
                 $.ajax({
                     type: "GET",
@@ -372,7 +342,7 @@
 //                        console.log(array);
                         $('#id_indicator').append('<option value="0">-- Pilih --</option>');
                         for(a=0; a<array.length;a++){
-                            $('#id_indicator').append('<option value="'+array[a].id+'">' +array[a].nm_indicator+'</option>');
+                            $('#id_indicator').append('<option value="'+array[a].id+'">' +array[a].id_indicator+' - ' +array[a].nm_indicator+'</option>');
                         }
                     },
                 });
@@ -413,6 +383,18 @@
                 
                 $('#idpojk').on('change', function(e){
                     var idpojk = $("#idpojk").val();
+//                    var v_html = '';
+//                    if(idpojk == '1'){
+//                        console.log(idpojk);
+//                        v_html = '<option value="0" >-- Pilih --</option><option value="1" >Proporsi perempuan yang berada di posisi managerial</option><option value="2" >Average hourly earnings of female and male employees, by occupation, age and persons with disabilities</option>';
+//                    }else if(idpojk == '2'){
+//                        console.log(idpojk);
+//                        v_html = '<option value="0" >-- Pilih --</option><option value="1" >Indeks Perilaku Anti Korupsi (IPAK)</option>';
+//                    }else{
+//                        console.log(idpojk);
+//                        v_html = '';
+//                    }
+//                    $("#idsdgind").html(v_html);
                     $.ajax({
                         type: "GET",
                         url: urls+'ran_rad/getpojkKodebyId/'+idpojk,
@@ -587,6 +569,30 @@
 	        
 	        $('#showModal').on('click', function(){
 	        	if($('#id_prov').val() && $('#id_monper').val() && $('#id_role').val()){
+                            var id_monper = $('#id_monper').val();
+                            $.ajax({
+                                type: "GET",
+                                url: urls+'get-monPer/'+id_monper,
+                                async:false,
+                                success: function (result) {
+                                    var array = result.content;
+                                    console.log(array);
+                                    var target="";
+                                    $("#tbody-target").html("");
+                                    var h=1;
+                                    for(i=array['start_year'];i<=array['end_year'];i++){
+                                        target += '<tr>'+
+                                                '<td><input type="text" name="target[][year]" class="input-block-level" value="'+($.trim(i))+'" readonly="true"/></td>'+
+                                                '<td><input type="text" name="target'+h+'" id="target'+h+'" class="input-block-level"  value="" /></td>'+
+                                        '</tr>';
+                                        h++;
+                                    }
+                                    $("#tbody-target").append(target);
+                                    
+                                    
+                                },
+                            });
+                            
 	        		$("#myModal").modal("show");
 	        	}else{
 		        	if(!$('#id_role').val()){
@@ -645,6 +651,8 @@
 	        	sessionStorage.monper_cor_prog  = $('#id_monper').val();
 	        	sessionStorage.role_cor_prog  = $('#id_role').val();
 	        	table.ajax.url(urls+'list-corporationProg/'+$('#id_role').val()+'/'+$('#id_monper').val()).load();
+                        
+
 	        	//table.ajax.reload( null, false );
 	        });
 	        
@@ -717,6 +725,7 @@
 				var unit = $('#unit').val();
 				var kd_bps = $('#kd_bps').val();
 				var budget_allocation = $('#budget_allocation').val();
+				var jangka_waktu = $('#jangka_waktu').val();
 				var target1 = $('#target1').val();
 				var target2 = $('#target2').val();
 				var target3 = $('#target3').val();
@@ -759,6 +768,7 @@
 						'unit': unit,
 						'kd_bps': kd_bps,
 						'budget_allocation':budget_allocation,
+						'jangka_waktu':jangka_waktu,
 						'target1': target1,
 						'target2': target2,
 						'target3': target3,
@@ -789,6 +799,29 @@
                     url: urls+'get-corporationProg/'+id,
                     success: function (result) {
                     	var val = result.content;
+                        $.ajax({
+                            type: "GET",
+                            url: urls+'get-monPer/'+val.id_monper,
+                            async:false,
+                            success: function (result) {
+                                var array = result.content;
+                                console.log(array);
+                                var target="";
+                                $("#tbody-target").html("");
+                                var h=1;
+                                for(i=array['start_year'];i<=array['end_year'];i++){
+                                    target += '<tr>'+
+                                            '<td><input type="text" name="target[][year]" class="input-block-level" value="'+($.trim(i))+'" readonly="true"/></td>'+
+                                            '<td><input type="text" name="target'+h+'" id="target'+h+'" class="input-block-level"  value="" /></td>'+
+                                    '</tr>';
+                                    h++;
+                                }
+                                $("#tbody-target").append(target);
+
+
+                            },
+                        });
+
                     	$('#id').val(val.id);
                     	$('#id_program').val(val.id_program).attr("readonly",true);
                         $('#nm_program').val(val.nm_program);
@@ -827,6 +860,29 @@
                     url: urls+'get-corporationProg/'+id,
                     success: function (result) {
                     	var val = result.content;
+                        $.ajax({
+                            type: "GET",
+                            url: urls+'get-monPer/'+val.id_monper,
+                            async:false,
+                            success: function (result) {
+                                var array = result.content;
+                                console.log(array);
+                                var target="";
+                                $("#tbody-target").html("");
+                                var h=1;
+                                for(i=array['start_year'];i<=array['end_year'];i++){
+                                    target += '<tr>'+
+                                            '<td><input type="text" name="target[][year]" class="input-block-level" value="'+($.trim(i))+'" readonly="true"/></td>'+
+                                            '<td><input type="text" name="target'+h+'" id="target'+h+'" class="input-block-level"  value="" /></td>'+
+                                    '</tr>';
+                                    h++;
+                                }
+                                $("#tbody-target").append(target);
+
+
+                            },
+                        });
+                        
                     	$('#id').val(val.id);
                     	$('#id_program').val(val.id_program).attr("readonly",true);
         				$('#nm_program').val(val.nm_program).attr("readonly",true);

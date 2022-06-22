@@ -84,6 +84,9 @@ public class UsahaProgram implements Serializable {
     @Column(nullable = false, length = 11)
     private Integer target5;
     
+    @Column(nullable = true, length = 10)
+    private String jangka_waktu;
+    
     
 
 	public UsahaProgram() {
@@ -135,6 +138,49 @@ public class UsahaProgram implements Serializable {
 		this.target4 = target4;
 		this.target5 = target5;
 	}
+        
+	public UsahaProgram(Integer id, String id_program, String nm_program, String nm_program_eng, Integer id_role,
+			Integer id_monper, String rel_prog_id, Integer created_by, Date date_created, Integer internal_code,
+                        Integer idkategori, Integer idpojk, Integer id_indicator, String kode, String uraian,
+                        String indicator_capaian, String unit, String kd_bps, Integer budget_allocation,
+                        Integer target1, Integer target2, Integer target3, Integer target4, Integer target5, String jangka_waktu) {
+		super();
+		this.id = id;
+		this.id_program = id_program;
+		this.nm_program = nm_program;
+		this.nm_program_eng = nm_program_eng;
+		this.id_role = id_role;
+		this.id_monper = id_monper;
+		this.rel_prog_id = rel_prog_id;
+		this.created_by = created_by;
+		this.date_created = date_created;
+		this.internal_code = internal_code;
+		this.idkategori = idkategori;
+		this.idpojk = idpojk;
+		this.id_indicator = id_indicator;
+		this.kode = kode;
+		this.uraian = uraian;
+		this.indicator_capaian = indicator_capaian;
+		this.unit = unit;
+		this.kd_bps = kd_bps;
+		this.budget_allocation = budget_allocation;
+		this.target1 = target1;
+		this.target2 = target2;
+		this.target3 = target3;
+		this.target4 = target4;
+		this.target5 = target5;
+		this.jangka_waktu = jangka_waktu;
+	}
+
+    public String getJangka_waktu() {
+        return jangka_waktu;
+    }
+
+    public void setJangka_waktu(String jangka_waktu) {
+        this.jangka_waktu = jangka_waktu;
+    }
+        
+        
 
     public Integer getIdkategori() {
         return idkategori;
