@@ -196,6 +196,38 @@
                 </div>
             </div>
         </div>
+        
+        <div class="modal hide fade addModalLokasi" data-backdrop="static" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="float:right">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h3 class="modal-title lang_indo" id="exampleModalLabel">Monitor Program Non Pemerintah</h3>
+                        <h3 class="modal-title lang_eng" id="exampleModalLabel" style="display: none">Non Government Program Monitoring</h3>
+                    </div>
+                    <form class="form-horizontal">
+                        <div class="modal-body">
+                            <div class="control-group">
+                                <label for="nm_inst" class="lang_indo">Lokasi Aktual :</label>
+                                <label for="nm_inst" class="lang_eng" style="display: none">Actual Location :</label>
+                                <input name="id_nsa_indicator" id="id_nsa_indicator" type="hidden" class="input-block-level"/>
+                                <select id="idpemda" multiple="multiple" class="input-xlarge input-block-level" style="width:100%"></select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary lang_indo" data-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-secondary lang_eng" data-dismiss="modal" style="display: none">Close</button>
+                            <button type="button" id="simpanTarget" class="btn btn-success">
+                            	<span class="lang_indo">Simpan</span>
+                            	<span class="lang_eng" style="display: none">Submit</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <div th:include="admin/layout :: footer"></div>
 </body>
@@ -205,6 +237,13 @@
             var id_role     = [[${id_role}]];
             var id_prov     = [[${id_prov}]];
             var privilege   = [[${privilege}]];
+
+            $('#idpemda').select2({
+				placeholder: 'Pilih',
+				allowClear: true,
+				dropdownParent: $(".addModalLokasi")
+			});
+			
             if(privilege == 'SUPER'){
                 
             }else{
@@ -293,6 +332,21 @@
             		t.ajax.url(urls+'list-entry-nsa/'+0+'/'+0+'/'+0+'/'+0).load();
                 }
             });
+
+            var pemda = [];
+
+            $.ajax({
+                type: "GET",
+                url: urls+'ran_rad/getpojkKdBps',
+                success: function (result) {
+                    var val = result.content;
+                    for(i=0;i<val.length;i++){
+                    	var newOption = new Option(val[i].nm_pemda, val[i].id_pemda, false, false);
+                    	$('#id_pemda').append(newOption).trigger('change');
+                    	pemda[val[i].id_pemda] = val[i].nm_pemda;
+                    }
+                }
+            });
                         
             $("#periode").on('change', function(e){
                 var data_id     = this.value.split("###");;
@@ -374,7 +428,7 @@
 	    	        messNOk = "Data tidak dapat dihapus";
 	    	        required = "Harus diisi";
 	    	        titleApp = "Anda Yakin";
-	    	        messApp = "Terapkan Data ini?";
+	    	        messApp = "Terapkan Data ini? <br/> Harap isi Budget & Output Kegiatan ";
 	    	        buttApp = 'Ya, Terapkan data ini!';
 	    	        titleUnApp = "Anda Yakin";
 	    	        messUnApp = "Batal Terapkan Data ini?";
@@ -390,7 +444,7 @@
 	    	        messNOk = "Can't delete data";
 	    	        required = "Required";
 	    	        titleApp = "Are you sure";
-	    	        messApp = "Apply this data?";
+	    	        messApp = "Apply this data? <br/> Please input Budget & Activity Output";
 	    	        buttApp = 'Ya, Apply this data!';
 	    	        titleUnApp = "Are you sure";
 	    	        messUnApp = "Unapply this data?";
@@ -516,7 +570,7 @@
                     "cache": false,
                     "autoWidth": true,
                     "responsive":true,
-                    "bDestroy": true,
+                    "destroy": true,
                     "paging": false,
                     "drawCallback": function( settings ) {
                     	$('#tabel-entri-sdg thead').html(header);
@@ -920,17 +974,17 @@
                     ],
                     "columnDefs": [
                         {
-                            "targets": [ 6 ],
+                            "targets": [ 7 ],
                             "visible": col2,
                             "searchable": col2
                         },
                         {
-                            "targets": [ 7 ],
+                            "targets": [ 8 ],
                             "visible": col3,
                             "searchable": col3
                         },
                         {
-                            "targets": [ 8 ],
+                            "targets": [ 9 ],
                             "visible": col4,
                             "searchable": col4
                         },
@@ -1029,7 +1083,7 @@
                     "cache": false,
                     "autoWidth": true,
                     "responsive":true,
-                    "bDestroy": true,
+                    "destroy": true,
                     "paging": false,
                     "drawCallback": function( settings ) {
                     	$('#tabel-entri-sdg thead').html(header);
@@ -1289,9 +1343,6 @@
                             return "<div style='font-size:90%;'>"+(row[27]?row[27]:'')+"</div>";
                         }},
                         {"data": function (row, data, index, display) {
-                            return "<div style='font-size:90%;'>"+(row[10]?row[10]:'')+"</div>";
-                        }},
-                        {"data": function (row, data, index, display) {
                         	return "<div style='font-size:90%;'>"+(row[11]?row[11]:'')+"</div>";
                         }},
                         {"data": function (row, data, index, display) {
@@ -1327,21 +1378,43 @@
                         	var color_sts = "";
                         	var text = "";
                         	var update = ""
-                            if(row[16] != null){
-                                text = " "+row[16];
-                                color_sts = 'btn btn-success';
-                                update="update";
-                             }else{
-                            	text = " - ";
-                            	update="update";
+                          	if(row[34]=='real_indicator'){
+                          		if(row[35] != null){
+                                    text = " "+row[35];
+                                    color_sts = 'btn btn-success';
+                                    update="update";
+                                 }else{
+                                	text = " - ";
+                                	update="update";
+                                }
+                            }else{
+                            	if(row[16] != null){
+                                    text = " "+row[16];
+                                    color_sts = 'btn btn-success';
+                                    update="update";
+                                 }else{
+                                	text = " - ";
+                                	update="update";
+                                }
                             }
+                            
                         	var id = "";
                         	var val = "";
-                        	id = row[21];
-                    		val1 = row[16];
-                    		val2 = row[17];
-                    		val3 = row[18];
-                    		val4 = row[19];
+                        	id = row[34]=='real_indicator'?row[39]:row[21];
+                        	var idNsa = row[34]=='real_indicator'?row[22]:row[23];
+                        	var jenis = row[34]=='real_indicator'?'real_indicator':'budget';
+                        	if(row[34]=='real_indicator'){
+                        		val1 = row[35];
+                        		val2 = row[36];
+                        		val3 = row[37];
+                        		val4 = row[38];
+                        	}else{
+                        		val1 = row[16];
+                        		val2 = row[17];
+                        		val3 = row[18];
+                        		val4 = row[19];
+                           	}
+                    		
                     		if(row[29]){
                     			color_sts = 'text-success';
                         		update = "";
@@ -1349,27 +1422,49 @@
                         	if(cek1>0){
                         		update = "";
                         	}
-                        	return '<a data-id="'+row[23]+'###'+val1+'###'+val2+'###'+val3+'###'+val4+'###1'+'###'+id+'###budget" title="Update" class="'+color_sts+' '+update+' " href="#"><i class="icon-edit "></i>'+text+"</a> ";
+                        	return '<a data-id="'+idNsa+'###'+val1+'###'+val2+'###'+val3+'###'+val4+'###1'+'###'+id+'###'+jenis+'" title="Update" class="'+color_sts+' '+update+' " href="#"><i class="icon-edit "></i>'+text+"</a> ";
                         }},
                         {"data": function (row, data, index, display) {
                         	var color_sts = "";
                         	var text = "";
-                        	var update = ""
-                       		if(row[17] != null){
-                                   text = " "+row[17];
-                                   color_sts = 'btn btn-success';
-                                   update="update";
-                             }else{
-                            	text = " - ";
-                            	update="update";
+                        	var update = "";
+                        	if(row[34]=='real_indicator'){
+                          		if(row[36] != null){
+                                    text = " "+row[36];
+                                    color_sts = 'btn btn-success';
+                                    update="update";
+                                 }else{
+                                	text = " - ";
+                                	update="update";
+                                }
+                            }else{
+                            	if(row[17] != null){
+                                    text = " "+row[17];
+                                    color_sts = 'btn btn-success';
+                                    update="update";
+	                              }else{
+	                             	text = " - ";
+	                             	update="update";
+	                             }
                             }
+                       		
                         	var id = "";
                         	var val = "";
-                        	id = row[21];
-                    		val1 = row[16];
-                    		val2 = row[17];
-                    		val3 = row[18];
-                    		val4 = row[19];
+                        	id = row[34]=='real_indicator'?row[39]:row[21];
+                        	var idNsa = row[34]=='real_indicator'?row[22]:row[23];
+                        	var jenis = row[34]=='real_indicator'?'real_indicator':'budget';
+                        	if(row[34]=='real_indicator'){
+                        		val1 = row[35];
+                        		val2 = row[36];
+                        		val3 = row[37];
+                        		val4 = row[38];
+                        	}else{
+                        		val1 = row[16];
+                        		val2 = row[17];
+                        		val3 = row[18];
+                        		val4 = row[19];
+                           	}
+                    		
                     		if(row[30]){
                     			color_sts = 'text-success';
                         		update = "";
@@ -1377,27 +1472,48 @@
                         	if(cek2>0){
                         		update = "";
                         	}
-                        	return '<a data-id="'+row[23]+'###'+val1+'###'+val2+'###'+val3+'###'+val4+'###2'+'###'+id+'###budget" title="Update" class="'+color_sts+' '+update+' " href="#"><i class="icon-edit "></i>'+text+"</a> ";
+                        	return '<a data-id="'+idNsa+'###'+val1+'###'+val2+'###'+val3+'###'+val4+'###2'+'###'+id+'###'+jenis+'" title="Update" class="'+color_sts+' '+update+' " href="#"><i class="icon-edit "></i>'+text+"</a> ";
                         }},
                         {"data": function (row, data, index, display) {
                         	var color_sts = "";
                         	var text = "";
-                        	var update = ""
-                       		if(row[18] != null){
-                                   text = " "+row[18];
-                                   color_sts = 'btn btn-success';
-                                   update="update";
-                             }else{
-                            	text = " - ";
-                            	update="update";
+                        	var update = "";
+                        	if(row[34]=='real_indicator'){
+                          		if(row[37] != null){
+                                    text = " "+row[37];
+                                    color_sts = 'btn btn-success';
+                                    update="update";
+                                 }else{
+                                	text = " - ";
+                                	update="update";
+                                }
+                            }else{
+                            	if(row[18] != null){
+                                    text = " "+row[18];
+                                    color_sts = 'btn btn-success';
+                                    update="update";
+	                              }else{
+	                             	text = " - ";
+	                             	update="update";
+	                             }
                             }
+                       		
                         	var id = "";
                         	var val = "";
-                        	id = row[21];
-                    		val1 = row[16];
-                    		val2 = row[17];
-                    		val3 = row[18];
-                    		val4 = row[19];
+                        	id = row[34]=='real_indicator'?row[39]:row[21];
+                        	var idNsa = row[34]=='real_indicator'?row[22]:row[23];
+                        	var jenis = row[34]=='real_indicator'?'real_indicator':'budget';
+                        	if(row[34]=='real_indicator'){
+                        		val1 = row[35];
+                        		val2 = row[36];
+                        		val3 = row[37];
+                        		val4 = row[38];
+                        	}else{
+                        		val1 = row[16];
+                        		val2 = row[17];
+                        		val3 = row[18];
+                        		val4 = row[19];
+                           	}
                     		if(row[31]){
                     			color_sts = 'text-success';
                         		update = "";
@@ -1405,27 +1521,48 @@
                         	if(cek3>0){
                         		update = "";
                         	}
-                        	return '<a data-id="'+row[23]+'###'+val1+'###'+val2+'###'+val3+'###'+val4+'###3'+'###'+id+'###budget" title="Update" class="'+color_sts+' '+update+' " href="#"><i class="icon-edit "></i>'+text+"</a> ";
+                        	return '<a data-id="'+idNsa+'###'+val1+'###'+val2+'###'+val3+'###'+val4+'###3'+'###'+id+'###'+jenis+'" title="Update" class="'+color_sts+' '+update+' " href="#"><i class="icon-edit "></i>'+text+"</a> ";
                         }},
                         {"data": function (row, data, index, display) {
                         	var color_sts = "";
                         	var text = "";
-                        	var update = ""
-                       		if(row[19] != null){
-                                   text = " "+row[19];
-                                   color_sts = 'btn btn-success';
-                                   update="update";
-                             }else{
-                            	text = " - ";
-                            	update="update";
+                        	var update = "";
+                        	if(row[34]=='real_indicator'){
+                          		if(row[38] != null){
+                                    text = " "+row[38];
+                                    color_sts = 'btn btn-success';
+                                    update="update";
+                                 }else{
+                                	text = " - ";
+                                	update="update";
+                                }
+                            }else{
+                            	if(row[19] != null){
+                                    text = " "+row[19];
+                                    color_sts = 'btn btn-success';
+                                    update="update";
+	                              }else{
+	                             	text = " - ";
+	                             	update="update";
+	                             }
                             }
+                       		
                         	var id = "";
                         	var val = "";
-                        	id = row[21];
-                    		val1 = row[16];
-                    		val2 = row[17];
-                    		val3 = row[18];
-                    		val4 = row[19];
+                        	id = row[34]=='real_indicator'?row[39]:row[21];
+                        	var idNsa = row[34]=='real_indicator'?row[22]:row[23];
+                        	var jenis = row[34]=='real_indicator'?'real_indicator':'budget';
+                        	if(row[34]=='real_indicator'){
+                        		val1 = row[35];
+                        		val2 = row[36];
+                        		val3 = row[37];
+                        		val4 = row[38];
+                        	}else{
+                        		val1 = row[16];
+                        		val2 = row[17];
+                        		val3 = row[18];
+                        		val4 = row[19];
+                           	}
                     		if(row[32]){
                     			color_sts = 'text-success';
                         		update = "";
@@ -1433,27 +1570,22 @@
                         	if(cek4>0){
                         		update = "";
                         	}
-                        	return '<a data-id="'+row[23]+'###'+val1+'###'+val2+'###'+val3+'###'+val4+'###4'+'###'+id+'###budget" title="Update" class="'+color_sts+' '+update+' " href="#"><i class="icon-edit "></i>'+text+"</a> ";
+                        	return '<a data-id="'+idNsa+'###'+val1+'###'+val2+'###'+val3+'###'+val4+'###4'+'###'+id+'###'+jenis+'" title="Update" class="'+color_sts+' '+update+' " href="#"><i class="icon-edit "></i>'+text+"</a> ";
                         }},
                     ],
                     "columnDefs": [
-                    	{
-                            "targets": [ 3 ],
-                            "visible": false,
-                            "searchable": false
-                        },
                         {
-                            "targets": [ 7 ],
+                            "targets": [ 6 ],
                             "visible": col2,
                             "searchable": col2
                         },
                         {
-                            "targets": [ 8 ],
+                            "targets": [ 7 ],
                             "visible": col3,
                             "searchable": col3
                         },
                         {
-                            "targets": [ 9 ],
+                            "targets": [ 8 ],
                             "visible": col4,
                             "searchable": col4
                         },
@@ -1524,7 +1656,8 @@
                 }else{
                 	var data = JSON.stringify({
                         'id': id,
-                        'id_nsa_activity': id_sdg_indicator,
+                        'id_nsa_activity': (jenis=='budget'?id_sdg_indicator:null),
+                        'id_nsa_indicator': (jenis!='budget'?id_sdg_indicator:null),
                         'achievement1': achievement1,
                         'achievement2': achievement2,
                         'achievement3': achievement3,
@@ -1533,6 +1666,9 @@
                         'created_by': v_idrole,
                         'id_monper': id_monper
                     });
+                    if(jenis=='budget'){
+
+                    }
     		        $.ajax({
     		            type: "POST",
     		            url: urls+'save-entry-non-gov_prog_budget/'+achiev,
@@ -1652,7 +1788,7 @@
                 
                 swal({
                     title: titleApp,
-                    text: messApp,
+                    html: messApp,
                     type: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',

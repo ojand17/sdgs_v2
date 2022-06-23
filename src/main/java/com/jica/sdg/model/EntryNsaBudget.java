@@ -80,6 +80,9 @@ public class EntryNsaBudget implements Serializable {
     
     @Column(name = "id_monper")
     private Integer id_monper;
+    
+    @Column(name = "id_nsa_indicator")
+    private Integer id_nsa_indicator;
 
     public EntryNsaBudget() {
     }
@@ -108,7 +111,44 @@ public class EntryNsaBudget implements Serializable {
         this.id_monper          = id_monper;
     }
 
-    public Integer getCreated_by2() {
+    public EntryNsaBudget(Integer id, Integer id_nsa_activity, Integer achievement1, Integer achievement2,
+			Integer achievement3, Integer achievement4, Integer new_value1, Integer new_value2, Integer new_value3,
+			Integer new_value4, Integer year_entry, Integer created_by, Integer created_by2, Integer created_by3,
+			Integer created_by4, Date date_created, Date date_created2, Date date_created3, Date date_created4,
+			Integer id_monper, Integer id_nsa_indicator) {
+		super();
+		this.id = id;
+		this.id_nsa_activity = id_nsa_activity;
+		this.achievement1 = achievement1;
+		this.achievement2 = achievement2;
+		this.achievement3 = achievement3;
+		this.achievement4 = achievement4;
+		this.new_value1 = new_value1;
+		this.new_value2 = new_value2;
+		this.new_value3 = new_value3;
+		this.new_value4 = new_value4;
+		this.year_entry = year_entry;
+		this.created_by = created_by;
+		this.created_by2 = created_by2;
+		this.created_by3 = created_by3;
+		this.created_by4 = created_by4;
+		this.date_created = date_created;
+		this.date_created2 = date_created2;
+		this.date_created3 = date_created3;
+		this.date_created4 = date_created4;
+		this.id_monper = id_monper;
+		this.id_nsa_indicator = id_nsa_indicator;
+	}
+
+	public Integer getId_nsa_indicator() {
+		return id_nsa_indicator;
+	}
+
+	public void setId_nsa_indicator(Integer id_nsa_indicator) {
+		this.id_nsa_indicator = id_nsa_indicator;
+	}
+
+	public Integer getCreated_by2() {
         return created_by2;
     }
 
