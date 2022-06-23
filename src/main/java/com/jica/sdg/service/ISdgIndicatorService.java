@@ -12,6 +12,8 @@ public interface ISdgIndicatorService {
     List findAllGrid(Integer id_goals, Integer id_target);
     
     List<SdgIndicator> findAll();
+    
+    List<SdgIndicator> findAllKodeLengkap();
 
     void saveSdgIndicator(SdgIndicator sdg);
     

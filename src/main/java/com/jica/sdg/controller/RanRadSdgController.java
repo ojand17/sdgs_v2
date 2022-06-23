@@ -2187,7 +2187,7 @@ public class RanRadSdgController {
     @GetMapping("admin/ran_rad/getpojkKategoriSdgIndicator")
     public @ResponseBody Map<String, Object> getpojkKategoriSdgIndicator(HttpSession session) {
     	List<SdgIndicator> listSdgIndicator;
-        listSdgIndicator = sdgIndicatorService.findAll();
+        listSdgIndicator = sdgIndicatorService.findAllKodeLengkap();
         Map<String, Object> hasil = new HashMap<>();
         hasil.put("content", listSdgIndicator);
         return hasil;

@@ -56,4 +56,9 @@ public class SdgIndicatorService implements ISdgIndicatorService{
 		List<SdgIndicator> list = sdgIndicatorRepo.findByGoals(id_goals);
 		return list;
 	}
+
+	@Override
+	public List<SdgIndicator> findAllKodeLengkap() {
+		return sdgIndicatorRepo.findAllKodeLengkap();
+	}
 }
