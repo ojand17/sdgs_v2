@@ -1757,6 +1757,19 @@ public class DataEntryController {
         query.executeUpdate();
     }
     
+    @PostMapping(path = "admin/save-new-location-non-gov/{id}/{idpemda}", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    @Transactional
+    public void saveNewLoc(@RequestBody Map<String, Object> payload) {
+    	JSONObject obj = new JSONObject(payload);
+    	String id = obj.get("id").toString();
+    	String idpemda = obj.get("idpemda").toString();
+    	Query query = em.createNativeQuery("update nsa_indicator set idpemda_actual = :new_value where id=:id");
+		query.setParameter("new_value", idpemda);
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
+    
     @PostMapping(path = "admin/save-new-target-usaha/{id}/{jenis}/{nilai}", consumes = "application/json", produces = "application/json")
     @ResponseBody
     @Transactional
