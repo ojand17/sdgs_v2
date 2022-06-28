@@ -1,11 +1,13 @@
 package com.jica.sdg.service;
 
+import com.jica.sdg.model.RefBadanHukum;
 import com.jica.sdg.model.RefBidangUsaha;
 import com.jica.sdg.model.RefKatUsaha;
 import com.jica.sdg.model.RefKodeUsaha;
 import com.jica.sdg.model.RefSkalaUsaha;
 import com.jica.sdg.model.Role;
 import com.jica.sdg.model.Usahaprofile;
+import com.jica.sdg.repository.RefBadanHukumRepository;
 import com.jica.sdg.repository.RefBidangUsahaRepository;
 import com.jica.sdg.repository.RefKatUsahaRepository;
 import com.jica.sdg.repository.RefKodeUsahaRepository;
@@ -37,6 +39,9 @@ public class UsahaProfileService implements IUsahaProfileService{
 	private RefKodeUsahaRepository refKodeUsahaRepo;
 	
 	@Autowired
+	private RefBadanHukumRepository refBadanHukumRepo;
+	
+	@Autowired
 	private RoleRepository nsaRoleRepo;
 	
 	@Override
@@ -57,6 +62,11 @@ public class UsahaProfileService implements IUsahaProfileService{
 	@Override
 	public List<RefKatUsaha> findAllKatUsaha() {
             return (List<RefKatUsaha>) refKatUsahaRepo.findAll();
+	}
+	
+	@Override
+	public List<RefBadanHukum> findAllBadanHukum() {
+            return (List<RefBadanHukum>) refBadanHukumRepo.findAll();
 	}
 	
 	@Override

@@ -43,6 +43,8 @@ public class Usahaprofile implements Serializable {
     private Integer id_bidang_usaha;
     @Column(name = "id_kat_usaha")
     private Integer id_kat_usaha;
+    @Column(name = "id_badan_hukum")
+    private Integer id_badan_hukum;
     
     @Column(name = "kode_usaha")
     private String kode_usaha;
@@ -64,7 +66,7 @@ public class Usahaprofile implements Serializable {
     }
 
     public Usahaprofile(Integer id_usaha, Integer id_role, String nm_usaha, String achieve_usaha, String loc_usaha, String beneficiaries, Integer year_impl, String major_part,
-                        String no_telp, String website, Integer id_skala_usaha, Integer id_bidang_usaha, Integer id_kat_usaha, String kode_usaha, String nama_perusahaan) {
+                        String no_telp, String website, Integer id_skala_usaha, Integer id_bidang_usaha, Integer id_kat_usaha, String kode_usaha, String nama_perusahaan, Integer id_badan_hukum) {
         this.id_usaha         = id_usaha;
         this.id_role        = id_role;
         this.nm_usaha         = nm_usaha;
@@ -81,8 +83,18 @@ public class Usahaprofile implements Serializable {
         this.id_kat_usaha     = id_kat_usaha;
         this.kode_usaha     = kode_usaha;
         this.nama_perusahaan     = nama_perusahaan;
+        this.id_badan_hukum     = id_badan_hukum;
     }
 
+    public Integer getId_badan_hukum() {
+        return id_badan_hukum;
+    }
+
+    public void setId_badan_hukum(Integer id_badan_hukum) {
+        this.id_badan_hukum = id_badan_hukum;
+    }
+
+    
     public String getNo_telp() {
         return no_telp;
     }

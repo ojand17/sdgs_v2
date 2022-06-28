@@ -1,5 +1,6 @@
 package com.jica.sdg.service;
 
+import com.jica.sdg.model.RefBadanHukum;
 import com.jica.sdg.model.RefBidangUsaha;
 import com.jica.sdg.model.RefKatUsaha;
 import com.jica.sdg.model.RefKodeUsaha;
@@ -16,6 +17,7 @@ public interface IUsahaProfileService {
     List<RefSkalaUsaha> findAllSkalaUsaha();
     List<RefBidangUsaha> findAllBidangUsaha();
     List<RefKatUsaha> findAllKatUsaha();
+    List<RefBadanHukum> findAllBadanHukum();
     List<RefKodeUsaha> findAllKodeUsaha();
     
     List<RefKodeUsaha> findNamaKodeUsahaByKode(String kode_usaha);

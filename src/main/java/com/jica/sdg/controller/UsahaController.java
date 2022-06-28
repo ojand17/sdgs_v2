@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jica.sdg.model.Provinsi;
+import com.jica.sdg.model.RefBadanHukum;
 import com.jica.sdg.model.RefBidangUsaha;
 import com.jica.sdg.model.RefSkalaUsaha;
 import com.jica.sdg.model.RefKatUsaha;
@@ -138,7 +139,7 @@ public class UsahaController {
     	String sql = "select a.id_usaha,a.nm_usaha,a.achieve_usaha,a.loc_usaha,a.beneficiaries,a.year_impl,a.major_part, "
     			+ "c.usaha_type,c.web_url,c.head_office,c.name_pic,c.pos_pic,c.email_pic,c.hp_pic,a.id_role, e.nm_prov,"
                         + "a.no_telp, a.website, a.id_skala_usaha, a.id_bidang_usaha, a.id_kat_usaha, a.kode_usaha, a.nama_perusahaan,"
-                        + "f.nm_skala_usaha, g.nm_bidang_usaha, h.nm_kategori "
+                        + "f.nm_skala_usaha, g.nm_bidang_usaha, h.nm_kategori, a.id_badan_hukum, i.nm_badan_hukum "
     			+ "from usaha_profile a "
     			+ "left join usaha_detail c on a.id_usaha=c.id_usaha "
     			+ "left join ref_role d on a.id_role = d.id_role "
@@ -146,6 +147,7 @@ public class UsahaController {
     			+ "left join ref_skala_usaha f on a.id_skala_usaha = f.id "
     			+ "left join ref_bidang_usaha g on a.id_bidang_usaha = g.id "
     			+ "left join ref_kat_usaha h on a.id_kat_usaha = h.id "
+    			+ "left join ref_badan_hukum i on a.id_badan_hukum = i.id "
                 + "left join ref_role b on b.id_role = a.id_role where 1=1 "+prov+" "+role;
         System.out.println(sql);
     	Query query = em.createNativeQuery(sql);
@@ -242,6 +244,15 @@ public class UsahaController {
     public @ResponseBody Map<String, Object> getKatUsaha(HttpSession session) {
     	List<RefKatUsaha> listKatUsaha;
         listKatUsaha = nsaProfilrService.findAllKatUsaha();
+        Map<String, Object> hasil = new HashMap<>();
+        hasil.put("content", listKatUsaha);
+        return hasil;
+    }
+    
+    @GetMapping("admin/corporation/getrefBadanHukum")
+    public @ResponseBody Map<String, Object> getBadanHukum(HttpSession session) {
+    	List<RefBadanHukum> listKatUsaha;
+        listKatUsaha = nsaProfilrService.findAllBadanHukum();
         Map<String, Object> hasil = new HashMap<>();
         hasil.put("content", listKatUsaha);
         return hasil;
