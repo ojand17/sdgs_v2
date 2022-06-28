@@ -548,7 +548,7 @@ public class DataEntryController {
     			+ "i.achievement1 as achi1, i.achievement2 as achi2, i.achievement3 as achi3, i.achievement4 as achi4, "
     			+ "h.id, i.id as idbud, c.id as idind, a.id as idact, b.internal_code as intid_program, "
     			+ "a.internal_code as intid_activity, c.internal_code as intid_nsa_indicator, c.impl_agen,e.new_value,"
-    			+ "j.approval aprv1,k.approval aprv2,l.approval aprv3,m.approval aprv4,e.id id_target "
+    			+ "j.approval aprv1,k.approval aprv2,l.approval aprv3,m.approval aprv4,e.id id_target,c.idpemda_actual "
     			+ "from nsa_activity as a "
     			+ "left join nsa_program b on a.id_program = b.id "
     			+ "left join nsa_indicator c on a.id_program = c.id_program and a.id = c.id_activity "
@@ -664,7 +664,8 @@ public class DataEntryController {
     			+ "a.internal_code as intid_activity, c.internal_code as intid_nsa_indicator, c.impl_agen, "
     			+ "CASE WHEN a.budget_allocation is null or a.budget_allocation = '' THEN c.new_budget_allocation ELSE a.new_budget_allocation end new_value,"
     			+ "j.approval aprv1,k.approval aprv2,l.approval aprv3,m.approval aprv4,e.id id_target,"
-    			+ "CASE WHEN a.budget_allocation is null or a.budget_allocation = '' THEN 'real_indicator' ELSE 'activity' end as jenis "
+    			+ "CASE WHEN a.budget_allocation is null or a.budget_allocation = '' THEN 'real_indicator' ELSE 'activity' end as jenis, "
+    			+ "n.achievement1 as achiInd1, n.achievement2 as achiInd2, n.achievement3 as achiInd3, n.achievement4 as achiInd4, n.id idBudInd "
     			+ "from nsa_activity as a "
     			+ "left join nsa_program b on a.id_program = b.id "
     			+ "left join nsa_indicator c on a.id_program = c.id_program and a.id = c.id_activity "
@@ -677,6 +678,7 @@ public class DataEntryController {
     			+ "left join entry_approval k on k.id_role = a.id_role and k.id_monper = b.id_monper and k.year = e.year and k.type = 'entry_nsa_budget' and k.periode = '2' "
     			+ "left join entry_approval l on l.id_role = a.id_role and l.id_monper = b.id_monper and l.year = e.year and l.type = 'entry_nsa_budget' and l.periode = '3' "
     			+ "left join entry_approval m on m.id_role = a.id_role and m.id_monper = b.id_monper and m.year = e.year and m.type = 'entry_nsa_budget' and m.periode = '4' "
+    			+ "left join entry_nsa_budget n on n.id_nsa_indicator = c.id and n.year_entry = :year and n.id_monper = g.id_monper "
     			+ "where g.id_monper = :id_monper and g.id_prov = :id_prov "+role
     			+ "order by b.id, a.id ";
         query = em.createNativeQuery(sql);
@@ -1755,6 +1757,19 @@ public class DataEntryController {
         query.executeUpdate();
     }
     
+    @PostMapping(path = "admin/save-new-location-non-gov/{id}/{idpemda}", consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    @Transactional
+    public void saveNewLoc(@RequestBody Map<String, Object> payload) {
+    	JSONObject obj = new JSONObject(payload);
+    	String id = obj.get("id").toString();
+    	String idpemda = obj.get("idpemda").toString();
+    	Query query = em.createNativeQuery("update nsa_indicator set idpemda_actual = :new_value where id=:id");
+		query.setParameter("new_value", idpemda);
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
+    
     @PostMapping(path = "admin/save-new-target-usaha/{id}/{jenis}/{nilai}", consumes = "application/json", produces = "application/json")
     @ResponseBody
     @Transactional
@@ -1866,6 +1881,7 @@ public class DataEntryController {
                     list.get().setAchievement4(entryNsaBudget.getAchievement4());
                     list.get().setYear_entry(entryNsaBudget.getYear_entry());
                     list.get().setId_monper(entryNsaBudget.getId_monper());
+                    list.get().setId_nsa_indicator(entryNsaBudget.getId_nsa_indicator());
                     list.ifPresent(foundUpdateObject ->entrySdgService.saveEntryNsaBudget(foundUpdateObject));
         	}else {
         		entrySdgService.saveEntryNsaBudget(entryNsaBudget);
