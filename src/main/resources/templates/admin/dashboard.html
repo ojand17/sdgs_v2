@@ -77,11 +77,13 @@
 	                    </div>
 	                    <div class="widget-content">
 	                    	<div class="row-fluid">
-	                    		<select class="span3 select2" id="periodeNas">
+	                    		<select class="span2 select2" id="periodeNas">
 		                    		<option></option>
 		                    		<option th:each="per: ${periodeNas}" th:value="${per.id_monper}" th:text="${per.start_year+' - '+per.end_year}"></option>
 	                            </select>
-	                            <select class="span9 select2" id="goals">
+	                            <select class="span2 select2" id="tahunSebaran">
+	                            </select>
+	                            <select class="span8 select2" id="goals">
 		                    		<option></option>
 		                    		<option th:each="data: ${goals}" th:value="${data.id}" th:text="${lang!=0?data.id_goals+'. '+data.nm_goals:data.id_goals+'. '+data.nm_goals_eng}"></option>
 	                            </select>
@@ -388,7 +390,7 @@
 			placeholder: 'Pilih',
 			allowClear: true,
 		});
-		$('#tahun,#tahunTarget,#tahunInd').select2({
+		$('#tahun,#tahunSebaran,#tahunTarget,#tahunInd').select2({
 			placeholder: 'Pilih Tahun',
 			allowClear: true,
 		});
@@ -761,10 +763,11 @@
         function barChart(){
             var id_monper = $("#periodeNas").val();
             var goals = $("#goals").val();
-            if(id_monper && goals){
+            var tahun = $("#tahunSebaran").val();
+            if(id_monper && goals && tahun){
             	$.ajax({
                     type: "GET",
-                    url: urls+'dashboard/get-bar-2a/'+id_monper+'/'+goals,
+                    url: urls+'dashboard/get-bar-2a/'+id_monper+'/'+goals+'/'+tahun,
                     success: function (result) {
                         var hasil = result.program;
                         var arrNama = [];
@@ -952,31 +955,15 @@
 
                         var hasilSpider1 = result.spider1;
                         var kategoriSpider1 = [];
-                        var seriesSpider = [];
+                        var dataSemester1 = [];
+                        var dataSemester2 = [];
                         
-                        var tahunper = $( "#periodeNas option:selected" ).text()?$( "#periodeNas option:selected" ).text().split("-"):"";
-            			var tahunAwal = parseInt($.trim(tahunper[0]));
-            			var tahunAkhir = parseInt($.trim(tahunper[1]));
-                        for(var j=tahunAwal;j<=(tahunAkhir+1);j++){
-
-                            var valueSpider1 = [];
-                        	for(var i = 0, len = hasilSpider1.length; i < len; i++){
-                            	if(hasilSpider1[i][3]==j){
-                            		valueSpider1.push(hasilSpider1[i][2]);
-                               	}
-                            }
-                        	if(kategoriSpider1.length === 0){
-                            	for(var i = 0, len = hasilSpider1.length; i < len; i++){
-                            		kategoriSpider1.push(hasilSpider1[i][1]);
-                                }
-                            }
-                            
-                        	seriesSpider.push({
-                        		'name':j,
-                        		'data':valueSpider1,
-                        		 pointPlacement: 'on'
-                            });
+                        for(var i = 0, len = hasilSpider1.length; i < len; i++){
+                    		kategoriSpider1.push(hasilSpider1[i][1]);
+                    		dataSemester1.push(hasilSpider1[i][2]);
+                    		dataSemester2.push(hasilSpider1[i][3]);
                         }
+                        
 						
                         Highcharts.chart('spider1', {
 
@@ -990,7 +977,7 @@
                     	    },
 
                     	    title: {
-                    	        text: 'Realisasi Anggaran per SDGs Indikator',
+                    	        text: 'Realisasi Anggaran per SDGs Indikator Tahun '+$('#tahunSebaran').val(),
                     	    },
 
                     	    pane: {
@@ -1011,7 +998,7 @@
 
                     	    tooltip: {
                     	        shared: true,
-                    	        pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y}</b><br/>'
+                    	        pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y}%</b><br/>'
                     	    },
 
                     	    legend: {
@@ -1020,7 +1007,15 @@
                     	        layout: 'vertical'
                     	    },
 
-                    	    series: seriesSpider,
+                    	    series: [{
+                    	        name: 'Semester 1',
+                    	        data: dataSemester1,
+                    	        pointPlacement: 'on'
+                    	    }, {
+                    	        name: 'Semester 2',
+                    	        data: dataSemester2,
+                    	        pointPlacement: 'on'
+                    	    }],
 
                     	    responsive: {
                     	        rules: [{
@@ -1045,27 +1040,15 @@
                         var hasilSpiderRole = result.spiderRole;
                         var kategoriSpiderRole = [];
                         var seriesSpiderRole = [];
+                        var dataRoleSemester1 = [];
+                        var dataRoleSemester2 = [];
                         
-                        for(var j=tahunAwal;j<=(tahunAkhir+1);j++){
-
-                            var valueSpiderRole = [];
-                        	for(var i = 0, len = hasilSpiderRole.length; i < len; i++){
-                            	if(hasilSpiderRole[i][2]==j){
-                            		valueSpiderRole.push(hasilSpiderRole[i][1]);
-                               	}
-                            }
-                        	if(kategoriSpiderRole.length === 0){
-                            	for(var i = 0, len = hasilSpiderRole.length; i < len; i++){
-                            		kategoriSpiderRole.push(hasilSpiderRole[i][0]);
-                                }
-                            }
-                            
-                        	seriesSpiderRole.push({
-                        		'name':j,
-                        		'data':valueSpiderRole,
-                        		 pointPlacement: 'on'
-                            });
+                        for(var i = 0, len = hasilSpiderRole.length; i < len; i++){
+                        	kategoriSpiderRole.push(hasilSpiderRole[i][0]);
+                    		dataRoleSemester1.push(hasilSpiderRole[i][1]);
+                    		dataRoleSemester2.push(hasilSpiderRole[i][2]);
                         }
+                        
 						
                         Highcharts.chart('spiderRole', {
 
@@ -1079,7 +1062,7 @@
                     	    },
 
                     	    title: {
-                    	        text: 'Realisasi Anggaran SDGs per K/L',
+                    	        text: 'Realisasi Anggaran SDGs per K/L Tahun '+$('#tahunSebaran').val(),
                     	    },
 
                     	    pane: {
@@ -1100,7 +1083,7 @@
 
                     	    tooltip: {
                     	        shared: true,
-                    	        pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y}</b><br/>'
+                    	        pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y}%</b><br/>'
                     	    },
 
                     	    legend: {
@@ -1109,7 +1092,15 @@
                     	        layout: 'vertical'
                     	    },
 
-                    	    series: seriesSpiderRole,
+                    	    series: [{
+                    	        name: 'Semester 1',
+                    	        data: dataRoleSemester1,
+                    	        pointPlacement: 'on'
+                    	    }, {
+                    	        name: 'Semester 2',
+                    	        data: dataRoleSemester2,
+                    	        pointPlacement: 'on'
+                    	    }],
 
                     	    responsive: {
                     	        rules: [{
@@ -1136,7 +1127,7 @@
             }
         }
         
-        $("#periodeNas,#goals").on('change', function(){
+        $("#periodeNas,#tahunSebaran,#goals").on('change', function(){
         	barChart();
         });
 
@@ -1327,6 +1318,19 @@
             	});
             }
         }
+        
+        $("#periodeNas").on('change', function(){
+        	var tahunper = $( "#periodeNas option:selected" ).text()?$( "#periodeNas option:selected" ).text().split("-"):"";
+			var tahunAwal = parseInt($.trim(tahunper[0]));
+			var tahunAkhir = parseInt($.trim(tahunper[1]));
+            $("#tahunSebaran").html("<option></option>");
+            for(var i=tahunAwal;i<=(tahunAkhir+1);i++){
+            	var newOption = new Option(i, i, true, true);
+                // Append it to the select
+                $('#tahunSebaran').append(newOption);
+            }
+            $('#tahunSebaran option:selected').remove();
+        });
 
         $("#periodeNas3").on('change', function(){
         	var tahunper = $( "#periodeNas3 option:selected" ).text()?$( "#periodeNas3 option:selected" ).text().split("-"):"";

@@ -530,7 +530,9 @@
                         async:false,
                         success: function (result) {
                             var array = result.content;
-                            $('#nama_perusahaan').val(array[0].nm_usaha);
+                            if(array.lenght>0){
+                            	$('#nama_perusahaan').val(array[0].nm_usaha);
+                            }
                         },
                     });
 	        });

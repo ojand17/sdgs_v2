@@ -555,38 +555,41 @@ public class AdminController {
         return "admin/ran_rad/monper";
     }
     
-    @GetMapping("admin/dashboard/get-bar-2a/{id_monper}/{id_goals}")
-    public @ResponseBody Map<String, Object> getBar(@PathVariable("id_monper") Integer id_monper,@PathVariable("id_goals") Integer id_goals) {
-    	Query query = em.createNativeQuery("SELECT distinct d.nm_role, count(distinct b.id_program) program\r\n" + 
+    @GetMapping("admin/dashboard/get-bar-2a/{id_monper}/{id_goals}/{tahun}")
+    public @ResponseBody Map<String, Object> getBar(@PathVariable("id_monper") Integer id_monper,@PathVariable("id_goals") Integer id_goals,@PathVariable("tahun") Integer tahun) {
+    	Query query = em.createNativeQuery("SELECT distinct d.acronym, count(distinct b.id_program) program\r\n" + 
     			"from gov_map a \r\n" + 
     			"left join gov_indicator b on a.id_gov_indicator = b.id\r\n" + 
     			"left join gov_activity c on b.id_activity = c.id\r\n" + 
     			"left join ref_role d on c.id_role = d.id_role\r\n" + 
     			"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_goals = '"+id_goals+"'\r\n" + 
-    			"GROUP BY d.nm_role");
-    	Query queryKegiatan = em.createNativeQuery("SELECT distinct d.nm_role, count(DISTINCT b.id_activity) activity\r\n" + 
+    			"GROUP BY d.acronym");
+    	Query queryKegiatan = em.createNativeQuery("SELECT distinct d.acronym, count(DISTINCT b.id_activity) activity\r\n" + 
     			"from gov_map a \r\n" + 
     			"left join gov_indicator b on a.id_gov_indicator = b.id\r\n" + 
     			"left join gov_activity c on b.id_activity = c.id\r\n" + 
     			"left join ref_role d on c.id_role = d.id_role\r\n" + 
     			"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_goals = '"+id_goals+"'\r\n" + 
-    			"GROUP BY d.nm_role");
-    	Query queryRo = em.createNativeQuery("SELECT distinct d.nm_role, count(DISTINCT b.id) indicator\r\n" + 
+    			"GROUP BY d.acronym");
+    	Query queryRo = em.createNativeQuery("SELECT distinct d.acronym, count(DISTINCT b.id) indicator\r\n" + 
     			"from gov_map a \r\n" + 
     			"left join gov_indicator b on a.id_gov_indicator = b.id\r\n" + 
     			"left join gov_activity c on b.id_activity = c.id\r\n" + 
     			"left join ref_role d on c.id_role = d.id_role\r\n" + 
     			"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_goals = '"+id_goals+"'\r\n" + 
-    			"GROUP BY d.nm_role");
+    			"GROUP BY d.acronym");
     	Query querySpider1 = em.createNativeQuery("SELECT \r\n" + 
     			"a.id_indicator, \r\n" + 
     			"CONCAT(g.id_goals,'.',f.id_target,'.',e.id_indicator) as kode, \r\n" + 
     			"CASE WHEN\r\n" + 
+    			"COALESCE(ROUND(((COALESCE(sum(d.achievement1),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) > 100 THEN 100 ELSE \r\n" + 
+    			"COALESCE(ROUND(((COALESCE(sum(d.achievement1),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) END persen_sms1,\r\n" + 
+    			"CASE WHEN\r\n" + 
     			"COALESCE(ROUND(((COALESCE(sum(d.achievement1),0)+COALESCE(sum(d.achievement2),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) > 100 THEN 100 ELSE \r\n" + 
-    			"COALESCE(ROUND(((COALESCE(sum(d.achievement1),0)+COALESCE(sum(d.achievement2),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) END persen,\r\n" + 
+    			"COALESCE(ROUND(((COALESCE(sum(d.achievement1),0)+COALESCE(sum(d.achievement2),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) END persen_sms2,\r\n" + 
     			"d.year_entry \r\n" + 
     			"from gov_map a    \r\n" + 
-    			"left join entry_gov_budget d on d.id_gov_activity = a.id_gov_indicator  \r\n" + 
+    			"left join entry_gov_budget d on d.id_gov_activity = a.id_gov_indicator and d.year_entry = '"+tahun+"'  \r\n" + 
     			"left join sdg_indicator e on a.id_indicator = e.id  \r\n" + 
     			"left join sdg_target f on f.id = e.id_target  \r\n" + 
     			"left join sdg_goals g on f.id_goals = g.id  \r\n" + 
@@ -596,13 +599,16 @@ public class AdminController {
     			"GROUP BY a.id_indicator, d.year_entry "+
     			"ORDER BY a.id_indicator, d.year_entry");
     	Query querySpiderRole = em.createNativeQuery("SELECT \r\n" + 
-    			"k.nm_role, \r\n" + 
+    			"k.acronym, \r\n" + 
+    			"CASE WHEN\r\n" + 
+    			"COALESCE(ROUND(((COALESCE(sum(d.achievement1),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) > 100 THEN 100 ELSE \r\n" + 
+    			"COALESCE(ROUND(((COALESCE(sum(d.achievement1),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) END persen_sms1,\r\n" + 
     			"CASE WHEN\r\n" + 
     			"COALESCE(ROUND(((COALESCE(sum(d.achievement1),0)+COALESCE(sum(d.achievement2),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) > 100 THEN 100 ELSE \r\n" + 
-    			"COALESCE(ROUND(((COALESCE(sum(d.achievement1),0)+COALESCE(sum(d.achievement2),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) END persen,\r\n" + 
+    			"COALESCE(ROUND(((COALESCE(sum(d.achievement1),0)+COALESCE(sum(d.achievement2),0))/COALESCE(sum(i.budget_allocation),0)*100),0),0) END persen_sms2,\r\n" + 
     			"d.year_entry \r\n" + 
     			"from gov_map a    \r\n" + 
-    			"left join entry_gov_budget d on d.id_gov_activity = a.id_gov_indicator  \r\n" + 
+    			"left join entry_gov_budget d on d.id_gov_activity = a.id_gov_indicator and d.year_entry = '"+tahun+"'  \r\n" + 
     			"left join sdg_indicator e on a.id_indicator = e.id  \r\n" + 
     			"left join sdg_target f on f.id = e.id_target  \r\n" + 
     			"left join sdg_goals g on f.id_goals = g.id  \r\n" + 
@@ -645,12 +651,12 @@ public class AdminController {
     			"GROUP BY a.id_gov_indicator) a");
 	    List list =  query.getResultList();
 	    
-	    Query queryByKl = em.createNativeQuery("SELECT id_role,nm_role,\r\n" + 
+	    Query queryByKl = em.createNativeQuery("SELECT id_role,acronym,\r\n" + 
 	    		"SUM(if(persen < 75, 1, 0)) kurang,\r\n" + 
 	    		"SUM(if(persen>=75 && persen<=95, 1, 0)) sedang,\r\n" + 
 	    		"SUM(if(persen > 95, 1, 0)) baik\r\n" + 
 	    		"FROM\r\n" + 
-	    		"(SELECT f.id_role,g.nm_role,\r\n" + 
+	    		"(SELECT f.id_role,g.acronym,\r\n" + 
 	    		"SUM(b.value) target, \r\n" + 
 	    		"SUM(d.achievement1+d.achievement2) realisasi,\r\n" + 
 	    		"ROUND(COALESCE(SUM(b.value)/SUM(d.achievement1+d.achievement2)*100,0),0) persen\r\n" + 
@@ -663,7 +669,7 @@ public class AdminController {
 	    		"left join ref_role g on f.id_role = g.id_role\r\n" + 
 	    		"where a.id_prov = '000' and a.id_monper = '"+id_monper+"' and a.id_indicator = '"+id_indicator+"'\r\n" + 
 	    		"GROUP BY a.id_gov_indicator) a\r\n" + 
-	    		"GROUP BY nm_role");
+	    		"GROUP BY acronym");
 	    List listByKl =  queryByKl.getResultList();
 	    Map<String, Object> hasil = new HashMap<>();
 	    hasil.put("ro",list);
@@ -690,7 +696,7 @@ public class AdminController {
 //    			"from \r\n" + 
 //    			"(select DISTINCT\r\n" + 
 //    			"CONCAT(j.id_activity,'.',h.id_gov_indicator) kode_ro,\r\n" + 
-//    			"CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) kode_sdg, k.nm_role,\r\n" + 
+//    			"CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) kode_sdg, k.acronym,\r\n" + 
 //    			"COALESCE(SUM(g.value),0) target_ro, \r\n" + 
 //    			"COALESCE(sum(f.achievement1),0)"+achievement2+" capaian_ro, \r\n" + 
 //    			"COALESCE(ROUND(((COALESCE(sum(f.achievement1),0)"+achievement2+")/COALESCE(SUM(g.value),0))*100,0),0) as persen_ro,\r\n" + 
@@ -714,7 +720,7 @@ public class AdminController {
 //    			"order by h.id,CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator), g.id_role ) a");
 //	    List listQuadran =  queryQuadran.getResultList();
 //    	
-	    Query queryQuadran1 = em.createNativeQuery("Select kode_ro,kode_sdg,nm_role,target_ro,capaian_ro,persen_ro,budget_allocation,realisasi,persen_realisasi,\r\n" + 
+	    Query queryQuadran1 = em.createNativeQuery("Select kode_ro,kode_sdg,acronym,target_ro,capaian_ro,persen_ro,budget_allocation,realisasi,persen_realisasi,\r\n" + 
 	    		"CASE\r\n" + 
 	    		"        WHEN persen_ro>="+persen+" and persen_realisasi>="+persen+" THEN\r\n" + 
 	    		"                '<span style=\''color#green\''>Realisasi anggaran tinggi<br/>RO tercapai</span>'\r\n" + 
@@ -730,7 +736,7 @@ public class AdminController {
 	    		"select DISTINCT \r\n" + 
 	    		"CONCAT(i.id_activity,'.',h.id_gov_indicator) kode_ro,\r\n" + 
 	    		"CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) kode_sdg, \r\n" + 
-	    		"k.nm_role,\r\n" + 
+	    		"k.acronym,\r\n" + 
 	    		"COALESCE(SUM(g.value),0) target_ro,       \r\n" + 
 	    		"COALESCE(sum(f.achievement1),0)"+achievement2+" capaian_ro,\r\n" + 
 	    		"COALESCE(ROUND(((COALESCE(sum(f.achievement1),0)"+achievement2+")/COALESCE(SUM(g.value),0))*100,0),0) as persen_ro,\r\n" + 
@@ -782,7 +788,7 @@ public class AdminController {
 //    			"from \r\n" + 
 //    			"(select DISTINCT\r\n" + 
 //    			"CONCAT(j.id_activity,'.',h.id_gov_indicator) kode_ro,\r\n" + 
-//    			"CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) kode_sdg, k.nm_role,\r\n" + 
+//    			"CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) kode_sdg, k.acronym,\r\n" + 
 //    			"COALESCE(SUM(g.value),0) target_ro, \r\n" + 
 //    			"COALESCE(sum(f.achievement1),0)"+achievement2+" capaian_ro, \r\n" + 
 //    			"COALESCE(ROUND(((COALESCE(sum(f.achievement1),0)"+achievement2+")/COALESCE(SUM(g.value),0))*100,0),0) as persen_ro,\r\n" + 
@@ -806,7 +812,7 @@ public class AdminController {
 //    			"order by h.id,CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator), g.id_role ) a");
 //	    List listQuadran =  queryQuadran.getResultList();
     	
-	    Query queryQuadran1 = em.createNativeQuery("Select kode_ro,kode_sdg,nm_role,target_ro,capaian_ro,persen_ro,budget_allocation,realisasi,persen_realisasi,\r\n" + 
+	    Query queryQuadran1 = em.createNativeQuery("Select kode_ro,kode_sdg,acronym,target_ro,capaian_ro,persen_ro,budget_allocation,realisasi,persen_realisasi,\r\n" + 
 	    		"CASE\r\n" + 
 	    		"        WHEN persen_ro>="+persen+" and persen_realisasi>="+persen+" THEN\r\n" + 
 	    		"                '<span style=\''color#green\''>Realisasi anggaran tinggi<br/>RO tercapai</span>'\r\n" + 
@@ -823,7 +829,7 @@ public class AdminController {
 	    		"select DISTINCT \r\n" + 
 	    		"CONCAT(i.id_activity,'.',h.id_gov_indicator) kode_ro,\r\n" + 
 	    		"CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) kode_sdg, \r\n" + 
-	    		"k.nm_role,\r\n" + 
+	    		"k.acronym,\r\n" + 
 	    		"COALESCE(SUM(g.value),0) target_ro,\r\n" + 
 	    		"COALESCE(sum(f.achievement1),0)"+achievement2+" capaian_ro,\r\n" + 
 	    		"COALESCE(ROUND(((COALESCE(sum(f.achievement1),0)"+achievement2+")/COALESCE(SUM(g.value),0))*100,0),0) as persen_ro,\r\n" + 
@@ -861,7 +867,7 @@ public class AdminController {
 	    Query query = em.createNativeQuery("Select \r\n" + 
 	    		"kode_ro,\r\n" + 
 	    		"kode_sdg,\r\n" + 
-	    		"nm_role,\r\n" + 
+	    		"acronym,\r\n" + 
 	    		"persen_ro_sms1,\r\n" + 
 	    		"persen_realisasi_sms1,\r\n" + 
 	    		"CASE\r\n" + 
@@ -891,7 +897,7 @@ public class AdminController {
 	    		"select \r\n" + 
 	    		"CONCAT(i.id_activity,'.',h.id_gov_indicator) kode_ro,\r\n" + 
 	    		"CONCAT(b.id_goals,'.',c.id_target,'.',d.id_indicator) kode_sdg, \r\n" + 
-	    		"k.nm_role,\r\n" + 
+	    		"k.acronym,\r\n" + 
 	    		"CASE WHEN\r\n" + 
 	    		"COALESCE(ROUND(((COALESCE(sum(f.achievement1),0))/COALESCE(SUM(g.value),0))*100,0),0) > 100 THEN 100\r\n" + 
 	    		"ELSE COALESCE(ROUND(((COALESCE(sum(f.achievement1),0))/COALESCE(SUM(g.value),0))*100,0),0) END as persen_ro_sms1,\r\n" + 

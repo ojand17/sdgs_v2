@@ -1825,6 +1825,11 @@
                     $('#achievement3').val("0").hide();
                     $('#achievement4').val("0").hide();
                 }
+                if(jenis=='budget' || jenis == 'real_indicator'){
+            		$('#achievement1,#achievement2,#achievement3,#achievement4').attr("placeholder","Ditulis lengkap dalam rupiah, Contoh: 1000000000");
+            	}else{
+            		$('#achievement1,#achievement2,#achievement3,#achievement4').removeAttr("placeholder");
+            	}
                 $('#id').val(id).hide();
                 $('#jenis').val(jenis).hide();
                 $('.addModal').modal("show");
@@ -1836,6 +1841,11 @@
             	$('#idtarget').val(dataid);
             	$('#jenistarget').val(jenis);
             	$('#new_target').val(nilai);
+            	if(jenis=='activity' || jenis == 'real_indicator'){
+            		$('#new_target').attr("placeholder","Ditulis lengkap dalam rupiah, Contoh: 1000000000");
+            	}else{
+            		$('#new_target').removeAttr("placeholder");
+            	}
             	$('.addModalTarget').modal("show");
             }).on('click','.update_lokasi', function(){
             	var dataid = $(this).data('id');
