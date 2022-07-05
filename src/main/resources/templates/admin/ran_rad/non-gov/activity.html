@@ -18,7 +18,7 @@
         				<select name="id_prov" id="id_prov">
 	        				<option th:each="f:${prov}" th:value="${f.id_prov}" th:text="${f.nm_prov}"></option>
 	        			</select>
-	        			<select name="id_role" id="id_role">
+	        			<select name="id_role" id="id_role" class="select2" width="100%">
 	        				<option value="0">-- Pilih --</option>
 	        				<option th:each="f:${role}" th:value="${f.id_role}" th:text="${f.nm_role}"></option>
 	        			</select>
@@ -180,6 +180,8 @@
 			var id_program = $('#id_program').val();
 			var privilege = [[${privilege}]];
 			var id_role = [[${id_role}]];
+			
+			$('.select2').select2();
 			//Bahasa
 	        var titleDel = "Anda Yakin";
 	        var messDel = "Menghapus Data dan Data level dibawahnya?";
