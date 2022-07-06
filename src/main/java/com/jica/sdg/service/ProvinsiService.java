@@ -18,6 +18,11 @@ public class ProvinsiService implements IProvinsiService{
         List prov = (List<Provinsi>) repository.findAllProvinsi();
         return prov;
     }
+    
+    public List<Provinsi> findAllProvinsiExcIndo() {
+        List prov = (List<Provinsi>) repository.findAllProvinsiExcIndo();
+        return prov;
+    }
 
 	@Override
 	public Optional<Provinsi> findOne(String id) {

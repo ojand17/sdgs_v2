@@ -9,6 +9,8 @@ public interface IProvinsiService {
 
     List<Provinsi> findAllProvinsi();
     
+    List<Provinsi> findAllProvinsiExcIndo();
+    
     Optional<Provinsi> findOne(String id);
 
 }

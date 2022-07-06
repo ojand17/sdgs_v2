@@ -948,7 +948,7 @@ public class DataEntryController {
     	String id_prov      = list.get().getId_prov();
     	String privilege    = list.get().getPrivilege();
     	if(id_prov.equals("000")) {
-            model.addAttribute("listprov", provinsiService.findAllProvinsi());
+            model.addAttribute("listprov", provinsiService.findAllProvinsiExcIndo());
     	}else {
             Optional<Provinsi> list1 = provinsiService.findOne(id_prov);
             list1.ifPresent(foundUpdateObject1 -> model.addAttribute("listprov", foundUpdateObject1));
