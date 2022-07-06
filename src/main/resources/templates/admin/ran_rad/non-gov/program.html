@@ -18,7 +18,7 @@
         				<select name="id_prov" id="id_prov">
 	        				<option th:each="f:${prov}" th:value="${f.id_prov}" th:text="${f.nm_prov}"></option>
 	        			</select>
-	        			<select name="id_role" id="id_role">
+	        			<select name="id_role" id="id_role" class="select2" width="100%">
 	        				<option th:each="f:${role}" th:value="${f.id_role}" th:text="${f.nm_role}"></option>
 	        			</select>
 	        			<span> RAN/RAD : </span>
@@ -183,6 +183,8 @@
 		//$(document).ready(function (e) {
 			var token = $("meta[name='_csrf']").attr("content");
 	        var header = $("meta[name='_csrf_header']").attr("content");
+	        
+	        $('.select2').select2();
 	        
 	        var id_prov = $('#id_prov').val();
 	        if(id_prov == '000'){

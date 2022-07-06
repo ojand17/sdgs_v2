@@ -19,12 +19,12 @@
         <div class="container-fluid">
             <div class="row-fluid">
                 <div class="pull-left" style="width:100%">
-                    <select th:field="*{listprov}" class="span3" id="id_prov" name="id_prov">
+                    <select th:field="*{listprov}" class="span3 select2" id="id_prov" name="id_prov" width="100%">
                         <option value="0" >-- Pilih --</option>
                         <option value="all" >-- ALL --</option>
                         <option th:each="list : ${listprov}" th:value="${list.id_prov}" th:text="${list.acronym}"></option>
                     </select>
-                    <select id="nm_nsa_profil" name="idrole" class="form-control">
+                    <select id="nm_nsa_profil" name="idrole" class="form-control select2" width="100%">
                         <option value="0" >-- Pilih NSA --</option>
                         <!--<option th:each="f:${listNsaProfile}" th:value="${f.id_role}" th:text="${f.nm_role}"></option>-->
                     </select>
@@ -341,7 +341,7 @@
             var id_role     = [[${id_role}]];
             var id_prov     = [[${id_prov}]];
             var privilege   = [[${privilege}]];
-			
+            $('.select2').select2();
             function headtabel(){
 	        	var text;
 	        	if($("#fs").is(':checked')){
