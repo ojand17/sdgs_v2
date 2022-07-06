@@ -2086,17 +2086,15 @@ public class DataEntryController {
     
     @GetMapping("admin/list-entry-corporation-indicator_approve/{id_role}/{id_monper}/{tahun}")
     public @ResponseBody Map<String, Object> listEntryCorIndicatorApprove(@PathVariable("id_role") String id_role, @PathVariable("id_monper") String id_monper, @PathVariable("tahun") String tahun) {
-        String sql  = "select a.id_activity, a.id_program, a.id_usaha_indicator, a.internal_code, a.nm_indicator,\n" +
-                    "b.id as id_entrygov, b.achievement1, b.achievement2, b.achievement3, b.achievement4, b.year_entry, b.id_monper, \n" +
-                    "(select usaha_prog from ran_rad where id_monper = :id_monper ) as ket_ran_rad , a.nm_indicator_eng, c.value as nilai_target, a.id, \n" +
-                    "d.nm_activity, d.nm_activity_eng, d.id_activity as id_acty, e.nm_program, e.nm_program_eng, e.id_program as id_prog, \n" +
-                    "b.new_value1, b.new_value2, b.new_value3, b.new_value4, e.internal_code as intprog, d.internal_code as intact, a.internal_code as intind \n" +
-                    "from usaha_indicator as a\n" +
-                    "left join (select * from usaha_activity where id_role = :id_role ) as d on a.id_activity = d.id \n" +
-                    "left join (select * from usaha_program ) as e on a.id_program = e.id \n" +
-                    "left join (select * from entry_usaha_indicator where id_monper = :id_monper and year_entry = :tahun ) as b on a.id = b.id_assign \n" +
-                    "left join (select * from usaha_target where id_role = :id_role and year = :tahun )  as c on a.id = c.id_usaha_indicator \n" +
-                    "where d.id_role = :id_role ";
+        String sql  = "select '' id_activity, '' id_program, '' id_usaha_indicator, '' internal_code, '' nm_indicator, \n" +
+                    " b.id as id_entrygov, b.achievement1, b.achievement2, b.achievement3, b.achievement4, b.year_entry, b.id_monper, \n" +
+                    " (select corporation_prog from ran_rad where id_monper = :id_monper ) as ket_ran_rad , '' nm_indicator_eng, c.value as nilai_target, '' id, \n" +
+                    " '' nm_activity, '' nm_activity_eng, '' id_acty, e.nm_program, e.nm_program_eng, e.id_program as id_prog, \n" +
+                    " b.new_value1, b.new_value2, b.new_value3, b.new_value4, e.internal_code as intprog, ''  intact, ''  intind \n" +
+                    " from usaha_program as e \n" +
+                    " left join (select * from entry_usaha_indicator where id_monper = :id_monper and year_entry = :tahun ) as b on e.id = b.id_assign \n" +
+                    " left join (select * from usaha_target where id_role = :id_role and year = :tahun )  as c on e.id = c.id_usaha_indicator \n" +
+                    " where e.id_role = :id_role ";
         
         Query query = em.createNativeQuery(sql);
 //        query.setParameter("id_program", id_program);

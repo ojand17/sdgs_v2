@@ -41,7 +41,6 @@
                             </select>
                             <select id="type" name="type" class="form-control">
                             	<option value="0" >-- Pilih --</option>
-                                <option value="entry_usaha_budget" >Budget</option>
                                 <option value="entry_usaha_indicator" >Output Kegiatan</option>
                             </select>
                             <select id="period" name="period" class="form-control">
@@ -1447,7 +1446,12 @@
                                         return "<div style='font-size:90%;'>"+(display.row+1)+"</div>";
                                     }},
                                     {"data": function (row, data, index, display) {
-                                    	return "<div style='font-size:90%;'>"+row[26]+"</div><span style='font-size:90%;'>"+row[26]+'.'+row[27]+"</span><div style='font-size:90%;'>"+row[26]+'.'+row[27]+'.'+row[28]+"</div>";
+                                        if(row[26] == null){
+                                            var kodeprog = '';
+                                        }else{
+                                            var kodeprog = row[26];
+                                        }
+                                    	return "<div style='font-size:90%;'>"+kodeprog+"</div>";
                                     }},
                                     {"data": function (row, data, index, display) {
                                         if($('#fs').is(':checked')){
