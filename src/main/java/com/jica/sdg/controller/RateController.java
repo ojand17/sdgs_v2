@@ -42,6 +42,8 @@ import com.jica.sdg.service.SdgFundingService;
 import com.jica.sdg.service.SdgGoalsService;
 import com.jica.sdg.service.SdgTargetService;
 import com.jica.sdg.service.UnitService;
+
+import java.math.BigInteger;
 import java.util.Date;
 import javax.transaction.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -1698,7 +1700,7 @@ public class RateController {
                             EntryNsaBudget entryNsaBudget = new EntryNsaBudget();
                             System.out.println("nilai = "+data_achievement[i]);
                             entryNsaBudget.setId_nsa_activity(Integer.parseInt(data_indicator[i]));
-                            entryNsaBudget.setAchievement1(Integer.parseInt(data_achievement[i]));
+                            entryNsaBudget.setAchievement1(new BigInteger(data_achievement[i]));
                             entryNsaBudget.setYear_entry(tahun);
                             entryNsaBudget.setDate_created(new Date());
                             entryNsaBudget.setId_monper(id_monper);
@@ -1708,7 +1710,7 @@ public class RateController {
                             EntryNsaBudget entryNsaBudget = new EntryNsaBudget();
 //                            entryGovIndicator.setId(null);
                             entryNsaBudget.setId_nsa_activity(Integer.parseInt(data_indicator[i]));
-                            entryNsaBudget.setAchievement2(Integer.parseInt(data_achievement[i]));
+                            entryNsaBudget.setAchievement2(new BigInteger(data_achievement[i]));
                             entryNsaBudget.setYear_entry(tahun);
                             entryNsaBudget.setDate_created(new Date());
                             entryNsaBudget.setId_monper(id_monper);
@@ -1718,7 +1720,7 @@ public class RateController {
                             EntryNsaBudget entryNsaBudget = new EntryNsaBudget();
 //                            entryGovIndicator.setId(null);
                             entryNsaBudget.setId_nsa_activity(Integer.parseInt(data_indicator[i]));
-                            entryNsaBudget.setAchievement3(Integer.parseInt(data_achievement[i]));
+                            entryNsaBudget.setAchievement3(new BigInteger(data_achievement[i]));
                             entryNsaBudget.setYear_entry(tahun);
                             entryNsaBudget.setDate_created(new Date());
                             entryNsaBudget.setId_monper(id_monper);
@@ -1728,7 +1730,7 @@ public class RateController {
                             EntryNsaBudget entryNsaBudget = new EntryNsaBudget();
 //                            entryGovIndicator.setId(null);
                             entryNsaBudget.setId_nsa_activity(Integer.parseInt(data_indicator[i]));
-                            entryNsaBudget.setAchievement4(Integer.parseInt(data_achievement[i]));
+                            entryNsaBudget.setAchievement4(new BigInteger(data_achievement[i]));
                             entryNsaBudget.setYear_entry(tahun);
                             entryNsaBudget.setDate_created(new Date());
                             entryNsaBudget.setId_monper(id_monper);
