@@ -54,6 +54,9 @@ public class NsaIndicator implements Serializable {
     
     @Column(nullable = true)
     private String impl_agen;
+    
+    @Column(nullable = true)
+    private String lokasi;
 
 	public NsaIndicator() {
 	}
@@ -75,7 +78,7 @@ public class NsaIndicator implements Serializable {
 
 	public NsaIndicator(Integer id, String id_nsa_indicator, String id_program, String id_activity, String nm_indicator,
 			String nm_indicator_eng, String unit, Integer created_by, Date date_created, Integer internal_code,
-			String idpemda, BigInteger budget_allocation, String funding_source, String impl_agen) {
+			String idpemda, BigInteger budget_allocation, String funding_source, String impl_agen, String lokasi) {
 		super();
 		this.id = id;
 		this.id_nsa_indicator = id_nsa_indicator;
@@ -91,6 +94,7 @@ public class NsaIndicator implements Serializable {
 		this.budget_allocation = budget_allocation;
 		this.funding_source = funding_source;
 		this.impl_agen = impl_agen;
+		this.lokasi = lokasi;
 	}
 
 	public Integer getId() {
@@ -207,5 +211,13 @@ public class NsaIndicator implements Serializable {
 
 	public void setImpl_agen(String impl_agen) {
 		this.impl_agen = impl_agen;
+	}
+
+	public String getLokasi() {
+		return lokasi;
+	}
+
+	public void setLokasi(String lokasi) {
+		this.lokasi = lokasi;
 	}
 }
