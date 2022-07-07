@@ -199,6 +199,14 @@
 				    </div>
 				  </div>
 				  <div class="control-group">
+				    <label class="lang_eng control-label" style="display:none">Location Detail</label>
+				    <label class="lang_indo control-label">Keterangan Lokasi</label>
+				    <div class="controls">
+				    	<input type="text" id="lokasi" name="lokasi" class=" input-xlarge input-block-level"/>
+					    <span class="help-block" id="error_pemda"></span>
+				    </div>
+				  </div>
+				  <div class="control-group">
 				    <label class="lang_eng" style="display:none"> Budget Allocation *</label><label class="lang_indo"> Alokasi Anggaran Output Kegiatan</label>
 				    
 				    <div class="controls">
@@ -634,6 +642,7 @@
 				$('#budget_allocation').val("").removeAttr("readonly");
 				$('#funding_source').val("").removeAttr("readonly");
 				$('#impl_agen').val("").removeAttr("readonly");
+				$('#lokasi').val("").removeAttr("readonly");
 				$('.control-group').removeClass('error');
 				$('.help-block').text("");
 			}
@@ -676,6 +685,8 @@
 				var budget_allocation = $('#budget_allocation').val();
 				var funding_source = $('#funding_source').val();
 				var impl_agen = $('#impl_agen').val();
+				var lokasi = $('#lokasi').val();
+				alert(lokasi)
 				$('.control-group').removeClass('error');
 				$('.help-block').text("");
 				var cek = 0;
@@ -708,6 +719,7 @@
 						'budget_allocation':budget_allocation,
 						'funding_source':funding_source,
 						'impl_agen':impl_agen,
+						'lokasi':lokasi,
 						});
 					$.ajax({
 						type: "POST",
@@ -776,6 +788,7 @@
         				$('#budget_allocation').val(val.budget_allocation);
         				$('#funding_source').val(val.funding_source);
         				$('#impl_agen').val(val.impl_agen);
+        				$('#lokasi').val(val.lokasi);
         				var privilege = [[${privilege}]];
         				if(privilege=='ADMIN' || privilege=='SUPER'){
         	                 $('#hide_kode_internal').show();
@@ -851,6 +864,7 @@
         				$('#budget_allocation').val(val.budget_allocation).attr("readonly",true);
         				$('#funding_source').val(val.funding_source).attr("readonly",true);
         				$('#impl_agen').val(val.impl_agen).attr("readonly",true);
+        				$('#lokasi').val(val.lokasi).attr("readonly",true);
         				var privilege = [[${privilege}]];
         				if(privilege=='ADMIN' || privilege=='SUPER'){
         	                 $('#hide_kode_internal').show();
