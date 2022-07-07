@@ -50,10 +50,10 @@
                     					<span class="lang_eng" style="display:none">Add Program</span>
                     					<span class="lang_indo">Tambah Program</span>
                     			</button>
-                    			<button type='button' id='export-all' class="btn btn-warning">
+                    			<!-- <button type='button' id='export-all' class="btn btn-warning">
                     					<span class="lang_eng" style="display:none">Export All</span>
                     					<span class="lang_indo">Export Semua</span>
-                    			</button>
+                    			</button> -->
                     		</div>
                     	</div>
                     	<br/>
@@ -242,10 +242,18 @@
                                 <label class="lang_eng control-label" style="display:none;text-align:left">Provinsi/Kabupaten</label>
                                 <label class="lang_indo control-label" style="text-align:left">Provinsi/Kabupaten</label>
                                 <div class="controls">
-                                    <select name="kd_bps" id="kd_bps" style="width: 100%;">
-                                        <option value="0" >-- Pilih --</option>
+                                    <select id="kd_bps" name="kd_bps" class="input-xlarge input-block-level" style="width:100%" multiple="multiple"></select>
+                                        
                                     </select>
                                     <span class="help-block" id="error_kdprov"></span>
+                                </div>
+                            </div>
+                            <div class="control-group" >
+                                <label class="lang_eng control-label" style="display:none;text-align:left">Keterangan Lokasi </label>
+                                <label class="lang_indo control-label" style="text-align:left">Location Description</label>
+                                <div class="controls">
+                                    <input type="text" id="keterangan_lokasi" name="keterangan_lokasi" placeholder="" class=" input-block-level" />
+                                    <span class="help-block" id="error_keterangan_lokasi"></span>
                                 </div>
                             </div>
                                     
@@ -304,6 +312,24 @@
 		//$(document).ready(function (e) {
 			var token = $("meta[name='_csrf']").attr("content");
 	        var header = $("meta[name='_csrf_header']").attr("content");
+
+            $('#kd_bps').select2({
+				placeholder: 'Pilih',
+				allowClear: true,
+				dropdownParent: $("#myModal")
+			});
+
+            $('#idpojk').select2({
+				placeholder: 'Pilih',
+				allowClear: true,
+				dropdownParent: $("#myModal")
+			});
+
+            $('#id_indicator').select2({
+				placeholder: 'Pilih',
+				allowClear: true,
+				dropdownParent: $("#myModal")
+			});
 	        
 	        var id_prov = $('#id_prov').val();
 	        if(id_prov == '000'){
@@ -497,9 +523,9 @@
 						}},
 					{"data": function (row, data, index, display) {
 							return "<div style='text-align:center;'>"+
-							'<button data-id="'+row.id+'" type="button" title="detail" class="btn btn-success btn-mini detail"><i class="icon-edit"></i></button>'+
-							'<button data-id="'+row.id+'" type="button" title="update" class="btn btn-warning btn-mini update"><i class="icon-pencil"></i></button>'+
-                            '<button data-id="'+row.id+'" type="button" title="delete" class="btn btn-danger btn-mini delete"><i class="icon-trash"></i></button></div>';
+							'<button data-id="'+row.id+'" type="button" title="View" class="btn btn-success btn-mini detail"><i class="icon-edit"></i></button>'+
+							'<button data-id="'+row.id+'" type="button" title="Edit" class="btn btn-warning btn-mini update"><i class="icon-pencil"></i></button>'+
+                            '<button data-id="'+row.id+'" type="button" title="Delete" class="btn btn-danger btn-mini delete"><i class="icon-trash"></i></button></div>';
 						}}
 				],
 				"columnDefs": [
@@ -757,7 +783,10 @@
 				var uraian = $('#uraian').val();
 				var indicator_capaian = $('#indicator_capaian').val();
 				var unit = $('#unit').val();
-				var kd_bps = $('#kd_bps').val();
+				// var kd_bps = $('#kd_bps').val();
+                var kd_bps = $('#kd_bps').val()?$('#kd_bps').val().toString():'';
+                var keterangan_lokasi = $('#keterangan_lokasi').val();
+                
 				var budget_allocation = $('#budget_allocation').val();
 				var jangka_waktu = $('#jangka_waktu').val();
 				var target1 = $('#target1').val();
@@ -801,6 +830,7 @@
 						'indicator_capaian': indicator_capaian,
 						'unit': unit,
 						'kd_bps': kd_bps,
+                        'keterangan_lokasi' : keterangan_lokasi,
 						'budget_allocation':budget_allocation,
 						'jangka_waktu':jangka_waktu,
 						'target1': target1,
@@ -891,16 +921,20 @@
                         $('#rel_prog_id').val(val.rel_prog_id);
                         $('#internal_code').val(val.internal_code?val.internal_code:'');
                         
-                        $('#idkategori').val(val.idkategori).trigger('change');
-                        $('#idpojk').val(val.idpojk).trigger('change');
-                        $('#id_indicator').val(val.id_indicator).trigger('change');
+                        $('#idkategori').val(val.idkategori).trigger('change').attr("disabled", false);
+                        $('#idpojk').val(val.idpojk).trigger('change').attr("disabled", false);
+                        $('#id_indicator').val(val.id_indicator).trigger('change').attr("disabled", false);
                         $('#kode').val(val.kode);
                         $('#uraian').val(val.uraian);
                         $('#indicator_capaian').val(val.indicator_capaian);
-                        $('#unit').val(val.unit);
-                        $('#jangka_waktu').val(val.jangka_waktu);
-                        $('#kd_bps').val(val.kd_bps).trigger('change');
-                        $('#budget_allocation').val(val.budget_allocation);
+                        $('#unit').val(val.unit).attr("readonly",false);
+                        $('#jangka_waktu').val(val.jangka_waktu).attr("readonly",false);
+                        $('#keterangan_lokasi').val(val.keterangan_lokasi).attr("readonly",false);
+                        
+                        // $('#kd_bps').val(val.kd_bps).trigger('change');
+                        var kd_bps = val.kd_bps?val.kd_bps.split(','):'';
+        				$('#kd_bps').val(kd_bps).trigger('change').attr("disabled", false);
+                        $('#budget_allocation').val(val.budget_allocation).attr("readonly",false);
 //                        $('#target1').val(val.target1);
 //                        $('#target2').val(val.target2);
 //                        $('#target3').val(val.target3);
@@ -909,8 +943,9 @@
                                         
         				var privilege = [[${privilege}]];
         				if(privilege=='ADMIN' || privilege=='SUPER'){
-        	                 $('#hide_kode_internal').show();
+        	                 $('#hide_kode_internal').hide();
         	             }
+                         $('#submit').show();
 						$('#myModal').modal('show');
                     },
                 });
@@ -946,7 +981,7 @@
                                     });
                                     target += '<tr>'+
                                             '<td><input type="text" name="target[][year]" class="input-block-level" value="'+($.trim(i))+'" readonly="true"/></td>'+
-                                            '<td><input type="text" name="target[][nilai]" id="target[][nilai]" class="input-block-level"  value="'+nilai+'" /></td>'+
+                                            '<td><input type="text" name="target[][nilai]" id="target[][nilai]" class="input-block-level"  value="'+nilai+'" readonly="true"/></td>'+
                                     '</tr>';
                                     h++;
                                 }
@@ -960,20 +995,25 @@
                     	$('#id_program').val(val.id_program).attr("readonly",true);
         				$('#nm_program').val(val.nm_program).attr("readonly",true);
         				$('#nm_program_eng').val(val.nm_program_eng).attr("readonly",true);
-        				$('#id_role').val(val.id_role).attr("readonly",true);
-        				$('#id_monper').val(val.id_monper).attr("readonly",true);
+        				$('#id_role').val(val.id_role);
+        				$('#id_monper').val(val.id_monper)
         				$('#rel_prog_id').val(val.rel_prog_id).attr("readonly",true);
         				$('#internal_code').val(val.internal_code?val.internal_code:"").attr("readonly",true);
                                         
-                                        $('#idkategori').val(val.idkategori).trigger('change');
-                        $('#idpojk').val(val.idpojk).trigger('change');
-                        $('#id_indicator').val(val.id_indicator).trigger('change');
-                        $('#kode').val(val.kode);
-                        $('#uraian').val(val.uraian);
-                        $('#indicator_capaian').val(val.indicator_capaian);
-                        $('#unit').val(val.unit);
-                        $('#kd_bps').val(val.kd_bps).trigger('change');
-                        $('#budget_allocation').val(val.budget_allocation);
+                        $('#idkategori').val(val.idkategori).trigger('change').attr("disabled", true);
+                        $('#idpojk').val(val.idpojk).trigger('change').attr("disabled", true);
+                        $('#id_indicator').val(val.id_indicator).trigger('change').attr("disabled", true);
+                        $('#kode').val(val.kode).attr("readonly",true);
+                        $('#uraian').val(val.uraian).attr("readonly",true);
+                        $('#jangka_waktu').val(val.jangka_waktu).attr("readonly",true);
+                        $('#indicator_capaian').val(val.indicator_capaian).attr("readonly",true);
+                        $('#unit').val(val.unit).attr("readonly",true);
+                        $('#keterangan_lokasi').val(val.keterangan_lokasi).attr("readonly",true);
+                        
+                        // $('#kd_bps').val(val.kd_bps).trigger('change');
+                        var kd_bps = val.kd_bps?val.kd_bps.split(','):'';
+        				$('#kd_bps').val(kd_bps).trigger('change').attr("disabled", true);
+                        $('#budget_allocation').val(val.budget_allocation).attr("readonly",true);
                         $('#target1').val(val.target1);
                         $('#target2').val(val.target2);
                         $('#target3').val(val.target3);
@@ -981,8 +1021,9 @@
                         $('#target5').val(val.target5);
         				var privilege = [[${privilege}]];
         				if(privilege=='ADMIN' || privilege=='SUPER'){
-        	                 $('#hide_kode_internal').show();
+        	                 $('#hide_kode_internal').hide();
         	             }
+                        $('#submit').hide();
 						$('#myModal').modal('show');
                     },
                 })
