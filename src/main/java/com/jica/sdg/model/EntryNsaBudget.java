@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,28 +25,28 @@ public class EntryNsaBudget implements Serializable {
     private Integer id_nsa_activity;
     
     @Column(name = "achievement1")
-    private Integer achievement1;
+    private BigInteger achievement1;
     
     @Column(name = "achievement2")
-    private Integer achievement2;
+    private BigInteger achievement2;
     
     @Column(name = "achievement3")
-    private Integer achievement3;
+    private BigInteger achievement3;
     
     @Column(name = "achievement4")
-    private Integer achievement4;
+    private BigInteger achievement4;
     
     @Column(name = "new_value1")
-    private Integer new_value1;
+    private BigInteger new_value1;
     
     @Column(name = "new_value2")
-    private Integer new_value2;
+    private BigInteger new_value2;
     
     @Column(name = "new_value3")
-    private Integer new_value3;
+    private BigInteger new_value3;
     
     @Column(name = "new_value4")
-    private Integer new_value4;
+    private BigInteger new_value4;
     
     @Column(name = "year_entry")
     private Integer year_entry;
@@ -87,7 +88,7 @@ public class EntryNsaBudget implements Serializable {
     public EntryNsaBudget() {
     }
 
-    public EntryNsaBudget(Integer id, Integer id_nsa_activity, Integer achievement1, Integer achievement2, Integer achievement3, Integer achievement4, Integer new_value1, Integer new_value2, Integer new_value3, Integer new_value4, Integer year_entry, Integer id_role, Integer created_by, Integer created_by2, Integer created_by3, Integer created_by4, Date date_created, Date date_created2, Date date_created3, Date date_created4, Integer id_monper) {
+    public EntryNsaBudget(Integer id, Integer id_nsa_activity, BigInteger achievement1, BigInteger achievement2, BigInteger achievement3, BigInteger achievement4, BigInteger new_value1, BigInteger new_value2, BigInteger new_value3, BigInteger new_value4, Integer year_entry, Integer id_role, Integer created_by, Integer created_by2, Integer created_by3, Integer created_by4, Date date_created, Date date_created2, Date date_created3, Date date_created4, Integer id_monper) {
         this.id                 = id;
         this.id_nsa_activity    = id_nsa_activity;
         this.achievement1       = achievement1;
@@ -111,9 +112,9 @@ public class EntryNsaBudget implements Serializable {
         this.id_monper          = id_monper;
     }
 
-    public EntryNsaBudget(Integer id, Integer id_nsa_activity, Integer achievement1, Integer achievement2,
-			Integer achievement3, Integer achievement4, Integer new_value1, Integer new_value2, Integer new_value3,
-			Integer new_value4, Integer year_entry, Integer created_by, Integer created_by2, Integer created_by3,
+    public EntryNsaBudget(Integer id, Integer id_nsa_activity, BigInteger achievement1, BigInteger achievement2,
+    		BigInteger achievement3, BigInteger achievement4, BigInteger new_value1, BigInteger new_value2, BigInteger new_value3,
+    		BigInteger new_value4, Integer year_entry, Integer created_by, Integer created_by2, Integer created_by3,
 			Integer created_by4, Date date_created, Date date_created2, Date date_created3, Date date_created4,
 			Integer id_monper, Integer id_nsa_indicator) {
 		super();
@@ -214,67 +215,67 @@ public class EntryNsaBudget implements Serializable {
         this.id_nsa_activity = id_nsa_activity;
     }
 
-    public Integer getAchievement1() {
+    public BigInteger getAchievement1() {
         return achievement1;
     }
 
-    public void setAchievement1(Integer achievement1) {
+    public void setAchievement1(BigInteger achievement1) {
         this.achievement1 = achievement1;
     }
 
-    public Integer getAchievement2() {
+    public BigInteger getAchievement2() {
         return achievement2;
     }
 
-    public void setAchievement2(Integer achievement2) {
+    public void setAchievement2(BigInteger achievement2) {
         this.achievement2 = achievement2;
     }
 
-    public Integer getAchievement3() {
+    public BigInteger getAchievement3() {
         return achievement3;
     }
 
-    public void setAchievement3(Integer achievement3) {
+    public void setAchievement3(BigInteger achievement3) {
         this.achievement3 = achievement3;
     }
 
-    public Integer getAchievement4() {
+    public BigInteger getAchievement4() {
         return achievement4;
     }
 
-    public void setAchievement4(Integer achievement4) {
+    public void setAchievement4(BigInteger achievement4) {
         this.achievement4 = achievement4;
     }
 
-    public Integer getNew_value1() {
+    public BigInteger getNew_value1() {
         return new_value1;
     }
 
-    public void setNew_value1(Integer new_value1) {
+    public void setNew_value1(BigInteger new_value1) {
         this.new_value1 = new_value1;
     }
 
-    public Integer getNew_value2() {
+    public BigInteger getNew_value2() {
         return new_value2;
     }
 
-    public void setNew_value2(Integer new_value2) {
+    public void setNew_value2(BigInteger new_value2) {
         this.new_value2 = new_value2;
     }
 
-    public Integer getNew_value3() {
+    public BigInteger getNew_value3() {
         return new_value3;
     }
 
-    public void setNew_value3(Integer new_value3) {
+    public void setNew_value3(BigInteger new_value3) {
         this.new_value3 = new_value3;
     }
 
-    public Integer getNew_value4() {
+    public BigInteger getNew_value4() {
         return new_value4;
     }
 
-    public void setNew_value4(Integer new_value4) {
+    public void setNew_value4(BigInteger new_value4) {
         this.new_value4 = new_value4;
     }
 
