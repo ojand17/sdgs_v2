@@ -2,6 +2,7 @@ package com.jica.sdg.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 
 @Entity
@@ -39,14 +40,14 @@ public class NsaActivity implements Serializable {
     @Column(nullable = true, length = 150)
     private Integer internal_code;
     
-    @Column(nullable = true, length = 11)
-    private Integer budget_allocation;
+    @Column(nullable = true)
+    private BigInteger budget_allocation;
 
 	public NsaActivity() {
 	}
 
 	public NsaActivity(Integer id, String id_activity, String id_program, Integer id_role, String nm_activity,
-			String nm_activity_eng, Integer created_by, Date date_created, Integer internal_code, Integer budget_allocation) {
+			String nm_activity_eng, Integer created_by, Date date_created, Integer internal_code, BigInteger budget_allocation) {
 		super();
 		this.id = id;
 		this.id_activity = id_activity;
@@ -136,11 +137,11 @@ public class NsaActivity implements Serializable {
 		return serialVersionUID;
 	}
 
-	public Integer getBudget_allocation() {
+	public BigInteger getBudget_allocation() {
 		return budget_allocation;
 	}
 
-	public void setBudget_allocation(Integer budget_allocation) {
+	public void setBudget_allocation(BigInteger budget_allocation) {
 		this.budget_allocation = budget_allocation;
 	}
 }

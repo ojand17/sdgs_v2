@@ -2,6 +2,7 @@ package com.jica.sdg.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 
 @Entity
@@ -46,7 +47,7 @@ public class NsaIndicator implements Serializable {
     private String idpemda;
     
     @Column(nullable = true)
-    private Integer budget_allocation;
+    private BigInteger budget_allocation;
     
     @Column(nullable = true)
     private String funding_source;
@@ -74,7 +75,7 @@ public class NsaIndicator implements Serializable {
 
 	public NsaIndicator(Integer id, String id_nsa_indicator, String id_program, String id_activity, String nm_indicator,
 			String nm_indicator_eng, String unit, Integer created_by, Date date_created, Integer internal_code,
-			String idpemda, Integer budget_allocation, String funding_source, String impl_agen) {
+			String idpemda, BigInteger budget_allocation, String funding_source, String impl_agen) {
 		super();
 		this.id = id;
 		this.id_nsa_indicator = id_nsa_indicator;
@@ -184,11 +185,11 @@ public class NsaIndicator implements Serializable {
 		this.idpemda = idpemda;
 	}
 
-	public Integer getBudget_allocation() {
+	public BigInteger getBudget_allocation() {
 		return budget_allocation;
 	}
 
-	public void setBudget_allocation(Integer budget_allocation) {
+	public void setBudget_allocation(BigInteger budget_allocation) {
 		this.budget_allocation = budget_allocation;
 	}
 
