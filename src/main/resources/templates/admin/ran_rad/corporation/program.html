@@ -476,7 +476,7 @@
                             var array = result.content;
 //                            console.log(array['uraian']);
                             if(idpojk == '0'){
-                                $("#id_indicator").val('0').trigger('change').attr("readonly",false);
+                                $("#id_indicator").val('0').trigger('change');
                                 $("#uraian").val("").attr("readonly",false);
                                 $("#unit").val("");
                                 $("#kode").val("");
@@ -486,7 +486,7 @@
                                 $("#uraian").val(array['uraian']).attr("readonly",true);
                                 $("#unit").val(array['unit']);
                                 $("#kode").val(array['kode']);
-                                $("#id_indicator").val(array['id_indicator']).trigger('change').attr("readonly",true);
+                                $("#id_indicator").val(array['id_indicator']).trigger('change');
                             }
                             
                             
