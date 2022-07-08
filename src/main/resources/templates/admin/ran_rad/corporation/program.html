@@ -138,7 +138,7 @@
                                     <label class="lang_indo control-label" style="text-align:left">Kode POJK</label>
                                     <div class="controls">
                                         <select name="idpojk" id="idpojk" style="">
-                                            <option value="0" >-- Pilih --</option>
+                                            <!-- <option value="0" >-- Pilih --</option> -->
                                         </select>
                                         <span class="help-block" id="error_idpojk"></span>   
                                     </div>
@@ -445,11 +445,11 @@
                             $('#idpojk').html("");
                             var array = result.content;
                             console.log(array);
-                            $('#idpojk').append('<option value="0">-- Pilih --</option>');
+                            // $('#idpojk').append('<option value="0">-- Pilih --</option>');
                             for(a=0; a<array.length;a++){
                                 $('#idpojk').append('<option value="'+array[a].id+'">' +array[a].kode+'</option>');
                             }
-                            $('#idpojk').append('<option value="00000">Lainnya</option>');
+                            $('#idpojk').append('<option value="0">Lainnya</option>');
                         },
                     });
 	        });
@@ -475,7 +475,7 @@
                         success: function (result) {
                             var array = result.content;
 //                            console.log(array['uraian']);
-                            if(idpojk == '00000'){
+                            if(idpojk == '0'){
                                 $("#id_indicator").val('0').trigger('change').attr("readonly",false);
                                 $("#uraian").val("").attr("readonly",false);
                                 $("#unit").val("");
