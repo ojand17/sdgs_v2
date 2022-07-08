@@ -133,11 +133,11 @@
                             </div>   
                             
                             <div class="col-md-12" >
-                                <div class="control-group col-md-4" style="width: 100%">
+                                <div class="control-group col-md-8" style="width: 100%">
                                     <label class="lang_eng control-label" style="display:none;text-align:left">POJK Code</label>
                                     <label class="lang_indo control-label" style="text-align:left">Kode POJK</label>
                                     <div class="controls">
-                                        <select name="idpojk" id="idpojk" style="">
+                                        <select name="idpojk" id="idpojk" style="width: 100%">
                                             <!-- <option value="0" >-- Pilih --</option> -->
                                         </select>
                                         <span class="help-block" id="error_idpojk"></span>   
@@ -447,7 +447,7 @@
                             console.log(array);
                             // $('#idpojk').append('<option value="0">-- Pilih --</option>');
                             for(a=0; a<array.length;a++){
-                                $('#idpojk').append('<option value="'+array[a].id+'">' +array[a].kode+'</option>');
+                                $('#idpojk').append('<option value="'+array[a].id+'">' +array[a].kode+' - ' +array[a].uraian+'</option>');
                             }
                             $('#idpojk').append('<option value="0">Lainnya</option>');
                         },
@@ -482,11 +482,19 @@
                                 $("#kode").val("");
                                 $("#indicator_capaian").val("").attr("readonly",false);
                             }else{
-                                $("#indicator_capaian").val(array['indicator_capaian']).attr("readonly",true);
-                                $("#uraian").val(array['uraian']).attr("readonly",true);
-                                $("#unit").val(array['unit']);
-                                $("#kode").val(array['kode']);
-                                $("#id_indicator").val(array['id_indicator']).trigger('change');
+                                if(array['kode'] == 'A.6.c.3.c - TJSL'){
+                                    $("#id_indicator").val('0').trigger('change');
+                                    $("#uraian").val(array['uraian']).attr("readonly",false);
+                                    $("#unit").val("");
+                                    $("#kode").val(array['kode']);
+                                    $("#indicator_capaian").val("").attr("readonly",false);
+                                }else{
+                                    $("#indicator_capaian").val(array['indicator_capaian']).attr("readonly",true);
+                                    $("#uraian").val(array['uraian']).attr("readonly",true);
+                                    $("#unit").val(array['unit']);
+                                    $("#kode").val(array['kode']);
+                                    $("#id_indicator").val(array['id_indicator']).trigger('change');
+                                }
                             }
                             
                             
