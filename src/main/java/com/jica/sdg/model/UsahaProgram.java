@@ -75,6 +75,9 @@ public class UsahaProgram implements Serializable {
 
     @Column(nullable = true)
     private BigInteger new_budget_allocation;
+
+    @Column(nullable = true)
+    private BigInteger target_jangka_panjang;
     
     @Column(nullable = false, length = 11)
     private Integer target1;
@@ -93,6 +96,15 @@ public class UsahaProgram implements Serializable {
     
     @Column(nullable = true, length = 10)
     private String jangka_waktu;
+
+    @Column(nullable = true, length = 500)
+    private String tahun_jangka_panjang;
+
+    @Column(nullable = true, length = 500)
+    private String target_tahun_jangka_panjang;
+
+    @Column(nullable = true, length = 500)
+    private String lembaga_pelaksana;
     
     
 
@@ -118,7 +130,7 @@ public class UsahaProgram implements Serializable {
 			Integer id_monper, String rel_prog_id, Integer created_by, Date date_created, Integer internal_code,
                         Integer idkategori, Integer idpojk, Integer id_indicator, String kode, String uraian,
                         String indicator_capaian, String unit, String kd_bps, BigInteger budget_allocation, BigInteger new_budget_allocation,
-                        Integer target1, Integer target2, Integer target3, Integer target4, Integer target5, String keterangan_lokasi) {
+                        Integer target1, Integer target2, Integer target3, Integer target4, Integer target5, String keterangan_lokasi, BigInteger target_jangka_panjang, String tahun_jangka_panjang, String target_tahun_jangka_panjang, String lembaga_pelaksana) {
 		super();
 		this.id = id;
 		this.id_program = id_program;
@@ -146,13 +158,17 @@ public class UsahaProgram implements Serializable {
 		this.target4 = target4;
 		this.target5 = target5;
 		this.keterangan_lokasi = keterangan_lokasi;
+		this.target_jangka_panjang = target_jangka_panjang;
+		this.tahun_jangka_panjang = tahun_jangka_panjang;
+		this.target_tahun_jangka_panjang = target_tahun_jangka_panjang;
+		this.lembaga_pelaksana = lembaga_pelaksana;
 	}
         
 	public UsahaProgram(Integer id, String id_program, String nm_program, String nm_program_eng, Integer id_role,
 			Integer id_monper, String rel_prog_id, Integer created_by, Date date_created, Integer internal_code,
                         Integer idkategori, Integer idpojk, Integer id_indicator, String kode, String uraian,
                         String indicator_capaian, String unit, String kd_bps, BigInteger budget_allocation, BigInteger new_budget_allocation,
-                        Integer target1, Integer target2, Integer target3, Integer target4, Integer target5, String jangka_waktu, String keterangan_lokasi) {
+                        Integer target1, Integer target2, Integer target3, Integer target4, Integer target5, String jangka_waktu, String keterangan_lokasi, BigInteger target_jangka_panjang, String tahun_jangka_panjang, String target_tahun_jangka_panjang, String lembaga_pelaksana) {
 		super();
 		this.id = id;
 		this.id_program = id_program;
@@ -181,7 +197,46 @@ public class UsahaProgram implements Serializable {
 		this.target5 = target5;
 		this.jangka_waktu = jangka_waktu;
 		this.keterangan_lokasi = keterangan_lokasi;
+		this.target_jangka_panjang = target_jangka_panjang;
+		this.tahun_jangka_panjang = tahun_jangka_panjang;
+		this.target_tahun_jangka_panjang = target_tahun_jangka_panjang;
+		this.lembaga_pelaksana = lembaga_pelaksana;
 	}
+
+    public BigInteger getTarget_jangka_panjang() {
+        return target_jangka_panjang;
+    }
+
+    public void setTarget_jangka_panjang(BigInteger target_jangka_panjang) {
+        this.target_jangka_panjang = target_jangka_panjang;
+    }
+
+    public String getTahun_jangka_panjang() {
+        return tahun_jangka_panjang;
+    }
+
+    public void setTahun_jangka_panjang(String tahun_jangka_panjang) {
+        this.tahun_jangka_panjang = tahun_jangka_panjang;
+    }
+
+    public String getTarget_tahun_jangka_panjang() {
+        return target_tahun_jangka_panjang;
+    }
+
+    public void setTarget_tahun_jangka_panjang(String target_tahun_jangka_panjang) {
+        this.target_tahun_jangka_panjang = target_tahun_jangka_panjang;
+    }
+
+    public String getLembaga_pelaksana() {
+        return lembaga_pelaksana;
+    }
+
+    public void setLembaga_pelaksana(String lembaga_pelaksana) {
+        this.lembaga_pelaksana = lembaga_pelaksana;
+    }
+
+
+
 
     public String getJangka_waktu() {
         return jangka_waktu;
