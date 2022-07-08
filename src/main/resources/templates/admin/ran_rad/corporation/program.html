@@ -434,13 +434,13 @@
 //                            console.log(array['uraian']);
                             if(idpojk == '00000'){
                                 $("#id_indicator").val('0').trigger('change').attr("readonly",false);
-                                $("#uraian").val("Lainnya");
+                                $("#uraian").val("").attr("readonly",false);
                                 $("#unit").val("");
                                 $("#kode").val("");
                                 $("#indicator_capaian").val("").attr("readonly",false);
                             }else{
                                 $("#indicator_capaian").val(array['indicator_capaian']).attr("readonly",true);
-                                $("#uraian").val(array['uraian']);
+                                $("#uraian").val(array['uraian']).attr("readonly",true);
                                 $("#unit").val(array['unit']);
                                 $("#kode").val(array['kode']);
                                 $("#id_indicator").val(array['id_indicator']).trigger('change').attr("readonly",true);
