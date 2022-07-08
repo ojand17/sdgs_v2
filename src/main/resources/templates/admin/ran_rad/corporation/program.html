@@ -630,7 +630,23 @@
                                     
                                 },
                             });
+                            $('#id_program').val('');
+                            $('#nm_program').val('');
+                            $('#nm_program_eng').val('');
                             
+                            $('#idkategori').val('0').trigger('change');
+                            // $('#idpojk').val('0').trigger('change');
+                            $('#id_indicator').val('0').trigger('change');
+                            $('#kode').val('');
+                            $('#uraian').val('');
+                            $('#indicator_capaian').val('');
+                            $('#unit').val('');
+                            $('#jangka_waktu').val('');
+                            $('#keterangan_lokasi').val('');
+                            
+                            // $('#kd_bps').val(val.kd_bps).trigger('change');
+                            $('#kd_bps').val('').trigger('change');
+                            $('#budget_allocation').val('');
 	        		$("#myModal").modal("show");
 	        	}else{
 		        	if(!$('#id_role').val()){
