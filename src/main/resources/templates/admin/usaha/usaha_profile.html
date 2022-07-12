@@ -169,6 +169,7 @@
                                 <label for="nm_inst" class="lang_indo">Nama Profil Pelaku Usaha :</label>
                                 <label for="nm_inst" class="lang_eng" style="display: none">Corporation Profile Name :</label>
                                 <input name="nm_nsa" id="nm_nsa" type="text" class="input-block-level" required>
+                                <div id="error_nm_nsa" class="error"></div>
                             </div>
                             <div class="control-group">
                                 <label for="nm_inst" class="lang_indo">Skala Usaha :</label>
@@ -252,7 +253,7 @@
                             </div>
                         </div>
                         <div class="modal-footer" id="simpan_">
-                            <button type="button" id="detail" class="btn btn-primary lang_indo">Detil</button>
+                            <button type="button" id="detail" class="btn btn-primary lang_indo">Detail</button>
                             <button type="button" id="detail" class="btn btn-primary lang_eng" style="display: none">Detail</button>
                             <button type="button" class="btn btn-secondary lang_indo" data-dismiss="modal">Tutup</button>
                             <button type="button" class="btn btn-secondary lang_eng" data-dismiss="modal" style="display: none">Close</button>
@@ -260,7 +261,7 @@
                             <button type="button" id="simpan" class="btn btn-success lang_eng" style="display: none">Submit</button>
                         </div>
                         <div class="modal-footer" id="update_" style="display: none">
-                            <button type="button" id="detail_update" class="btn btn-primary lang_indo">Detil</button>
+                            <button type="button" id="detail_update" class="btn btn-primary lang_indo">Detail</button>
                             <button type="button" id="detail_update" class="btn btn-primary lang_eng" style="display: none">Detail</button>
                             <button type="button" class="btn btn-secondary lang_indo" data-dismiss="modal">Tutup</button>
                             <button type="button" class="btn btn-secondary lang_eng" data-dismiss="modal" style="display: none">Close</button>
@@ -412,6 +413,12 @@
             var id_prov     = [[${id_prov}]];
             var privilege   = [[${privilege}]];
 			
+            $('#kode_usaha').select2({
+				placeholder: 'Pilih',
+				allowClear: true,
+				dropdownParent: $(".addModal")
+			});
+
             function headtabel(){
 	        	var text;
 	        	if($("#fs").is(':checked')){
@@ -875,6 +882,14 @@
                 $('#beneficiaries').val('');
                 $('#year_impl').val('');
                 $('#major_part').val('');
+                $('#no_telp').val('');
+                $('#website').val('');
+
+                $('#id_skala_usaha').val('0').trigger('change');
+                $('#id_bidang_usaha').val('0').trigger('change');
+                $('#id_kat_usaha').val('0').trigger('change');
+                $('#kode_usaha').val('0').trigger('change');
+                $('#id_badan_hukum').val('0').trigger('change');
 
                 $('.addModal').modal("show");
                 $('#simpan_').show();

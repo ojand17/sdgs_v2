@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.math.BigDecimal;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -1327,11 +1328,12 @@ public class RanRadSdgController {
         	String year = obj.getString("year");
         	String value = obj.getString("nilai");
         	if(!value.equals("")) {
+                double result_val = Double.parseDouble(value);
         		UsahaTarget nsa = new UsahaTarget();
         		nsa.setId_usaha_indicator(id_nsa_indicator);
         		nsa.setId_role(id_role);
         		nsa.setYear(Integer.parseInt(year));
-        		nsa.setValue(Integer.parseInt(value));
+        		nsa.setValue(BigDecimal.valueOf(result_val));
         		usahaTargetService.saveTarget(nsa);
         	}
         }
@@ -1685,11 +1687,12 @@ public class RanRadSdgController {
         	String year = obj.getString("year");
         	String value = obj.getString("nilai");
         	if(!value.equals("")) {
+                BigDecimal result_val = new BigDecimal(value);
         		UsahaTarget nsa = new UsahaTarget();
         		nsa.setId_usaha_indicator(id_nsa_indicator);
         		nsa.setId_role(id_role);
         		nsa.setYear(Integer.parseInt(year));
-        		nsa.setValue(Integer.parseInt(value));
+        		nsa.setValue(result_val);
         		usahaTargetService.saveTarget(nsa);
         	}
         }
