@@ -103,4 +103,9 @@ public class RoleService implements IRoleService{
 		return role.findAllRoleCor();
 	}
 
+	@Override
+	public Role findById(Integer id) {
+		return role.findbyId(id);
+	}
+
 }

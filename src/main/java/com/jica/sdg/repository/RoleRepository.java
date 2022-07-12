@@ -75,5 +75,8 @@ public interface RoleRepository extends CrudRepository<Role, Integer> {
 	
 	@Query(value = "select * from ref_role where LOWER(cat_role) = 'corporation' and privilege='USER'",nativeQuery = true)
     public List<Role> findAllRoleCor();
+	
+	@Query(value = "select * from ref_role where id_role = :id_role", nativeQuery = true)
+	Role findbyId(@Param("id_role") Integer id_role);
 
 }

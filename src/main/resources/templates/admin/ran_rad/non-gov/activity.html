@@ -19,7 +19,6 @@
 	        				<option th:each="f:${prov}" th:value="${f.id_prov}" th:text="${f.nm_prov}"></option>
 	        			</select>
 	        			<select name="id_role" id="id_role" class="select2" width="100%">
-	        				<option value="0">-- Pilih --</option>
 	        				<option th:each="f:${role}" th:value="${f.id_role}" th:text="${f.nm_role}"></option>
 	        			</select>
 	        			<span> RAN/RAD : </span>
