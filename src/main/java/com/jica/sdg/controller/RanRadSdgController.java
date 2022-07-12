@@ -1197,14 +1197,14 @@ public class RanRadSdgController {
     @GetMapping("admin/ran_rad/non-gov/program/{id_program}/activity/{id_activity}/indicator")
     public String nsa_indikator(Model model, @PathVariable("id_program") Integer id_program,
                                 @PathVariable("id_activity") Integer id_activity, HttpSession session) {
-    	//Optional<NsaProgram> list = nsaProgService.findOne(id_program);
-    	//Optional<NsaActivity> list1 = nsaActivityService.findOne(id_activity);
+    	Optional<NsaProgram> list = nsaProgService.findOne(id_program);
+    	Optional<NsaActivity> list1 = nsaActivityService.findOne(id_activity);
     	//Integer id_role = list.get().getId_role();
     	//Optional<Role> role = roleService.findOne(id_role);
     	Optional<Role> role = roleService.findOne((Integer) session.getAttribute("id_role"));
-    	//Optional<Role> roleDrop = roleService.findOne(list.get().getId_role());
-    	//Optional<Provinsi> provin = prov.findOne(roleDrop.get().getId_prov());
-    	//Optional<RanRad> monper = monPeriodService.findOne(list.get().getId_monper());
+    	Optional<Role> roleDrop = roleService.findOne(list.get().getId_role());
+    	Optional<Provinsi> provin = prov.findOne(roleDrop.get().getId_prov());
+    	Optional<RanRad> monper = monPeriodService.findOne(list.get().getId_monper());
     	Integer id_role = (Integer) session.getAttribute("id_role");
     	Optional<Role> listRole = roleService.findOne(id_role);
     	Iterable<RefPemda> listPemda = pemdaRepo.findAll();
@@ -1225,11 +1225,11 @@ public class RanRadSdgController {
                         new Unit((Integer)row[0], (String) row[1], (Integer)row[2],(Integer)row[3])
             );
         }
-//    	provin.ifPresent(foundUpdateObject -> model.addAttribute("prov", foundUpdateObject));
-//        monper.ifPresent(foundUpdateObject -> model.addAttribute("monPer", foundUpdateObject));
-//        roleDrop.ifPresent(foundUpdateObject -> model.addAttribute("role", foundUpdateObject));
-//        list.ifPresent(foundUpdateObject -> model.addAttribute("govProg", foundUpdateObject));
-//        list1.ifPresent(foundUpdateObject1 -> model.addAttribute("govActivity", foundUpdateObject1));
+    	provin.ifPresent(foundUpdateObject -> model.addAttribute("prov", foundUpdateObject));
+        monper.ifPresent(foundUpdateObject -> model.addAttribute("monPer", foundUpdateObject));
+        roleDrop.ifPresent(foundUpdateObject -> model.addAttribute("role", foundUpdateObject));
+        list.ifPresent(foundUpdateObject -> model.addAttribute("govProg", foundUpdateObject));
+        list1.ifPresent(foundUpdateObject1 -> model.addAttribute("govActivity", foundUpdateObject1));
         model.addAttribute("lang", session.getAttribute("bahasa"));
         model.addAttribute("name", session.getAttribute("name"));
         model.addAttribute("unit", result);
