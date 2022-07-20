@@ -15,6 +15,8 @@ public interface IRoleService {
     
     Optional<Role> findOne(Integer id);
     
+    Role findById(Integer id);
+    
     List<Role> findByProvince(String id_prov);
     
     List<Role> findByProvinceUserForm(String id_prov);

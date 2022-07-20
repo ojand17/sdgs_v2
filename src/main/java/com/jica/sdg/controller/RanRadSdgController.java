@@ -1085,9 +1085,11 @@ public class RanRadSdgController {
     	Optional<Provinsi> provin = prov.findOne(ranrad.get().getId_prov());
     	Optional<RanRad> monper = monPeriodService.findOne(list.get().getId_monper());
     	Optional<Role> role = roleService.findOne((Integer) session.getAttribute("id_role"));
+    	Role roleList = roleService.findById(list.get().getId_role());
     	provin.ifPresent(foundUpdateObject -> model.addAttribute("prov", foundUpdateObject));
     	monper.ifPresent(foundUpdateObject -> model.addAttribute("monPer", foundUpdateObject));
-    	model.addAttribute("role", roleService.findRoleNonGov(ranrad.get().getId_prov()));
+    	//model.addAttribute("role", roleService.findRoleNonGov(ranrad.get().getId_prov()));
+    	model.addAttribute("role", roleList);
         model.addAttribute("title", "Define RAN/RAD/Government Program");
         list.ifPresent(foundUpdateObject -> model.addAttribute("govProg", foundUpdateObject));
         model.addAttribute("lang", session.getAttribute("bahasa"));

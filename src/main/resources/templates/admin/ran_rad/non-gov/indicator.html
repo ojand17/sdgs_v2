@@ -44,6 +44,7 @@
 							<a th:href="@{'/admin/ran_rad/non-gov/program/'+${govProg.id}+'/activity'}" th:text="${govProg.internal_code+'.'+govActivity.internal_code+' - '+govActivity.nm_activity}" class="lang_indo"></a>
 							<a th:href="@{'/admin/ran_rad/non-gov/program/'+${govProg.id}+'/activity'}" th:text="${govProg.internal_code+'.'+govActivity.internal_code+' - '+govActivity.nm_activity_eng}" class="lang_eng" style="display:none"></a>
 							<input type="hidden" th:value="${govActivity.budget_allocation}" id="alokasi_kegiatan"/>
+							<input type="hidden" th:value="${govProg.budget_allocation}" id="alokasi_kegiatan_program"/>
 					</div>
 				</div>
 			</div>
@@ -350,7 +351,8 @@
 				dropdownParent: $("#myModal")
 			});
 			var alokasi_kegiatan = $('#alokasi_kegiatan').val();
-			if(alokasi_kegiatan){
+			var alokasi_kegiatan_program = $('#alokasi_kegiatan_program').val();
+			if(alokasi_kegiatan || alokasi_kegiatan_program){
 				$('#budget_allocation').val('');
 				$('#budget_allocation').attr('readonly',true);
 			}
@@ -793,7 +795,7 @@
         				if(privilege=='ADMIN' || privilege=='SUPER'){
         	                 $('#hide_kode_internal').show();
         	            }
-        				if(alokasi_kegiatan){
+        				if(alokasi_kegiatan || alokasi_kegiatan_program){
         					$('#budget_allocation').val('');
         					$('#budget_allocation').attr('readonly',true);
         				}
@@ -869,7 +871,7 @@
         				if(privilege=='ADMIN' || privilege=='SUPER'){
         	                 $('#hide_kode_internal').show();
         	             }
-        				if(alokasi_kegiatan){
+        				if(alokasi_kegiatan || alokasi_kegiatan_program){
         					$('#budget_allocation').val('');
         					$('#budget_allocation').attr('readonly',true);
         				}

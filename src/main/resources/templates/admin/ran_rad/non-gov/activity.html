@@ -19,7 +19,6 @@
 	        				<option th:each="f:${prov}" th:value="${f.id_prov}" th:text="${f.nm_prov}"></option>
 	        			</select>
 	        			<select name="id_role" id="id_role" class="select2" width="100%">
-	        				<option value="0">-- Pilih --</option>
 	        				<option th:each="f:${role}" th:value="${f.id_role}" th:text="${f.nm_role}"></option>
 	        			</select>
 	        			<span> RAN/RAD : </span>
@@ -38,6 +37,7 @@
 						Program : 
 						<a th:href="@{/admin/ran_rad/non-gov/program}" th:text="${govProg.internal_code+' - '+govProg.nm_program}" class="lang_indo"></a>
 						<a th:href="@{/admin/ran_rad/non-gov/program}" th:text="${govProg.internal_code+' - '+govProg.nm_program_eng}" class="lang_eng" style="display:none"></a>
+						<input type="hidden" th:value="${govProg.budget_allocation}" id="alokasi_kegiatan"/>
 					</div>
 				</div>
 			</div>
@@ -182,6 +182,11 @@
 			var id_role = [[${id_role}]];
 			
 			$('.select2').select2();
+			var alokasi_kegiatan = $('#alokasi_kegiatan').val();
+			if(alokasi_kegiatan){
+				$('#budget_allocation').val('');
+				$('#budget_allocation').attr('readonly',true);
+			}
 			//Bahasa
 	        var titleDel = "Anda Yakin";
 	        var messDel = "Menghapus Data dan Data level dibawahnya?";
@@ -465,6 +470,10 @@
         				if(privilege=='ADMIN' || privilege=='SUPER'){
         	                 $('#hide_kode_internal').show();
         	            }
+        				if(alokasi_kegiatan){
+        					$('#budget_allocation').val('');
+        					$('#budget_allocation').attr('readonly',true);
+        				}
 						$('#myModal').modal('show');
                     },
                 })
@@ -485,6 +494,10 @@
         				if(privilege=='ADMIN' || privilege=='SUPER'){
         	                 $('#hide_kode_internal').show();
         	             }
+        				if(alokasi_kegiatan){
+        					$('#budget_allocation').val('');
+        					$('#budget_allocation').attr('readonly',true);
+        				}
 						$('#myModal').modal('show');
                     },
                 })
