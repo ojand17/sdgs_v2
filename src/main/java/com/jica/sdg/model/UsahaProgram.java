@@ -76,8 +76,8 @@ public class UsahaProgram implements Serializable {
     @Column(nullable = true)
     private BigInteger new_budget_allocation;
 
-    @Column(nullable = true)
-    private BigInteger target_jangka_panjang;
+    @Column(nullable = true, length = 800)
+    private String target_jangka_panjang;
     
     @Column(nullable = false, length = 11)
     private Integer target1;
@@ -130,7 +130,7 @@ public class UsahaProgram implements Serializable {
 			Integer id_monper, String rel_prog_id, Integer created_by, Date date_created, Integer internal_code,
                         Integer idkategori, Integer idpojk, Integer id_indicator, String kode, String uraian,
                         String indicator_capaian, String unit, String kd_bps, BigInteger budget_allocation, BigInteger new_budget_allocation,
-                        Integer target1, Integer target2, Integer target3, Integer target4, Integer target5, String keterangan_lokasi, BigInteger target_jangka_panjang, String tahun_jangka_panjang, String target_tahun_jangka_panjang, String lembaga_pelaksana) {
+                        Integer target1, Integer target2, Integer target3, Integer target4, Integer target5, String keterangan_lokasi, String target_jangka_panjang, String tahun_jangka_panjang, String target_tahun_jangka_panjang, String lembaga_pelaksana) {
 		super();
 		this.id = id;
 		this.id_program = id_program;
@@ -168,7 +168,7 @@ public class UsahaProgram implements Serializable {
 			Integer id_monper, String rel_prog_id, Integer created_by, Date date_created, Integer internal_code,
                         Integer idkategori, Integer idpojk, Integer id_indicator, String kode, String uraian,
                         String indicator_capaian, String unit, String kd_bps, BigInteger budget_allocation, BigInteger new_budget_allocation,
-                        Integer target1, Integer target2, Integer target3, Integer target4, Integer target5, String jangka_waktu, String keterangan_lokasi, BigInteger target_jangka_panjang, String tahun_jangka_panjang, String target_tahun_jangka_panjang, String lembaga_pelaksana) {
+                        Integer target1, Integer target2, Integer target3, Integer target4, Integer target5, String jangka_waktu, String keterangan_lokasi, String target_jangka_panjang, String tahun_jangka_panjang, String target_tahun_jangka_panjang, String lembaga_pelaksana) {
 		super();
 		this.id = id;
 		this.id_program = id_program;
@@ -203,13 +203,15 @@ public class UsahaProgram implements Serializable {
 		this.lembaga_pelaksana = lembaga_pelaksana;
 	}
 
-    public BigInteger getTarget_jangka_panjang() {
-        return target_jangka_panjang;
+
+    public String getTarget_jangka_panjang() {
+        return this.target_jangka_panjang;
     }
 
-    public void setTarget_jangka_panjang(BigInteger target_jangka_panjang) {
+    public void setTarget_jangka_panjang(String target_jangka_panjang) {
         this.target_jangka_panjang = target_jangka_panjang;
     }
+    
 
     public String getTahun_jangka_panjang() {
         return tahun_jangka_panjang;
